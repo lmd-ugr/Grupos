@@ -8,4 +8,4 @@ Extensión de la librería de [pedritomelenas](https://github.com/pedritomelenas
 [absalg](https://github.com/naftaliharris/Abstract-Algebra), respectivamente.
 
 # Breve Descripción
-Un grupo es un conjunto G no vacío junto a una operación binaria $*$ que verifica asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py (set, function, group)
+Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py (set, function, group)
