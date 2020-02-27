@@ -1,2 +1,2 @@
-# Teor-a-de-Grupos
+# Teoría-de-Grupos
 Repositorio para TFG
