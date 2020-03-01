@@ -9,3 +9,11 @@ Extensión de la librería de [pedritomelenas](https://github.com/pedritomelenas
 
 # Breve Descripción
 Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py (set, function, group)
+
+
+# Modificaciones
+## Set.py
+-Calcular el orden del grupo
+-Comprobar que el grupo es finito
+-Calcular los subconjuntos de un grupo y los subconjuntos de tamaño n
+-Operaciones unión, intersección, diferencia y diferencia simétrica
