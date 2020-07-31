@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
-
-
 """
+Created on Wed Feb 26 18:25:42 2020
+
+@author: Alberto
+
+
 Definition of a function
 """
 
 from Set import Set
 
+
 class Function:
-    """Definition of a finite function"""
+    
+    
     def __init__(self, domain, codomain, function, check_well_defined=True):
         """
         Initialize the function and check that it is well-formed.
@@ -22,20 +27,27 @@ class Function:
             raise TypeError("Codomain must be a Set")
             
         if check_well_defined:
-            if not all(function(elem) in codomain for elem in domain):
-                raise TypeError("Function returns some value outside of codomain")
+            #if not all(function(elem) in codomain for elem in domain):
+                #raise TypeError("Function returns some value outside of codomain")
+            
+            for elem in domain:
+                if(function(elem) not in codomain):
+                    print(function(elem), " not in " , codomain)
+                    raise TypeError("Function returns some value outside of codomain")
 
+                    
         self.domain = domain
         self.codomain = codomain
         self.function = function
 
-
+    
     def __call__(self, elem):
         if elem not in self.domain:
-            raise TypeError("Function must be called on elements of the domain")
+            print(elem, " not in ", self.domain)
+            #raise TypeError("Function must be called on elements of the domain")
         return self.function(elem)
-
-
+    
+    
     def __hash__(self):
         """Returns the hash of self"""
 
@@ -77,7 +89,7 @@ class Function:
         """
         return self._image()
 
-
+    '''
     #Print
     def __str__(self):
         """Pretty outputing of functions"""
@@ -90,8 +102,16 @@ class Function:
 
         return("".join(formatstr1.format(x, self(x)) for x in self.domain) + \
                "".join(formatstr2.format("", y) for y in nothit))
-
-    #sobreyectiva
+    '''
+    
+    def __str__(self):
+        l1 = []
+        for i in self.domain:
+            l1.append( "f(" + str(i)+ ")=" + str(self(i)) + "\n")
+        
+        return ' '.join(l1)
+    
+    
     def is_surjective(self):
         # Need to make self.domain into a Set, since it might not be in
         # subclasses of Function
@@ -103,38 +123,40 @@ class Function:
     def is_bijective(self):
         return self.is_surjective() and self.is_injective()
 
+    
     def compose(self, other):
         """Returns x -> self(other(x))"""
         if not self.domain == other.codomain:
             raise ValueError("codomain of other must match domain of self")
         return Function(other.domain, self.codomain, lambda x: self(other(x)))
-
+   
+    
     def new_domains(self, domain, codomain, check_well_defined=True):
         return Function(domain, codomain, self.function, check_well_defined)
 
 
 
+
 def identity(s):
-    """Returns the identity function on the set s"""
     if not isinstance(s, Set):
         raise TypeError("s must be a set")
     return Function(s, s, lambda x: x)
 
 
+def plus1(dom, cod):
+    if not isinstance(dom, Set) or not isinstance(cod, Set):
+        raise TypeError("both must be a set")
+    return Function(dom, cod, lambda x: x+1)
+    
 
+    
+if __name__ == '__main__':
 
-'''
-A=Set({1,2,3})
-B=Set({2,3,4})
-
-C = Function(A,A, lambda x: x)
-D = Function(A,B, lambda x: x+1)
-
-print(D.compose(C))
-
-print(D)
-
-print(C.is_surjective())
-print(C.is_injective())
-print(C.is_bijective())
-'''
+    F2 = Function(Set({1,2,3}), Set({1,2,3,4}), lambda x: x+1)
+    
+    print("Imagen: ", F2._image())
+    print("Print:\n", F2)
+    print(F2.is_bijective())
+    
+    
+    

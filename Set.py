@@ -18,21 +18,44 @@ class Set(frozenset):
     1) it makes Set immutable
     2) it allows Set to contains Sets
     """
+    
+        
     def __repr__(self):
         return str(set(self))
+
 
     def __str__(self):
         return str(set(self))
 
-    #def __mul__(self, other):
-    def cartesian(self, other):
-        """Cartesian product"""
+    
+    def __sub__(self, other):
         if not isinstance(other, Set):
             raise TypeError("One of the objects is not a set")
-        return Set(itertools.product(self,other, repeat=1))
+        
+        #return Set(self.union(other))
+        return Set(self | other)
+    
+    #A*B
+    def __mul__(self, other):
+        """Igual que cartesian"""
+        if not isinstance(other, Set):
+            raise TypeError("One of the objects is not a set")
         #return Set((a,b) for a in self for b in other)
+        return Set(itertools.product(self,other, repeat=1))
 
-    #Siempre devuelve 1 ¿?
+    
+    #A+B
+    def __add__(self, other):
+        if not isinstance(other, Set):
+            raise TypeError("One of the objects is not a set")
+        
+        #return Set(self.union(other))
+        return Set(self | other)
+    
+    #A-B
+    
+
+    #¿?
     def pick(self):
         """Return an arbitrary element. (The finite Axiom of Choice is true!)"""
         
@@ -43,15 +66,6 @@ class Set(frozenset):
         return item
     
     
-    '''BOOM##################################
-    
-    ##########################
-    Añado funciones, practising
-    ##########################
-    
-    '''
-
-
     def cardinality(self):
         return len(self)
     
@@ -60,30 +74,35 @@ class Set(frozenset):
         return len(self)<math.inf
     
     
-    #Subconjuntos de tamaño n
     def subsetsSize(self,n):
         if not isinstance(n, int) or n < 1:
             raise TypeError("Bad n, it must be greater than 1 ")
         return [Set(i) for i in itertools.combinations(self, n)]
     
     
-    #Subconjuntos
     def subsets(self):
-        return [Set(i) for p in range(1,len(self)) for i in itertools.combinations(self, p)]
+        #hasta len+1 porque el mismo conjunto es un subconjunto de él mismo
+        return [Set(i) for p in range(1,len(self)+1) for i in itertools.combinations(self, p)]
         '''
         Z=[]
-        for i in range(2, len(self)):
+        for i in range(1, len(self)+1):
             for j in itertools.combinations(self, i):
                 Z.append(Set(j))
         return Z
         '''
         
-    #Funciones elementales y necesarias para hacer el cast Set()
+    def cartesian(self, other):
+        if not isinstance(other, Set):
+            raise TypeError("One of the objects is not a set")
+        #return Set((a,b) for a in self for b in other)
+        return Set(itertools.product(self,other, repeat=1))
+        
+    #Funciones elementales y necesarias para devolver Set()
     def Union(self, other):
         if not isinstance(other, Set):
             raise TypeError("One of the objects is not a set")
         
-        #return Set(self.union(other)) #frozenset, no set
+        #return Set(self.union(other))
         return Set(self | other)
     
     
@@ -100,7 +119,9 @@ class Set(frozenset):
         if not isinstance(other, Set):
             raise TypeError("One of the objects is not a set")
             
-        return Set(self - other)
+        return Set(self.difference(other))
+                
+    
     
     #Elementos de A y B que no están en ambos a la vez
     def SymetricDifference(self, other):
@@ -111,27 +132,43 @@ class Set(frozenset):
         
     
 
+if __name__ == '__main__':
+    
+    A=Set({1,2,3,4})
+    B=Set({1,5})
 
-#A=Set({1,2,3})
-#print(A.subsets())
-#B=Set({3,4})
-
-#print(A.Union(B))
-#print(A.SymetricDifference(B))
-#print(A.symmetric_difference(B))
-
-#print(C.subsets())
-
-#print(A.__str__)  -------------?
-#print(A.__repr__) ---------------?
-#Z=[Set({1,2,3,4})]
-#Z.append(A)
-#print(A.is_finite())
-#print(A.subsetsSize(2))
-#print(Z)
-
-#print(A.subsets())
-
-#print(A.subsets())
-
-#print(A.cartesian(B))
+    C=A*B
+    print(1 in A)
+    #print(C)
+    print(" ")
+    #print(C+B)
+    
+    '''
+    for i in A.cartesian(B):
+        for j in B.cartesian(A):
+            if i==j:
+                print(i) #Bien, solamente el (1,1) es igual, (a,b) != (b,a) forall a,b in A,B
+    '''   
+     
+    
+    
+    #print(A.is_finite())
+    #print(A.cardinality())
+    #print(C.cardinality())
+    
+    #print(A.subsets())
+    
+    
+    #print(A.subsets())
+    #print(A.Union(B))
+    #print(A.SymetricDifference(B))
+    #print(A.symmetric_difference(B))
+    
+    
+    
+    #P = A.subsets()
+    #print(P)
+    #print(type(P[3]))
+    #print(A.subsets())
+    #print(A.cartesian(B))
+    
