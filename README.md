@@ -8,12 +8,84 @@ Extensión de la librería de [pedritomelenas](https://github.com/pedritomelenas
 [absalg](https://github.com/naftaliharris/Abstract-Algebra), respectivamente.
 
 # Breve Descripción
-Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py (set, function, group)
+- Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica las tres propiedades de: asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py:
+
+- Set: Clase donde se añadirán todas las operaciones a nivel de conjunto.
+- Function: Simula la operación binaria definida en nuestro grupo
+- Group: Clase principal donde se realizarán las operaciones más importante:
 
 
 # Modificaciones
+
 ## Set.py
--Calcular el orden del grupo
--Comprobar que el grupo es finito
--Calcular los subconjuntos de un grupo y los subconjuntos de tamaño n
--Operaciones unión, intersección, diferencia y diferencia simétrica
+- Calcular el orden del conjunto
+- Comprobar que el conjunto es finito
+- Calcular los subconjuntos de un conjunto y los subconjuntos de tamaño n. Estas funciones son útiles de cara a la clase Grupo para así calcular los subgrupos y subgrupos de tamaño n con mayor facilidad.
+- Además,se añaden las siguientes funciones que realizan operaciones a nivel de conjunto:
+Unión, intersección, diferencia y diferencia simétrica.
+
+## Function.py
+- Método __str__: Lo implemento de nuevo para realizar una representación 
+"bonita" y clara de nuestra función.
+- El resto por ahora OK.
+
+## Group.py
+
+- Modifico Constructor:
+	-Identidad: Puede ser que se le pase el elemento id erróneo por parámetro por lo que
+	obligo a comprobar cual es el elemento neutro. 
+	-Grupo abeliano. Borro la variable de clase y defino una función que compruebe
+	si el grupo es abeliano (en vez de hacerlo en el constructor __init__)
+	-Elimino la gran mayoría de las variables pasadas como parámetro en el constructor
+	__init__ (check_associativity, check_inverses, identity) ya que el grupo debe
+	cumplir estar 3 propiedades si o si, luego SIEMPRE SE OBLIGA a comprobar que el conjunto
+	con la operación binaria cumplen las 3
+
+- __str__: muestro además los elementos del grupo.
+
+
+- Inverse: La función que calcula la inversa de un elemento estaba definida en la clase Grupo en vez
+de en la clase del elemento. Lo modifico.
+
+- Añado método Cardinality() (creo que ya estaba con el nombre de order() )
+
+
+- Table -> Cayley_table  //pip install beautifultable
+Elimino la implementación ENTERA ya que al usar HTML se utilizan librerías
+que necesitan interfaz por lo que en la terminal no funcionaba el método. 
+Además, el código era muy abstracto.
+Simplicidad y optimización de código: En menos de la mitad de líneas realizo la misma funcionalidad
+y se utiliza únicamente python. Funciona perfectamente en la terminal.
+De cara a funcionalidades próximas quizás es conveniente añadir representación
+de la tabla con "letras".
+
+
+### Los siguientes métodos de subgrupos y normalidad los he modificado en su totalidad:
+
+- El método is_subgroup(other) H <= G está mal, simplemente comprueba que
+sea un subconjunto y que a*b (en G) = a*b (en H) \forall a,b \in G, es decir, que la operación
+binaria se restringe. Pero NO comprueba la definición de subgrupo.
+La he modificado y realizo lo siguiente:
+1-Que sea un subconjunto H<=G (como a nivel de conjunto se ha implementado una función que
+calcula los subconjuntos pues basta con comprobar que H es uno de ellos)
+2- Si a,b \in H => a*b \in H 
+3- Si a,b \in H => a*b^{-1}
+
+
+- Método all_subgroups(order): Recorro el contenedor de subconjuntos y devuelvo una 
+lista con aquellos que sean subgrupos (llamo a la función is_subgroup(other) anterior.
+
+- Método is_normalSubgroup(other): En caso de que sea un subgrupo compruebo 
+que g*h*g**-1 pertenezca en el conjunto \forall g \in G , h in H
+
+
+- Método all_normalSubgroups(order): Recorro el contenedor de subgrupos y a cada uno
+de ellos le aplico is_normalSubgroup(other) devolviendo así todos los que
+sean normales.
+
+- Las funciones que devuelven todos los subgrupos o subgrupos normales llevan
+además un parámetro "order" que nos dan la posibilidad de devolver aquellos subgrupos
+de tamaño n=order indicado
+
+- En todos estos métodos se devuelve una lista, quizás sea conveniente devolver un 
+diccionario...?
