@@ -7,12 +7,13 @@ import itertools
 import functools
 import operator
 import math
+
 from Set import Set
 from Function import Function
-from fractions import gcd
-from copy import deepcopy
-from sympy.ntheory import factorint,totient
-from sympy.utilities.iterables import flatten
+from Permutation import permutation
+
+
+
 
 class GroupElem:
     """
@@ -98,14 +99,15 @@ class GroupElem:
             return self * other
         raise TypeError("not an element of an abelian group")
 
-    def __pow__(self, n, modulo=None):
+    '''
+    def __pow__(self, n, modulo):
         """
         Returns self**n
         modulo is included as an argument to comply with the API, and ignored
         """
         if not (isinstance(n, int)):
             raise TypeError("n must be an int or a long")
-
+      
         if n == 0:
             return self.group.e
         elif n < 0:
@@ -114,6 +116,20 @@ class GroupElem:
             return self * (self ** (n - 1))
         else:
             return (self * self) ** (n // 2)
+    '''
+    
+    def __pow__(self, n):
+        #Output: self**n
+        g = self
+        x = self.group.identity()
+        if n%2==1:
+            x = self*x
+        while(n>1):
+            g = g*g
+            n = n//2
+            if n%2 == 1:
+                x = x*g
+        return x
     
     __xor__=__pow__
     
@@ -134,21 +150,10 @@ class GroupElem:
         return g*self*g**-1
 
     def conjugacy_class(self):
-        """
-        Returns the conjugacy class of self in self.group
-        """
+        #Returns the conjugacy class of self in self.group
         return Set([g*self*g**-1 for g in self.group])
     
-    
-    def centralizer(self):
-        """
-        Returns the centralizer of self, that is, the set of elements that commute with self
-        """
-        G=self.group
-        def prop(g):
-            return g*self  ==  self*g
-        return G.subgroup_search(prop)
-
+    '''
     def order(self):
         if not self in self.group:
             raise ValueError
@@ -166,7 +171,40 @@ class GroupElem:
                 i = i + 1
             ind = i
         return ind
+    '''
     
+    def power(self, n):
+        #Output: self**n
+        g = self
+        x = self.group.identity()
+        if n%2==1:
+            x = self*x
+        while(n>1):
+            g = g*g
+            n = n//2
+            if n%2 == 1:
+                x = x*g
+        return x
+    
+    
+    def order(self, n):
+        if not self in self.group:
+            raise ValueError
+        ident = self.group.identity()
+
+        if n==1:
+            return 1
+        div = [x for x in range(1, n+1) if n%x==0 if is_prime(x)]
+    
+        for p in div:
+            #if(self.power(n//p) == ident):
+            if(self**(n//p) == ident):
+
+                return self.order(n//p)
+        
+        return n
+    
+        
     
     def inverse(self):
         """Returns the inverse of elem"""
@@ -182,35 +220,17 @@ class GroupElem:
         raise RuntimeError("Didn't find an inverse for g")
 
     
-
     
-'''
-def is_associative(Set, bin_op):
-    if all(bin_op((a, bin_op((b, c)))) == \
-          bin_op((bin_op((a, b)), c)) \
-              for a in Set for b in Set for c in Set):
-        return True
-    else:
+    
+    
+def is_prime(x):
+    if x<2:
         return False
-        
-def has_inverses(Set, bin_op, e):
-        
-    # Test for inverses
-    for a in G:
-        if not any(bin_op((a,  b)) == e for b in Set):
-            return False
-    return True
-    
-
-
-def has_identity(Set, bin_op, e):
-    found_id = False
-    for e in Set:
-        if all(bin_op((e, a)) == a for a in Set):
-            return True
-    return False
-    
-'''
+    else:
+        for n in range(2,x):
+            if x%n == 0:
+                return False
+        return True
 
     
 class Group:
@@ -377,17 +397,32 @@ class Group:
         table.set_style(BeautifulTable.STYLE_BOX)
         return table
         
+        '''
+        for a in self.Set:
+            for b in self.Set:
+                table[hash_pair(a,b)] = self.bin_op((a,b))
+        return table
+        '''
+        
         
     def cardinality(self):
         return self.Set.cardinality()
     
     def order(self):
-        """Return the order of the group.
-        """
+        #Return the order of the group.
+        
         if self.group_order != None:
             return self.group_order
         self.group_order = len(self)
         return self.group_order
+    
+    
+    def elements_order(self):
+        dev = {}
+        
+        for a in self.group_elems:
+            dev[a] = a.order(self.order())
+        return dev
     
     
     def is_subgroup(self, other):
@@ -427,26 +462,31 @@ class Group:
     def index(self, other):
         if not isinstance(other,Group):
             raise TypeError(other, " is not a Group")
-        return self.order()/other.index()
+        return self.order()/other.order()
     
     
     def is_normalSubgroup(self, other):
         if not isinstance(other, Group):
             return False
         
-        if self.is_subgroup(other):
-            for g in other:
-                for h in self:
-                    #print(g, "*", h, "*", g.inverse(), " in ", Set(self.group_elems))
-                    p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
-                    #p= g.elem*h.elem*(g**-1).elem
-                    if not p in self.Set:
-                        return False
-            return True
+
+        if not self.is_subgroup(other):
+            return False
+        
+        if other.is_abelian() or other.index(self)==2:
+            return True 
+            
+        for g in other:
+            for h in self:
+                #print(g, "*", h, "*", g.inverse(), " in ", Set(self.group_elems))
+                #p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
+                p= g.elem*h.elem*(g**-1).elem
+                if not p in self.Set:
+                    return False
+        return True
             
         
-        if self.is_abelian() or other.index(self)==2:
-            return True 
+        
         
     '''
     def all_normalSubgroups(self):
@@ -474,15 +514,19 @@ class Group:
     def all_subgroups(self, order=None):        
         l = [] 
         for a in self.Set.subsets():
-            #print(a)
+            
+            
             try:
-                #print(a)
-                gr = Group(a, self.bin_op, identity=self.e)
+                #gr = Group(a, self.bin_op, identity=self.e)
+                gr = Group(a, self.bin_op)
+                #print(gr)
                 if(gr.is_subgroup(self)):
+                    print(gr)
                     l.append(gr)
             except:
                 #print(a, "is not a subgroup")
                 pass
+            
         if(order==None or order=="all"):
             return l
         elif(isinstance(order, int) and order<=self.cardinality()):
@@ -494,7 +538,7 @@ class Group:
     
     
     def is_simple(self):
-        return len(self.all_subgroups()==2)
+        return len(self.all_subgroups())==2
     
     
     
@@ -504,9 +548,203 @@ class Group:
             
             
 
+    def gens_cyclic_group(self):
+        
+        '''
+        #phi Euler
+        x = self.order()
+        
+        #if the group is cyclic
+        if self.Set == Set(range(x)):
+            if x == 1:
+                return 1
+            else:
+                n = [y for y in range(1,x) if math.gcd(x,y)==1]
+                return n
+        else:
+        ''' 
+        l = []
+        for a in self.group_elems:
+            p = Set(a**h for h in range(0,self.order()))
+                
+            if(p.cardinality() == self.order()):
+                print(a,"gens", p)
+                l.append(a)
+        if len(l) != 0:
+            return l
+        else:
+            for a in self.group_elems:
+                for b in self.group_elems:
+                    p = Set((a**h) * (b**j)  for h in range(0,self.order()) for j in range(0,self.order()))
+                        
+                    if(p.cardinality() == self.order()):
+                        print(a,",", b, "gens", p)
+                        ab = str(a)+" "+str(b)
+                        l.append(ab)
+            return l
+        
+    
 
+
+
+
+
+def SymmetricGroup(n):
+    """
+    Returns the symmetric group of order n!
+    Example:
+        >>> S3=SymmetricGroup(3)
+        >>> S3.group_elems
+        Set([ (2, 3),  (1, 3),  (1, 2),  (1, 3, 2), ( ),  (1, 2, 3)])
+    """
+    
+    G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))))
+    bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+    
+    if n>2:
+        Gr = Group(G, bin_op, identity=permutation(list(range(1,n+1))), 
+        group_order=math.factorial(n), group_degree=n)
+        Gr.group_gens=[Gr(permutation([tuple(range(1,n+1))])),Gr(permutation((1,2)).extend(n))]
+        return Gr
+    if n==2:
+        Gr = Group(G, bin_op, identity=permutation(list(range(1,3))), 
+        group_order=2, group_degree=2)
+        Gr.group_gens=[Gr(permutation([tuple(range(1,3))]))]
+    if n==1:
+        Gr = Group(G, bin_op, identity=permutation(list(range(1,2))), 
+        group_order=1, group_degree=1)
+        Gr.group_gens=[Gr(permutation([tuple(range(1,2))]))]
+    return Gr
+    
+    
+    
+def AlternatingGroup(n):
+    """
+    Returns the alternating group: the subgroup of even permutations of SymmetricGroup(n)
+    
+    Example:
+        >>> A3=AlternatingGroup(3)
+        >>> A3<=S3
+        True
+        >>> A3.is_normal_subgroup(S3)
+        True
+        >>> Q=S3/A3
+        >>> Q.Set
+        Set([Set([ (2, 3),  (1, 2),  (1, 3)]), Set([ (1, 2, 3),  (1, 3, 2), ( )])])
+    """
+    
+    #G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))) if permutation(list(g)).sign()==1)
+    G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))) if permutation(list(g)).even_permutation())
+
+    bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+    if n>2:
+        Gr=Group(G, bin_op,identity=permutation(list(range(1,n+1))),
+        group_order=math.factorial(n)//2, group_degree=n)
+        Gr.group_gens=[Gr.parent(permutation((i,i+1,i+2)).extend(n)) for i in range(1,n-1)]
+    if n==2:
+        Gr = Group(G, bin_op, identity=permutation(list(range(1,3))),
+        group_order=1, group_degree=2)
+        Gr.group_gens=[Gr.parent(permutation(list(range(1,3))))]
+    return Gr
+
+
+
+
+
+def CyclicGroup(n, rep="integers"):
+    """
+    Returns the cylic group of order n
+
+    Args:
+        n a positive integer
+        rep may be either "integers" and then the output is integers mod n, or "permuations" and the output is the subgroup of S_n generated by the cycle (1..n)
+
+    Example:
+        >>> CP=CyclicGroup(3,"permutations")
+        >>> CP.Set
+        Set([ (1, 2, 3),  (1, 3, 2), ( )])
+        >>> C=CyclicGroup(3,"integers")
+        >>> C.group_elems
+        Set([0, 1, 2])
+        >>> CP.is_isomorphic(C)
+        True
+    """
+    if rep=="integers":
+        G = Set(range(n))
+        bin_op = Function(G.cartesian(G), G, lambda x: (x[0] + x[1]) % n)
+        Gr= Group(G, bin_op,identity=0, group_order=n)
+        if n==1:
+            Gr.group_gens=[Gr(0)]
+        else:    
+            Gr.group_gens=[Gr(1)]
+        return Gr
+    if rep=="permutations":
+        def rotate_left(x, y):
+            if len(x) == 0:
+                return []
+            y = y % len(x)
+            return x[y:] + x[:y]
+
+        def cyclic(n):
+            gen = list(range(1,n+1))
+            for i in range(n):
+                yield permutation(gen)
+                gen = rotate_left(gen, 1)
+        G=Set(cyclic(n))
+        #bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+        bin_op=SymmetricGroup(n).bin_op.new_domains(G.cartesian(G),G,check_well_defined=False)
+        Gr = Group(G, bin_op, identity=permutation(list(range(1,n+1))),
+        abelian=True, group_order=n, group_degree=n,parent=SymmetricGroup(n))
+        Gr.group_gens=[Gr(permutation([tuple(range(1,n+1))]))]
+        return Gr
+    raise ValueError("The second argument can be 'integers' or 'permutations'")
+
+
+
+
+
+
+
+
+
+    
 if __name__ == '__main__':
     
+    
+    C = CyclicGroup(6)
+    print(C.elements_order())
+    '''
+    print(C)
+    print(C.all_subgroups())
+    print(C.Cayley_table())
+    
+    print(C.gens_cyclic_group())
+    '''
+    
+    S = SymmetricGroup(3)
+    #A = AlternatingGroup(3)
+    print(S.elements_order())
+    #print(S.Cayley_table())
+    #print(S.is_abelian())
+    #print(A.is_abelian())
+    #print(S.gens_cyclic_group())
+    #print(A.is_normalSubgroup(S))
+    
+    #print(A)
+    #print(S)
+    #print(A)
+    #print(A.all_normalSubgroups())
+    
+    
+    
+    #p=permutation(1,3,2,4)
+    #q=permutation(1,2,3,4)
+    #print(p*q)   
+    
+    
+    #print(p, "vs" , q)
+    
+        
     #Grupo Z_12
     S=Set(range(12))
     b_op12=Function(S*S, S,lambda x: (x[0]+x[1])%12)
@@ -517,6 +755,8 @@ if __name__ == '__main__':
     b_op6=Function(S*S, S,lambda x: (x[0]+x[1])%6)
     Z6 = Group(S, b_op6)   
     
+    print(" ")
+    #print(Z6.gens_cyclic_group())
     
     #Grupo Z_5
     R=Set(range(5))
@@ -529,17 +769,41 @@ if __name__ == '__main__':
     b_op0=Function(C*C, C,lambda x: (x[0]+x[1])%6) 
     Z0 = Group(C, b_op0)
         
-    #0,3 
-    D=Set({0,3})
-    b_op3=Function(D*D, D,lambda x: (x[0]+x[1])%6) 
-    Z3 = Group(D, b_op3)
+    
+    #0,6
+    D=Set({0,6})
+    b_op3=Function(D*D, D, lambda x: (x[0]+x[1])%12) 
+    O6 = Group(D, b_op3)
+    
+    #0,4,8
+    D=Set({0,4,8})
+    b_op3=Function(D*D, D, lambda x: (x[0]+x[1])%12) 
+    O48 = Group(D, b_op3)
     
     
-    print(Z12.all_normalSubgroups(13))
+    '''
+    print(Z12.all_subgroups())
     print(" ")
+    print(O6.gens_cyclic_group())
+    print(" ")
+
+    print(O6.is_subgroup(Z12))
+    print(O48.is_subgroup(Z12))
+    '''
+    #print(Z12.elements_order())
+    #print(phi_euler(12))
+    #print(O.gens_cyclic_group())
+    #print(Z12.gens_cyclic_group())
+
+    #print(Z6.Cayley_table())
+    
+    #print(Z12.all_subgroups())
+
+    #print(Z12.all_normalSubgroups())
+    #print(" ")
     #print(Z3.is_cyclic())
     #print(Z5.all_subgroups())
-    print(" ")
+    #print(" ")
     #print(Z6.all_normalSubgroups2())
     
 
@@ -590,14 +854,7 @@ if __name__ == '__main__':
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
+
     '''
     def _find_identity(self):
     		for element in self.set:
@@ -609,6 +866,7 @@ if __name__ == '__main__':
 
     def Divisores(n):
         return [x for x in range (1,n+1) if n%x==0]
+
     
     def is_prime(x):
         if x<2:

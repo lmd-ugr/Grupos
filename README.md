@@ -44,8 +44,19 @@ Unión, intersección, diferencia y diferencia simétrica.
 - __str__: muestro además los elementos del grupo.
 
 
+### class GroupElem:
+
 - Inverse: La función que calcula la inversa de un elemento estaba definida en la clase Grupo en vez
 de en la clase del elemento. Lo modifico.
+
+
+- Siguiendo el libro ComputationalGroup Theory (libro verde), modifico 
+__pow__ para realizar la exponenciación en O(log(n)) y también la
+función order, que calcula el orden de los elementos del grupo con 
+eficiencia O(log(n)^3) como mucho.
+
+
+### class Group:
 
 - Añado método Cardinality() (creo que ya estaba con el nombre de order() )
 
@@ -56,8 +67,14 @@ que necesitan interfaz por lo que en la terminal no funcionaba el método.
 Además, el código era muy abstracto.
 Simplicidad y optimización de código: En menos de la mitad de líneas realizo la misma funcionalidad
 y se utiliza únicamente python. Funciona perfectamente en la terminal.
-De cara a funcionalidades próximas quizás es conveniente añadir representación
+- De cara a funcionalidades próximas quizás es conveniente añadir representación
 de la tabla con "letras".
+
+- Añado función gens_cyclic_group: Obtiene los generadores del grupo.
+Inicialmente estaba orientada para grupos cíclicos (phi Euler) pero
+la he modificado para que funcione con cualquier grupo. 
+Funciona pero aún no está terminada en su optimidad.
+
 
 
 ### Los siguientes métodos de subgrupos y normalidad los he modificado en su totalidad:
@@ -66,10 +83,10 @@ de la tabla con "letras".
 sea un subconjunto y que a*b (en G) = a*b (en H) \forall a,b \in G, es decir, que la operación
 binaria se restringe. Pero NO comprueba la definición de subgrupo.
 La he modificado y realizo lo siguiente:
-1-Que sea un subconjunto H<=G (como a nivel de conjunto se ha implementado una función que
+- 1-Que sea un subconjunto H<=G (como a nivel de conjunto se ha implementado una función que
 calcula los subconjuntos pues basta con comprobar que H es uno de ellos)
-2- Si a,b \in H => a*b \in H 
-3- Si a,b \in H => a*b^{-1}
+- 2- Si a,b \in H => a*b \in H 
+- 3- Si a,b \in H => a*b^{-1} \in H
 
 
 - Método all_subgroups(order): Recorro el contenedor de subconjuntos y devuelvo una 
@@ -88,4 +105,33 @@ además un parámetro "order" que nos dan la posibilidad de devolver aquellos su
 de tamaño n=order indicado
 
 - En todos estos métodos se devuelve una lista, quizás sea conveniente devolver un 
-diccionario...?
+diccionario...? Por ahora no, funciona perfect.
+
+
+## Permutation.py
+
+- En una primera versión, las funciones que crean Simmetric y Alternative group las
+había hecho en un método de clase. Sin embargo he preferido dejar el formato original y 
+mantener esas funciones en el archivo Group.py
+
+- Mágicamente la nueva tabla de Cayley funciona para todos los grupos :))
+
+- He modificado en su totalidad la función __mul__ ya que estaba hecha bastante rara.
+Modifico también la función __call__ para que funcione bien.
+
+- Añado las funciones even_permutation y odd_permutation para saber si una
+permutación es par o impar.
+
+- Compruebo las nuevas funciones realizadas de la clase group (is_normal_group,
+all_subgroups, is_normalSubgroup y all_normalSubgroups) con instancias
+del grupo simétrico y alternado y funcionan perfect.
+
+- Convendría quitar "=" en el __str__ y __repr__
+
+
+## NEXT
+
+- Usar letters para la tabla de Cayley
+- Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
+del libro COmputationalGroup theory por la eficiencia.
+
