@@ -8,13 +8,13 @@ Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github
 [absalg](https://github.com/naftaliharris/Abstract-Algebra), respectivamente.
 
 # Breve Descripción
-- Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica las tres propiedades de: asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py:
+- Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica las tres propiedades de: asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py principales:
 
 - Set: Clase donde se añadirán todas las operaciones a nivel de conjunto.
 - Function: Simula la operación binaria definida en nuestro grupo
 - Group: Clase principal donde se realizarán las operaciones más importante:
 
-
+- Adicionales: Se han añadido dos clases para representar las permutaciones y el grupo de los cuaternios
 # Modificaciones
 
 ## Set.py
@@ -108,6 +108,7 @@ de tamaño n=order indicado
 diccionario...? Por ahora no, funciona perfect.
 
 
+
 ## Permutation.py
 
 - En una primera versión, las funciones que crean Simmetric y Alternative group las
@@ -129,9 +130,20 @@ del grupo simétrico y alternado y funcionan perfect.
 - Convendría quitar "=" en el __str__ y __repr__
 
 
+## Quaternion.py
+
+- Añado una tabla para encapsular los elementos de los cuaternios.
+
+- Todos los operadores están incluído así como funciones que nos permiten calcular
+el conjugado, la norma, inverso, traza.
+
+- Posible adición posterior de su representación matricial.
+
+
 ## NEXT
 
 - Usar letters para la tabla de Cayley
 - Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
 del libro COmputationalGroup theory por la eficiencia.
+- Usar una clase para el grupo Diédrico
 

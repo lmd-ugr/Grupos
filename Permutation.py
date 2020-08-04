@@ -6,18 +6,9 @@ Created on Mon Aug  3 16:37:32 2020
 """
 
 
-import itertools
 import functools
 import operator
 import math
-
-from Set import Set
-from Function import Function
-
-from copy import deepcopy
-from sympy.ntheory import factorint,totient
-from sympy.utilities.iterables import flatten
-from functools import reduce
 
 
 
