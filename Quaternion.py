@@ -260,7 +260,7 @@ class Quaternion:
             
             G=Set(q2)
             Gr=Group(G,Function(G.cartesian(G),G, lambda x: x[0]*x[1]))
-            Gr.group_gens=[Gr("i"),Gr("j")]
+            Gr.group_gens=[i,j]
             return Gr
             
         
@@ -312,10 +312,10 @@ if __name__ == '__main__':
     print(i*j==k, " ", j*k==i, " ", k*i==j)
     print(j*i==-k, " ", k*j==-i, " ", i*k==-j)
   
-    '''
+    
     #print(i.matrix())
     #print(j.matrix())
     #print(k.matrix())
     
     #print(n1.conjugate())
-    
+    '''

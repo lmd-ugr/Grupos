@@ -4,8 +4,6 @@ Created on Wed Feb 26 16:18:18 2020
 """
 
 import itertools
-import functools
-import operator
 import math
 
 from Set import Set
@@ -25,8 +23,9 @@ class GroupElem:
     def __init__(self, elem, group):
         if not isinstance(group, Group):
             raise TypeError(str(group) + " is not a Group")
-        if not elem in group.Set:
+        if not elem in group.Set:    
             raise TypeError( str(elem) + " is not an element of group")
+
         self.elem = elem
         self.group = group
 
