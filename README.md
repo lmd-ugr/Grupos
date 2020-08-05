@@ -132,12 +132,23 @@ del grupo simétrico y alternado y funcionan perfect.
 
 ## Quaternion.py
 
-- Añado una tabla para encapsular los elementos de los cuaternios.
+- Añado una Clase para encapsular los elementos de los cuaternios.
 
-- Todos los operadores están incluído así como funciones que nos permiten calcular
+- Todos los operadores están incluídos así como funciones que nos permiten calcular
 el conjugado, la norma, inverso, traza.
 
-- Posible adición posterior de su representación matricial.
+- Se puede instanciar un cuaternio a partir de una tupla o una letra (solo si es única):
+Ejemplo: Quaternion(0,i,0,0) == Quaternion(letter="i")
+
+- Gracias a lo anterior, ahora no es necesario indicar cómo se comporta el producto de los cuaternios pues todas 
+estas operaciones ya están realizadas en la clase (__mul__)
+
+- Se ha añadido un representación bonita de estos cuaternios (métodos __repr__ y __str__).
+Se pueden realizar operaciones como i*k, k*i, j*k ...etc , la tabla de Cayley mostrada es correcta. 
+
+-   >>> print(i*i == j*j == k*k == i*j*k == -1)
+            'True' 
+
 
 
 ## NEXT
@@ -145,5 +156,6 @@ el conjugado, la norma, inverso, traza.
 - Usar letters para la tabla de Cayley
 - Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
 del libro COmputationalGroup theory por la eficiencia.
-- Usar una clase para el grupo Diédrico
+-  Posible adición posterior de una representación matricial de los cuaternios.
+- Usar una clase para el grupo Diédrico y demás grupos que se vayan programando.
 
