@@ -293,11 +293,12 @@ if __name__ == '__main__':
     print(i, "*", k, "=", i*k)
     
     
-    '''
-    Q = Quaternion.Group(rep="ijk")
-    print(Q)
-    print(Q.Cayley_table())
     
+    Q = Quaternion.Group(rep="ijk")
+    print(Q.elements_order())
+    print(Q.is_abelian())
+    #print(Q.Cayley_table())
+    '''
     
     q = Quaternion(68,12,3,-9)
     r = Quaternion(-8,-2,2,32)

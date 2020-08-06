@@ -424,29 +424,7 @@ class Group:
         return dev
     
     
-    def is_subgroup(self, other):
-        #Return True if all elements of self belong to other.
-        
-        if not isinstance(other, Group):
-            #print("No es un grupo")
-            return False
-        if other.order() % self.order() != 0:
-            #print("El subgrupo no tiene la misma cardinalidad")
-            return False
-        
-        if self == other or self.parent==other:
-            return True
-        
-      
-           
-        if ( self.Set in other.Set.subsets() and \
-            all(other.bin_op((a.elem,b.elem)) in self.Set
-                for a in self for b in self) and \
-            all(other.bin_op((a.elem,b.inverse().elem )) in self.Set
-                for a in self for b in self) ):
-            return True
-        else:
-            return False
+
         
         '''
         
@@ -464,10 +442,37 @@ class Group:
         return self.order()/other.order()
     
     
+    
+    
+    def is_subgroup(self, other):
+        #Return True if all elements of self belong to other.
+        
+        if not isinstance(other, Group):
+            #print("No es un grupo")
+            return False
+        if other.order() % self.order() != 0:
+            #print("La cardinalidad tiene que dividir al orden del grupo")
+            return False
+        
+        if self == other or self.parent==other:
+            return True
+        
+      
+           
+        if ( self.Set in other.Set.subsets() and \
+            all(other.bin_op((a.elem,b.elem)) in self.Set
+                for a in self for b in self) and \
+            all(other.bin_op((a.elem,b.inverse().elem )) in self.Set
+                for a in self for b in self) ):
+            return True
+        else:
+            return False
+        
+        
+    
     def is_normalSubgroup(self, other):
         if not isinstance(other, Group):
             return False
-        
 
         if not self.is_subgroup(other):
             return False
@@ -478,8 +483,8 @@ class Group:
         for g in other:
             for h in self:
                 #print(g, "*", h, "*", g.inverse(), " in ", Set(self.group_elems))
-                #p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
-                p= g.elem*h.elem*(g**-1).elem
+                p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
+                #p= g.elem*h.elem*(g**-1).elem
                 if not p in self.Set:
                     return False
         return True
@@ -543,8 +548,9 @@ class Group:
     
     def is_cyclic(self):
         """Checks if self is a cyclic Group"""
+        #return any(g.order(self.cardinality()) == self.cardinality() for g in self)
         return any(g.order() == self.cardinality() for g in self)
-            
+    
             
 
     def gens_cyclic_group(self):

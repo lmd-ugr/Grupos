@@ -150,12 +150,30 @@ Se pueden realizar operaciones como i*k, k*i, j*k ...etc , la tabla de Cayley mo
             'True' 
 
 
+## Diedral.py
+
+- Se ha creado una nueva clase para representar el grupo Diédrico de orden 2n. Funciona bien, mostrando todas las matrices
+de rotación y reflexión de cada grupo.
+
+- He tenido problemas a la hora de representar las rotaciones y reflexiones con matrices ya que no son hashables
+y no se podía aplicar la operación binaria correctamente. He tenido que usar tuplas que al fin y al cabo representan
+lo mismo.
+
+- La tabla de Cayley para las matrices/tuplas es algo feota por lo que añado otra representación mejorada con R (rotaciones)
+y S (simetrías/reflexiones). Se usa un diccionario para esta representación. RO, R1,...RN, S0, S1,... SN
+
+- Pulse [aquí](https://github.com/lmd-ugr/Grupos/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
+Cayley con las tres diferentes representaciones.
 
 ## NEXT
 
 - Usar letters para la tabla de Cayley
 - Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
-del libro COmputationalGroup theory por la eficiencia.
--  Posible adición posterior de una representación matricial de los cuaternios.
-- Usar una clase para el grupo Diédrico y demás grupos que se vayan programando.
+del libro ComputationalGroup theory por la eficiencia.
+- Posible adición posterior de una representación matricial de los cuaternios.
+- Repasar all_subgroups y all_normalSubgroups()
+- Usar una clase para el grupo Diédrico (¡hecho!) y demás grupos que se vayan programando.
+- Añadir operaciones al grupo diédrico (?)
+- Crear un grupo desde sus relaciones
+- Todd Coxeter algorithm
 

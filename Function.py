@@ -31,8 +31,9 @@ class Function:
                 #raise TypeError("Function returns some value outside of codomain")
             
             for elem in domain:
+                #print(elem, "in", codomain)
                 if(function(elem) not in codomain):
-                    #print(function(elem), " not in " , codomain)
+                    print(function(elem), " not in " , codomain)
                     raise TypeError("Function returns some value outside of codomain")
 
                     
