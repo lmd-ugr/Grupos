@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Aug  6 16:38:44 2020
-
-@author: albduranlopez
-"""
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
 Created on Wed Aug  5 16:18:45 2020
 
 @author: albduranlopez
