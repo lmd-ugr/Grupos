@@ -165,7 +165,7 @@ y S (simetrías/reflexiones). Se usa un diccionario para esta representación. R
 - Pulse [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
 Cayley con las tres diferentes representaciones.
 
-## NEXT
+## NEXT ToDo
 
 - Usar letters para la tabla de Cayley
 - Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
@@ -174,6 +174,6 @@ del libro ComputationalGroup theory por la eficiencia.
 - Repasar all_subgroups y all_normalSubgroups()
 - Usar una clase para el grupo Diédrico (¡hecho!) y demás grupos que se vayan programando.
 - Añadir operaciones al grupo diédrico (?)
-- Crear un grupo desde sus relaciones
+- Crear un grupo desde sus presentación (relaciones o relatores de un grupo)
 - Todd Coxeter algorithm
 
