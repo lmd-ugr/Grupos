@@ -162,7 +162,7 @@ lo mismo.
 - La tabla de Cayley para las matrices/tuplas es algo feota por lo que añado otra representación mejorada con R (rotaciones)
 y S (simetrías/reflexiones). Se usa un diccionario para esta representación. RO, R1,...RN, S0, S1,... SN
 
-- Pulse [aquí](https://github.com/lmd-ugr/Grupos/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
+- Pulse [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
 Cayley con las tres diferentes representaciones.
 
 ## NEXT
