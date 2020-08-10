@@ -144,7 +144,6 @@ class Dihedral():
     
     def product_Matrix(self, a, b):
         
-
         if a  in self.rot :
             i = self.rot.index(a)
         else:
@@ -244,6 +243,7 @@ class Dihedral():
             Gr=Group(G, bin_op,identity=permutation(list(range(1,2*n+1))),
             group_order=2*n,parent=SymmetricGroup(n), group_degree=n)
             Gr.group_gens=[Gr.parent(permutation([1]+list(range(2,n+1))[::-1])),Gr.parent(permutation([tuple(range(1,n+1))]))]
+            
             return Gr
         
         raise ValueError("The second argument can be 'matrix' , 'RS' or 'permutations'")
@@ -260,7 +260,7 @@ class Dihedral():
 if __name__=="__main__":
     
 
-    G = Dihedral.Group(2,"RS")
+    G = Dihedral.Group(6,"RS")
     D3 = Dihedral.Group(2,"matrix")    
     D3_1 = Dihedral.Group(2, "permutations")
     
@@ -272,7 +272,9 @@ if __name__=="__main__":
     print("\nCon permutaciones:")
     print(D3_1.Cayley_table())
 
+    print(G.gens_group(pr="yes"))
     
+    #print(G.all_normalSubgroups())
     
     #print(G.all_normalSubgroups())
     #print(D3.all_subgroups())

@@ -97,6 +97,9 @@ class Quaternion:
     
     def get_k(self):
         return self.imag_k
+    
+    def __call__(self):
+        return self
 
     def __add__(self, other):
         if not isinstance(other,Quaternion):
@@ -295,9 +298,23 @@ if __name__ == '__main__':
     
     
     Q = Quaternion.Group(rep="ijk")
-    print(Q.elements_order())
-    print(Q.is_abelian())
+    
+    #print(Q.all_normalSubgroups())
+    #print(Q.gens_group())
+    a = Q.group_gens
+    b= Q.gens_group()
+    
+    
+    print("##################")
+    print(b[0] , a)
+    print(type(a[0]), type(b[0]))
+    print(type(a), type(b))
+    print("{} vs {}".format(a,b))
+    #print(Q.elements_order())
+    #print(Q.is_abelian())
     #print(Q.Cayley_table())
+    
+    
     '''
     
     q = Quaternion(68,12,3,-9)

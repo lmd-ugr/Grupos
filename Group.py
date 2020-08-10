@@ -480,15 +480,26 @@ class Group:
         if other.is_abelian() or other.index(self)==2:
             return True 
             
-        for g in other:
-            for h in self:
+        
+        for g in other.Set:#other:
+            for h in self.Set:
+            #for h in self:
                 #print(g, "*", h, "*", g.inverse(), " in ", Set(self.group_elems))
-                p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
+                #p = self.bin_op((self.bin_op((g.elem,h.elem)), g.inverse().elem))
+                #print(p , " = " , self.bin_op((g.elem,h.elem)), "*", g.inverse().elem() )
                 #p= g.elem*h.elem*(g**-1).elem
+                p = g*h*g**(-1)
                 if not p in self.Set:
+                    print(p, "not in" , self.Set)
                     return False
-        return True
+                #else:
+                 #   print(p, "in" , self.Set)
+
+
+        #Es más eficiente poner esta condición aquí en vez de al ppio.
+        #return self.is_subgroup(other) 
             
+    
         
         
         
@@ -553,7 +564,7 @@ class Group:
     
             
 
-    def gens_cyclic_group(self):
+    def gens_group(self, pr="No"):
         
         '''
         #phi Euler
@@ -568,27 +579,309 @@ class Group:
                 return n
         else:
         ''' 
-        l = []
-        for a in self.group_elems:
-            p = Set(a**h for h in range(0,self.order()))
-                
-            if(p.cardinality() == self.order()):
-                print(a,"gens", p)
-                l.append(a)
-        if len(l) != 0:
-            return l
-        else:
+        if len(self.group_gens)==0:
+            l = []
             for a in self.group_elems:
-                for b in self.group_elems:
-                    p = Set((a**h) * (b**j)  for h in range(0,self.order()) for j in range(0,self.order()))
-                        
-                    if(p.cardinality() == self.order()):
-                        print(a,",", b, "gens", p)
-                        ab = str(a)+" "+str(b)
-                        l.append(ab)
-            return l
-        
+                p = Set(a**h for h in range(0,self.order()))
+                    
+                if(p.cardinality() == self.order()):
+                    if pr=="yes":
+                        print("{} gens {}".format(a,p))
+                    l.append(a)
+            if len(l) != 0:
+                return l
+            else:
+                for a in self.group_elems:
+                    for b in self.group_elems:
+                        p = Set((a**h) * (b**j)  for h in range(0,self.order()) for j in range(0,self.order()))
+                            
+                        if(p.cardinality() == self.order()):
+                            if pr=="yes":
+                                print("{},{} gens {}".format(a,b,p))
+                            #ab = str(a)+" "+str(b)
+                            l.append([a,b])
+                return l
+        else:
+            return self.group_gens
     
+
+
+
+    def direct_product(self, other):
+            
+        """
+        Returns the cartesian product of the two groups
+        """
+        if not isinstance(other, Group):
+            raise TypeError("other must be a group")
+
+        G = (self.Set).cartesian(other.Set)
+        
+        bin_op = Function( G.cartesian(G), G, 
+            lambda x: (self.bin_op((x[0][0], x[1][0])),  other.bin_op((x[0][1], x[1][1]))) )
+        
+        #Gr=Group(G, bin_op, identity=(self.e.elem, other.e.elem))
+        Gr=Group(G, bin_op)
+        
+        Gr.group_gens=[Gr((self.e.elem,b.elem))  for b in other.group_gens]+[Gr((a.elem,other.e.elem)) for a in self.group_gens]
+        return Gr
+
+
+    
+    def is_direct_product(self, H, K):
+        
+        if not isinstance(H, Group) or not isinstance(K, Group):
+            raise TypeError("h and k must be groups")
+        
+        if not ((H.Set).Intersection(K.Set)).cardinality()==1:
+            print("intersection must be {1}")
+            return False
+        
+        if not H.is_normalSubgroup(self) or not K.is_normalSubgroup(self):
+            print("h and k are not normal subgroups")
+            return False
+            
+
+        
+        for h in H.Set:#other:
+            for k in K.Set:
+            #for h in self:
+                #print(g, "*", h, "*", g.inverse(), " in ", Set(self.group_elems))
+                #if not self.bin_op((h,k)) == self.bin_op((k,h)):
+                #print(p , " = " , self.bin_op((g.elem,h.elem)), "*", g.inverse().elem() )
+                ##if k.elem*h.elem != h.elem*k.elem:
+                izq = self.bin_op(( (h[1],k[1]), (h[0],k[0])  ))
+                dcha= self.bin_op(( (h[0],k[0]), (h[1],k[1])  ))
+                #if not self.bin_op(( (h[0],k[0]), (h[1],k[1]) ))==self.bin_op(( (k[0],h[0]), (k[1],h[1])  )) :
+                if not izq == dcha :
+                    print("{}*{}={} vs {}".format(h,k,izq,dcha))
+                    print("{} != {}".format(izq,dcha))
+                    #return False
+                #else:
+                 #   print("{}*{}={} vs {}".format(h,k,izq,dcha))
+                  #  print("{} == {}".format(izq,dcha))
+        return True
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class GroupHomomorphism(Function): #we should add here check_well_defined, and check_group_axioms as options
+    """
+    The definition of a Group Homomorphism
+    A GroupHomomorphism is a Function between Groups that obeys the group
+    homomorphism axioms.
+    Args:
+        domain, codomain and function. domain and codomain are groups, and function is the map
+    Example:
+        >>> G=CyclicGroup(2)
+        >>> H=G.cartesian(G)
+        >>> f=GroupHomomorphism(H,G, lambda x:G(x.elem[1]))
+        >>> f.kernel()
+        Group with 2 elements
+        >>> f.is_surjective()
+        True
+    """
+
+    def __init__(self, domain, codomain, function, check_morphism_axioms=True):
+        """Check types and the homomorphism axioms; records the two groups"""
+
+        if not isinstance(domain, Group):
+            raise TypeError("domain must be a Group")
+        if not isinstance(codomain, Group):
+            raise TypeError("codomain must be a Group")
+        #if not all(function(elem) in codomain for elem in domain):
+        #    raise TypeError("Function returns some value outside of codomain")
+
+        if check_morphism_axioms:
+            if not all(function(elem) in codomain for elem in domain):
+                raise TypeError("Function returns some value outside of codomain")
+            if not all(function(a * b) == function(a) * function(b) \
+                       for a in domain for b in domain):
+                raise ValueError("function doesn't satisfy the homomorphism axioms")
+
+        self.domain = domain
+        self.codomain = codomain
+        self.function = function
+
+    def __call__(self,other):
+        return self.function(other)
+
+    def __hash__(self):
+        return hash(self.domain) + 2 * hash(self.codomain)
+
+    def __eq__(self, other):
+        if not isinstance(other, GroupHomomorphism):
+            return False
+
+        return self.domain == other.domain and self.codomain==other.codomain and all(self.function(a)==other.function(a) for a in self.domain)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __str__(self):
+        if not(self.domain==self.codomain):
+            return "Group homomorphism between "+str(self.domain)+" and "+str(self.codomain)
+        return "Group endomorphism of "+str(self.domain)
+
+    def __repr__(self):
+        if not(self.domain==self.codomain):
+            return "Group homomorphism"
+        return "Group endomorphism"
+
+    def kernel(self):
+        """Returns the kernel of the homomorphism as a Group object"""
+        G = Set(g.elem for g in self.domain if self(g) == self.codomain.e)
+        return Group(G, self.domain.bin_op.new_domains(G.cartesian(G), G, check_well_defined=False),parent=self.domain, check_ass=False,check_inv=False,identity=self.domain.e.elem)
+
+    def image(self):
+        """Returns the image of the homomorphism as a Group object"""
+        G = Set(g.elem for g in self._image())
+        return Group(G, self.codomain.bin_op.new_domains(G.cartesian(G), G, check_well_defined=False),parent=self.codomain, check_ass=False,check_inv=False,identity=self.codomain.e.elem)
+
+    def is_isomorphism(self):
+        return self.is_bijective()
+
+    def homomorphism_compose(self,other):
+        if not self.domain == other.codomain:
+            raise ValueError("codomain of other must match domain of self")
+        return GroupHomomorphism(other.domain, self.codomain,lambda x: self(other(x)), check_morphism_axioms=False)
+
+    def automorphism_inverse(self):
+        if not self.function.is_bijective():
+            raise ValueError("self must be bijective")
+        l={}
+        for x in self.domain:
+            l[x]=self(x)
+        inv = {v: k for k, v in l.items()}
+        return GroupHomomorphism(self.codomain, self.domain,lambda x: inv[x], check_morphism_axioms=False)
+
+
+
+
+
+
+class GroupAction: #we should add here check_well_defined, and check_group_axioms as options
+    """
+    The definition of a Group Action
+    A Group Action is a Function from the cartasian product of a set X and a group G to X, fulfilling some properties
+    Example:
+        >>> from Group import *
+        >>> G=SymmetricGroup(3)
+        >>> f=GroupAction(G,Set({1,2,3}),lambda x,y:x.elem(y))
+        >>> p=G(permutation(2,3,1))
+        >>> f.action(p,3)
+        1
+        >>> f.orbit(2)
+        frozenset({1, 2, 3})
+        >>> f.stabilizer(3)
+        Group with 2 elements
+        >>> list(_)
+        [( ),  (1, 2)]
+    """
+
+    def __init__(self, group, theset, action, check_action_axioms=True):
+        """Check types and the homomorphism axioms; records the two groups"""
+
+        if not isinstance(group, Group):
+            raise TypeError("The first argument must be a Group")
+        if not isinstance(theset, Set):
+            raise TypeError("The secon argument must be a Set")
+        # f(g,x) maps to X with g in the group and x in the set
+        #if not all(action(g,x) in theset for g in group for x in theset):
+        #    raise TypeError("action returns some value outside of codomain")
+
+        if check_action_axioms:
+            if not all(action(g,x) in theset for g in group for x in theset):
+                raise TypeError("action returns some value outside of codomain")
+            #first axiom a*(b*x)=(a b)*x
+            if not all(action(a,action(b,x)) == action(a*b,x) \
+                       for a in group for b in group for x in theset):
+                raise ValueError("action doesn't satisfy the first action axiom")
+            #second axiom
+            if not all(action(group.e, x)==x for x in theset):
+                raise ValueError("action doesn't satisfy the second action axiom")
+
+        self.group = group
+        self.set = theset
+        self.action = action
+
+    def __str__(self):
+        return "Group action"
+
+    def __repr__(self):
+        return "Group action from ("+str(self.group)+")x("+str(self.set)+") to "+str(self.set)
+
+    def __call__(self,g,el):
+        return self.action(g,el)
+
+
+    def orbit(self, other):
+        if not(other in self.set):
+            raise ValueError("other must be in self.set")
+        orb=[other]
+        S=self.group.group_gens
+        for y in orb:
+            for a in S:
+                if not self.action(a,y) in orb:
+                    orb.append(self.action(a,y)) 
+        return Set(orb)
+        
+    def orbits(self):
+        lels=list(self.set)
+        lorb=[]
+        while len(lels)>0:
+            el=lels[0]
+            orb=self.orbit(el)
+            lorb.append(orb)
+            lels=[g for g in lels if not(g in orb)]
+        return lorb
+    
+    def stabilizer(self,other):
+        def prop(x):
+            return self.action(x,other)  ==  other
+        return self.group.subgroup_search(prop)
+
+    def is_transitive(self):
+        got_orb = False
+        for x in self.orbits():
+            if len(x) > 1:
+                if got_orb:
+                    return False
+                got_orb = True
+        return got_orb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -622,6 +915,16 @@ def SymmetricGroup(n):
     return Gr
     
     
+#Generar el grupo a partir de un elemento:
+def generate_group(element):
+    G = Set((element**h) for h in range(0,element.order()) )
+    bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+    
+    Gr = Group(G, bin_op)
+    Gr.group_gens=[element]
+        
+    return Gr
+
     
 def AlternatingGroup(n):
     """
@@ -647,8 +950,8 @@ def AlternatingGroup(n):
         group_order=math.factorial(n)//2, group_degree=n)
         Gr.group_gens=[Gr.parent(permutation((i,i+1,i+2)).extend(n)) for i in range(1,n-1)]
     if n==2:
-        Gr = Group(G, bin_op, identity=permutation(list(range(1,3))),
-        group_order=1, group_degree=2)
+        Gr = Group(G, bin_op ,identity=permutation(list(range(1,3)))
+        ,group_order=1, group_degree=2)
         Gr.group_gens=[Gr.parent(permutation(list(range(1,3))))]
     return Gr
 
@@ -678,11 +981,16 @@ def CyclicGroup(n, rep="integers"):
         G = Set(range(n))
         bin_op = Function(G.cartesian(G), G, lambda x: (x[0] + x[1]) % n)
         Gr= Group(G, bin_op,identity=0, group_order=n)
+        
+        Gr.group_gens = [Gr(0)] if n==1 else [Gr(1)]
+        '''
         if n==1:
             Gr.group_gens=[Gr(0)]
         else:    
             Gr.group_gens=[Gr(1)]
+        '''
         return Gr
+    
     if rep=="permutations":
         def rotate_left(x, y):
             if len(x) == 0:
@@ -702,6 +1010,7 @@ def CyclicGroup(n, rep="integers"):
         abelian=True, group_order=n, group_degree=n,parent=SymmetricGroup(n))
         Gr.group_gens=[Gr(permutation([tuple(range(1,n+1))]))]
         return Gr
+    
     raise ValueError("The second argument can be 'integers' or 'permutations'")
 
 
@@ -716,8 +1025,23 @@ def CyclicGroup(n, rep="integers"):
 if __name__ == '__main__':
     
     
+    
+    
+    
+
+    q=permutation((1,2,3,4))
+    H = generate_group(q)
+    G= SymmetricGroup(4)
+    G3= AlternatingGroup(3)
+
+    #print(G3.is_normalSubgroup(G))
+
+    
+    #print(H.is_normalSubgroup(G))
+    
+    
     C = CyclicGroup(6)
-    print(C.elements_order())
+    #print(C.elements_order())
     '''
     print(C)
     print(C.all_subgroups())
@@ -728,7 +1052,7 @@ if __name__ == '__main__':
     
     S = SymmetricGroup(3)
     #A = AlternatingGroup(3)
-    print(S.elements_order())
+    #print(S.elements_order())
     #print(S.Cayley_table())
     #print(S.is_abelian())
     #print(A.is_abelian())
@@ -758,7 +1082,36 @@ if __name__ == '__main__':
     #Grupo Z_6
     S=Set(range(6))
     b_op6=Function(S*S, S,lambda x: (x[0]+x[1])%6)
-    Z6 = Group(S, b_op6)   
+    Z6_ = Group(S, b_op6)   
+    
+    
+    #Grupo Z_3
+    S=Set(range(3))
+    b_op3=Function(S*S, S,lambda x: (x[0]+x[1])%3)
+    Z3 = Group(S, b_op3)  
+    
+    #Grupo Z_2
+    S=Set(range(2))
+    b_op2=Function(S*S, S,lambda x: (x[0]+x[1])%2)
+    Z2 = Group(S, b_op2)  
+    
+    #Grupo Z_1
+    S=Set(range(1))
+    b_op1=Function(S*S, S,lambda x: (x[0]+x[1])%1)
+    Z1 = Group(S, b_op1)  
+    
+    
+    Z6 = Z2.direct_product(Z3)
+    
+    Z2x1 = Z2.direct_product(Z1)
+    Z1x3 = Z1.direct_product(Z3)
+    
+    print(Z2x1.is_normalSubgroup(Z6))
+    print(Z1x3.is_normalSubgroup(Z6))
+
+    print(Z6.is_direct_product(Z2x1,Z1x3))
+    
+    
     
     print(" ")
     #print(Z6.gens_cyclic_group())
