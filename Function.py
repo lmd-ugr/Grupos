@@ -33,7 +33,7 @@ class Function:
             for elem in domain:
                 #print(elem, "in", codomain)
                 if(function(elem) not in codomain):
-                    print(function(elem), " not in " , codomain)
+                    #print(function(elem), " not in " , codomain)
                     raise TypeError("Function returns some value outside of codomain")
 
                     
@@ -44,8 +44,9 @@ class Function:
     
     def __call__(self, elem):
         if elem not in self.domain:
-            print(elem, " not in ", self.domain)
-            #raise TypeError("Function must be called on elements of the domain")
+            #pass
+            #print(elem[0]*elem[1], " not in ", self.domain)
+            raise TypeError("Function must be called on elements of the domain")
         return self.function(elem)
     
     

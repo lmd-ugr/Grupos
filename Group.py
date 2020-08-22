@@ -1021,8 +1021,35 @@ def CyclicGroup(n, rep="integers"):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     
 if __name__ == '__main__':
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1106,11 +1133,12 @@ if __name__ == '__main__':
     Z2x1 = Z2.direct_product(Z1)
     Z1x3 = Z1.direct_product(Z3)
     
+    '''
     print(Z2x1.is_normalSubgroup(Z6))
     print(Z1x3.is_normalSubgroup(Z6))
 
     print(Z6.is_direct_product(Z2x1,Z1x3))
-    
+    '''
     
     
     print(" ")
