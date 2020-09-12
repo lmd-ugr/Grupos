@@ -9,6 +9,7 @@ import math
 from Set import Set
 from Function import Function
 from Permutation import permutation
+from beautifultable import BeautifulTable
 
 
 
@@ -375,10 +376,10 @@ class Group:
     #abcdefghijclme
     #pip install beautifultable
     def Cayley_table(self):
-        from beautifultable import BeautifulTable
+        table = BeautifulTable()
         head=list(self.Set)
         
-        table = BeautifulTable()
+
         #table.colums_headers = head
         
         table.rows.insert(0, head, "*")

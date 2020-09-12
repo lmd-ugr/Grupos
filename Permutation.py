@@ -10,9 +10,7 @@ import functools
 import operator
 import math
 
-#from Set import Set
-#from Function import Function
-#from Group import Group
+
 
 class permutation():
     """
@@ -99,6 +97,7 @@ class permutation():
     def __hash__(self):
         return hash(self.tuple)
 
+    
     def __str__(self):
         
         s=str(list(self.tuple))+" = "
@@ -111,22 +110,26 @@ class permutation():
             str(list(self.tuple))
             #return s +"( )"
         return s+s2
-        
+    
 
     def __repr__(self):
-        s2=str(" ")
+        s2=str("")
         for c in self.disjoint_cycles():
             if len(c)>1:
                 s2=s2+str(c)
-        if s2==str(" "):
-            return "( )"
+        if s2==str(""):
+            return "()"
         return s2
+
+    #__str__ = __repr__
 
     def __eq__(self, other):
         """Tests if the permutations are identical (with the same length)"""
 
         if not isinstance(other, permutation):
             raise TypeError("other is not a permutation")
+        if self.order()==other.order():
+            return True
         return (self.tuple == other.tuple)
 
 
@@ -292,19 +295,7 @@ class permutation():
     def odd_permutation(self):
         return not self.even_permutation()
     
-    '''
-    def generate_group(self):
-        G = Set((self**h) for h in range(0,self.order()) )
-        bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
-        n = G.cardinality()
-        
-        Gr = Group(G, bin_op, identity=permutation(list(range(1,n+1))), 
-            group_order=math.factorial(n), group_degree=n)
-        
-        Gr.group_gens=[self]
-        
-        return Gr
-    '''
+    
     
     
     '''
@@ -374,11 +365,6 @@ class permutation():
 if __name__ == '__main__':
     
     
-    #p=permutation((1,3))
-    #q=permutation([2,1,3])
-    #print("{}*{}={}".format(p,q,p*q))
-    
-    print("yes")
     
     #S = permutation.SymmetricGroup(3)
     #A = permutation.AlternatingGroup(3)
@@ -391,11 +377,13 @@ if __name__ == '__main__':
     #print(A)
     #print(S)
     #print(A.all_normalSubgroups())
+    p = permutation([1])
+    q = permutation([1])
+    print(p.order(), q.order())
     
-
-    
-    #p=permutation(1,3,2,4)
-    #q=permutation(1,2,3,4)
+    r = permutation((1,2))
+    s = permutation((1,2))
+    print(r*s == p)
     #print(p*q)   
     
     #print(p, "vs" , q)
