@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 
-from toddCox import *
+from ToddCoxeter import *
 from tkinter.scrolledtext import ScrolledText
 from tkinter import ttk #treeview
 

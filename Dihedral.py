@@ -22,8 +22,6 @@ Por otro lado, estaría bien trabajar a nivel de matrices y realizar operaciones
 en el grupo Diédrico. Convedría hacer esa modificación?:
     -Trabajar con matrices y a la hora de crear el grupo convertir las matrices a tuplas
     
--Identificar los elementos con RO, R1,...RN, S0, S1,... SN
-Para ello podemos usar un diccionario y así quitar rep="RS" y juntar "matrix" y "RS" en una misma
 """
 
 

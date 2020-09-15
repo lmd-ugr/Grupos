@@ -374,8 +374,6 @@ if __name__ == '__main__':
     #print(S.gens_cyclic_group())
     #print(A.is_normalSubgroup(S))
     
-    #print(A)
-    #print(S)
     #print(A.all_normalSubgroups())
     p = permutation([1])
     q = permutation([1])

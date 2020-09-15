@@ -4,10 +4,8 @@
 from Permutation import permutation
 from Set import Set
 from Function import Function
-from Group import Group
-from Group import SymmetricGroup, GroupHomomorphism
+from Group import Group, GroupElem, GroupHomomorphism
 from beautifultable import BeautifulTable
-
 
 gens = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 
@@ -330,7 +328,7 @@ class CosetTable(object):
 
 
 
-def generate(gens):
+def generate2(gens):
         
     idn = permutation([1])
     
@@ -357,15 +355,34 @@ def generate(gens):
    
     S = Set(dev) if len(dev) != 0 else Set({1})
     bin_op = Function(S*S, S, lambda x: x[0]*x[1])
-    
-    return Group(S, bin_op)
-          
+    G = Group(S, bin_op)
+    G.group_gens=gens
+    return G
 
+
+
+def generate(elems):
+
+    oldG = Set(elems)
+    
+    while True:
+        newG = oldG | Set(a * b for a in oldG for b in oldG)
+        if oldG == newG: 
+            break
+        else: 
+            oldG = newG
+    C = Set(oldG)
+    bin_op = Function(C*C, C, lambda x: x[0]*x[1])
+    
+    G = Group(C, bin_op)
+    G.group_gens = [ GroupElem(g, G) for g in elems ]
+   
+    return G   
     
 
 if __name__ == "__main__":
     
-    file = "Groups/S3.txt"
+    file = "Groups/D10.txt"
     try:
         
         f = open(file, "r")
@@ -425,13 +442,14 @@ if __name__ == "__main__":
         
         print("\n")
         G = generate(gens)
-        print(G)
+        
+        print("Orden del grupo: ", G.order())
         #print(G.Cayley_table())
         #print(G.elements_order())
 
 
-        S = SymmetricGroup(3)
-        print(S.is_isomorphic(S))
+        #S = SymmetricGroup(3)
+        #print(S.is_isomorphic(S))
         '''
         I = S.find_isomorphism(G)
         if I==None:

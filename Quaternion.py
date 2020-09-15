@@ -8,10 +8,10 @@ Created on Tue Aug  4 07:46:08 2020
 import numbers
 import numpy as np
 import math
-from Permutation import permutation
-from Group import Group
-from Set import Set
-from Function import Function
+#from Permutation import permutation
+#from Group import Group
+#from Set import Set
+#from Function import Function
 
 class Quaternion:
     "Quaternions Numbers:  +-{1, i, j, k}"
@@ -233,7 +233,7 @@ class Quaternion:
     def trace(self):
         return self+self.conjugate()
     
-    
+    '''
     @classmethod        
     def Group(cls, rep="ijk"):
         """
@@ -279,11 +279,11 @@ class Quaternion:
             return Gr
         
         raise ValueError("The second argument must be 'ijk' or 'permutations'")
-
+    '''
 
 if __name__ == '__main__':
     
-
+    '''
     i2 = Quaternion(0,1,0,0)
     i = Quaternion(letter="i")
 
@@ -313,10 +313,10 @@ if __name__ == '__main__':
     #print(Q.elements_order())
     #print(Q.is_abelian())
     #print(Q.Cayley_table())
+    '''
     
     
     '''
-    
     q = Quaternion(68,12,3,-9)
     r = Quaternion(-8,-2,2,32)
     print((q*r).conjugate() == r.conjugate()*q.conjugate())
