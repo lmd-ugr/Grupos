@@ -97,7 +97,7 @@ class permutation():
     def __hash__(self):
         return hash(self.tuple)
 
-    
+    '''
     def __str__(self):
         
         s=str(list(self.tuple))+" = "
@@ -110,7 +110,7 @@ class permutation():
             str(list(self.tuple))
             #return s +"( )"
         return s+s2
-    
+    '''
 
     def __repr__(self):
         s2=str("")
@@ -121,15 +121,15 @@ class permutation():
             return "()"
         return s2
 
-    #__str__ = __repr__
+    __str__ = __repr__
 
     def __eq__(self, other):
         """Tests if the permutations are identical (with the same length)"""
 
         if not isinstance(other, permutation):
             raise TypeError("other is not a permutation")
-        if self.order()==other.order():
-            return True
+        #if self.order()==other.order():
+         #   return True
         return (self.tuple == other.tuple)
 
 

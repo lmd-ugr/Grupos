@@ -5,6 +5,7 @@ from Permutation import permutation
 from Set import Set
 from Function import Function
 from Group import Group
+from Group import SymmetricGroup, GroupHomomorphism
 from beautifultable import BeautifulTable
 
 
@@ -309,11 +310,6 @@ class CosetTable(object):
         A.draw('salida.png')
         '''    
     
-    def new(self):
-        c = len(self.p)
-        self.p.append(c)
-        self.tab.append((2*2)*[None])
-        return c
     
     
     def find(self,c):
@@ -328,21 +324,20 @@ class CosetTable(object):
     def follow(self, c, d):
         c = self.find(c)
         ns = self.tab[c]
-        if ns[d] == None:
-            print("salseo")
-            ns[d] = self.new()
+        
         return self.find(ns[d])
             
 
 
 
-def generate(gens, idn):
+def generate(gens):
         
-    element_list = [idn]
+    idn = permutation([1])
+    
     set_element_list = set([idn])
     dev = []
     for i in range(len(gens)):
-        D = element_list[:]
+        D = list(set_element_list)
         N = [idn]
         while N:
             A = N
@@ -356,7 +351,6 @@ def generate(gens, idn):
                         # produce G_i*g
                         for d in D:
                             ap = d*ag
-                            element_list.append(ap)
                             dev.append(ap)
                             set_element_list.add(ap)
                             N.append(ap)
@@ -371,7 +365,7 @@ def generate(gens, idn):
 
 if __name__ == "__main__":
     
-    file = "Groups/1.txt"
+    file = "Groups/S3.txt"
     try:
         
         f = open(file, "r")
@@ -379,53 +373,73 @@ if __name__ == "__main__":
         gen = replace_all(f.readline(), rep).split()
         rels = replace_all(f.readline(), rep).split()
         genH = replace_all(f.readline(), rep).split()
-        '''
-        gen=['a','b', 'c']
-        rels=['aa', 'bb', 'cc','abABc']
-        
-        #gen = ['a','b']
-        #rels=['aaaaa','bb', 'abABaaaBAAb']
-        
-        #gen=['a', 'b']
-        #rels=['aa', 'bb', 'abAB']
-        #genH=[]
-        
-        #gen = ['a','b']
-        #rels=['Aa','Bb', 'aaa', 'bb', 'abab']
-        #genH = ['b']
-        
-        #gen=['a', 'b']
-        #rels = ['aa', 'bb', 'abAB']
-        genH=[]
-        '''
         
         nueva = CosetTable(2*len(gen), gen, rels, genH)
         nueva.CosetEnumeration()
-        print("The index of H in G is {}".format(nueva.finalCosets()))
+        
+        big = CosetTable(2*len(gen), gen, rels, [])
+        big.CosetEnumeration()
+
+        print("The order of G is {}".format(big.finalCosets()))
+        print("The index [G:H] is {}".format(nueva.finalCosets()))
+        print("The order of H is {}".format(big.finalCosets()//nueva.finalCosets()))
         print("Number of used cosets: " , nueva.usedCosets())
         
-        #if nueva.finalCosets() <= 25:
-        nueva.pretty_print()
+       
+        table = nueva.pretty_print()
+        if nueva.finalCosets() <= 25:
+            pass
+            print(table)
+           
+        '''
+        En nueva.cosets almacenamos el índice de los vértices que están vivos.
+        Estos no tienen por qué ser consecutimos, puede ser por ejemplo:
+            0,1,4,5,6,8,9
         
-        #print(nueva.cosets) #we need the index of cosets
-        perms = [[nueva.cosets.index(nueva.follow(c, 2*d)) for i, c in enumerate(nueva.cosets)] for d in range(len(gen))]
-
-
+        Se tiene la estructura del grafo de Schreier y a partir de las aristas
+        del grafo es posible construir una permutación
+        
+        En nueva.cosets se almacenan las clases que son válidas!
+        recorro cada una de ellas llamando a la función follow.
+        Esta función toma un vértice c y encuentra al vecino en la dirección 2*g
+        '''
+        perms=[]
+        for g in range(len(gen)):
+            l=[]
+            for i, c in enumerate(nueva.cosets):
+                l.append(nueva.cosets.index(nueva.follow(c, 2*g)))
+            perms.append(l)
+             
+        #perms = [[nueva.cosets.index(nueva.follow(c, 2*g)) for i, c in enumerate(nueva.cosets)] for g in range(len(gen))]
+ 
         for i in range(len(perms)):
             for j in range(len(perms[i])):
                 perms[i][j] = perms[i][j]+1
-
-
+                
+        print("\nGenerators of G:")
         gens=[]
-        for d in range(len(gen)):
-            gens.append(permutation(perms[d]))
-            print ("g%d ="%d, permutation(perms[d]))
+        for i in range(len(gen)):
+            gens.append(permutation(perms[i]))
+            print("g{} = {}".format(i, permutation(perms[i])))
         
+        
+        print("\n")
+        G = generate(gens)
+        print(G)
+        #print(G.Cayley_table())
+        #print(G.elements_order())
 
+
+        S = SymmetricGroup(3)
+        print(S.is_isomorphic(S))
+        '''
+        I = S.find_isomorphism(G)
+        if I==None:
+            print("No son isomorfos")
+        elif I.is_isomorphism():
+            print("Son isomorfos")
+        '''
+        f.close()
         
-        G = generate(gens, permutation([1]))
-        print(G.order())
-        
-        #f.close()
     except IOError:
         print("Could not read file ", file)

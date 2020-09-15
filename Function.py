@@ -45,7 +45,7 @@ class Function:
     def __call__(self, elem):
         if elem not in self.domain:
             #pass
-            #print(elem[0]*elem[1], " not in ", self.domain)
+            print(elem[0]*elem[1], " not in ", self.domain)
             raise TypeError("Function must be called on elements of the domain")
         return self.function(elem)
     

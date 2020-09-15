@@ -28,10 +28,10 @@ Para ello podemos usar un diccionario y así quitar rep="RS" y juntar "matrix" y
 
 
 
-from Set import Set
-from Group import Group, SymmetricGroup
-from Function import Function
-from Permutation import permutation
+#from Set import Set
+#from Group import Group, SymmetricGroup
+#from Function import Function
+#from Permutation import permutation
 
 import math
 import numpy as np
@@ -169,7 +169,7 @@ class Dihedral():
             return self.rot[(i-j)%self.n]
     
     
-    
+    '''
     @classmethod
     def Group(cls, n, rep="RS"):
         
@@ -248,7 +248,7 @@ class Dihedral():
         
         raise ValueError("The second argument can be 'matrix' , 'RS' or 'permutations'")
     
-    
+    '''
     
     
     
@@ -260,11 +260,13 @@ class Dihedral():
 if __name__=="__main__":
     
 
-    G = Dihedral.Group(6,"RS")
-    D3 = Dihedral.Group(2,"matrix")    
-    D3_1 = Dihedral.Group(2, "permutations")
+    #G = Dihedral.Group(6,"RS")
+    #D3 = Dihedral.Group(2,"matrix")    
+    #D3_1 = Dihedral.Group(2, "permutations")
     
-
+    #print(D3_1)
+    #print(D3_1.elements_order())
+    '''
     print("R_i y S_i: ")
     print(G.Cayley_table())
     print("\nForma matricial (tuplas): ")
@@ -273,7 +275,7 @@ if __name__=="__main__":
     print(D3_1.Cayley_table())
 
     print(G.gens_group(pr="yes"))
-    
+    '''
     #print(G.all_normalSubgroups())
     
     #print(G.all_normalSubgroups())
@@ -281,9 +283,9 @@ if __name__=="__main__":
 
     
     
-    D5 = Dihedral.Group(5,"matrix")
-    D3 = Dihedral.Group(3,"matrix")
-    S3 = SymmetricGroup(3)
+    #D5 = Dihedral.Group(5,"matrix")
+    #D3 = Dihedral.Group(3,"matrix")
+    #S3 = SymmetricGroup(3)
     
     #print(D3.elements_order(), "\n\n", S3.elements_order())
     #print(D3.Cayley_table())
