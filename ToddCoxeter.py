@@ -279,34 +279,36 @@ class CosetTable(object):
         
         
     def schreier_graph(self):
+        
+        import networkx as nx
+
         if self.table == None:
             raise ValueError("Debe llamar primero a la función Todd Cox")
         
-        cols = [self.table.columns[i] for i in range(0, self.getnlive()) if i%2==0]
-        table=[]
-        for i in range(1, len(cols[0])):
-            l = []
-            for j in range(0, len(cols)):
-                l.append(cols[j][i])
-            table.append(l)
+        #necesitamos convertir BTRowData to list of list
+        gens = [self.table[0][i] for i in range(0, len(self.table[0]) ,2)]
+        l = [ list(self.table[i]) for i in range(1,len(self.cosets)+1)]
+        vertexs = [ self.cosets[i]+1 for i in range(len(self.cosets))]
+        cols = [[row[i] for row in l] for i in range (0,len(l[0]),2) ]
+        colors = ['red','blue','green','black','orange','grey','purple','orange'] #max 8 gens
         
-        '''
-        import networkx as nx
-        import matplotlib.pyplot as plt
-        import graphviz as gv
-        G = gv.Digraph(format='png', engine='circo')
+        Grafo = nx.MultiDiGraph()
+        Grafo.graph['node']={'shape':'circle'}
         
-        for i in range(0, self.getnlive()):
-            G.node(i)
-        '''
-            
+        for i in vertexs:
+            Grafo.add_node(str(i))
+        for idx, i in enumerate(vertexs):
+            for j in range(len(l[0])//2):
+                Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ str(gens[j]))
+                #print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
         
-        print(table)
-        '''
-        A = nx.nx_agraph.tp_agraph(G)
-        A.layout('dot')
-        A.draw('salida.png')
-        '''    
+                
+        G = nx.nx_agraph.to_agraph(Grafo)
+        G.layout('dot')
+        G.draw('test/T&C_SchreierGraph.png')
+        
+        
+        
     
     
     
@@ -327,7 +329,7 @@ class CosetTable(object):
             
 
 
-
+'''
 def generate2(gens):
         
     idn = permutation([1])
@@ -358,7 +360,7 @@ def generate2(gens):
     G = Group(S, bin_op)
     G.group_gens=gens
     return G
-
+'''
 
 
 def generate(elems):
@@ -375,14 +377,16 @@ def generate(elems):
     bin_op = Function(C*C, C, lambda x: x[0]*x[1])
     
     G = Group(C, bin_op)
-    G.group_gens = [ GroupElem(g, G) for g in elems ]
-   
+    #G.group_gens = [ GroupElem(g, G) for g in elems ]
+    G.group_gens = elems
     return G   
     
 
+
+
 if __name__ == "__main__":
     
-    file = "Groups/D10.txt"
+    file = "Groups/Q2.txt"
     try:
         
         f = open(file, "r")
@@ -403,7 +407,11 @@ if __name__ == "__main__":
         print("Number of used cosets: " , nueva.usedCosets())
         
        
+
+       
         table = nueva.pretty_print()
+        nueva.schreier_graph()
+        
         if nueva.finalCosets() <= 25:
             pass
             print(table)

@@ -180,14 +180,21 @@ como bien sabemos, coincide con el índice de G:H
 - Funciona correctamente. Se puede dar un grupo por presentación y el mismo grupo dando los elementos. Al aplicar
 is_isomorphic devuelve True.
 
+- Añado función que calcula el Grafo de Schreier a partir de la tabla de cosets resultante tras aplicar el Algoritmo de Todd Coxeter.
+
+
 ## NEXT ToDo
 
 - Decidirse por una función generate y generators buena.
-- Modificar __pow__ de todas las clases? puede ser conveniente usar la función 
+- Modificar _pow__ de todas las clases? puede ser conveniente usar la función 
 del libro ComputationalGroup theory por la eficiencia.
 - Posible adición posterior de una representación matricial de los cuaternios.
 - Repasar all_subgroups y all_normalSubgroups()
 - Usar una clase para el grupo Diédrico (¡hecho!) y demás grupos que se vayan programando.
 - Añadir operaciones al grupo diédrico (?)
 - Quizás es conveniendo implementar un order() en cada grupo.
+- Arreglar la doble llamada a Todd Coxeter para obtener |G| y |H|.
+- Interfaz que no sea pocha.
+- Añadir las instrucciones de uso al tutorial de Pedro.
+- Cayley table, subgroups with new graphs??
 

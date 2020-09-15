@@ -5,6 +5,8 @@ Created on Wed Feb 26 16:18:18 2020
 
 import itertools
 import math
+from sympy import pi
+
 
 from Set import Set
 from Function import Function
@@ -12,7 +14,7 @@ from Permutation import permutation
 from beautifultable import BeautifulTable
 from Dihedral import Dihedral
 from Quaternion import Quaternion
-
+from Complex import Complex, print_roots
 
 
 class GroupElem:
@@ -693,8 +695,13 @@ class Group:
         oldG = Set(g.elem for g in oldG)
 
         G = Group(oldG, self.bin_op.new_domains(oldG * oldG, oldG))
-        G.group_elems = [ GroupElem(g, G) for g in elems] 
+        #G.group_elems = [ GroupElem(g, G) for g in elems] 
+        G.group_elems = elems
         return G
+    
+    
+    
+    
     
     '''
     def generate(self, generators):
@@ -1193,7 +1200,6 @@ def DihedralGroup(n, rep="RS"):
     """
         
     
-
         
     if rep=="matrix":
         D = Dihedral(n)
@@ -1284,7 +1290,7 @@ def QuaternionGroup(rep="ijk"):
         
         G=Set(q2)
         Gr=Group(G,Function(G.cartesian(G),G, lambda x: x[0]*x[1]))
-        Gr.group_gens=[i,j]
+        Gr.group_gens = [i,j]
         return Gr
     
     
@@ -1304,26 +1310,66 @@ def QuaternionGroup(rep="ijk"):
 
 
 
+
+
+def RootsOfUnitGroup(n):
+    '''
+    #G = Set(complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
+    G = Set( (np.round(math.cos(2*pi*k/n),3), np.round(math.sin(2*pi*k/n),3)) for k in range(n))
+    
+    def mul(x):
+        #return complex(x[0]*y[0]-x[1]*y[1], x[1]*y[0]+x[0]*y[1])
+        return (np.round(x[0][0]*x[1][0]-x[0][1]*x[1][1],3), np.round(x[0][1]*x[1][0]+x[0][0]*x[1][1],3))
+        
+    bin_op=Function(G.cartesian(G),G,lambda x: mul(x), check_well_defined=False)
+    Gr=Group(G,bin_op) 
+    
+    return Gr
+    '''
+    
+    G = Set(Complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
+
+    bin_op=Function(G.cartesian(G),G,lambda x: x[0].product(x[1]) ,  check_well_defined=False)
+    Gr=Group(G,bin_op) 
+    
+    Gr.gens_group()
+    Gr.gens_group(G.pick())
+    
+    return Gr
+
+
+
+
+
+
     
 if __name__ == '__main__':
     
     
-    '''
+    G = RootsOfUnitGroup(5)
+    #print_roots(G)
+    #print(G.generators())
+    print(G.is_abelian())
+    print(G.generators())
+    
+    
+    
     Q = QuaternionGroup(rep="ijk")
     Q2 = QuaternionGroup(rep="permutations")
-    print(Q.is_isomorphic(Q2))
-    '''
+    #print(Q.is_isomorphic(Q2))
     
-    '''
+    print(Q.generators())
+    
+    
     Dm = DihedralGroup(4, rep='matrix')
     Drs = DihedralGroup(4, rep='RS')
     Dp = DihedralGroup(4, rep='permutations')
-
-    print(Dp.is_isomorphic(Drs))
-    print(Dp.is_isomorphic(Dm))
-    print(Dm.is_isomorphic(Drs))
+    print(Drs.generators())
+    #print(Dp.is_isomorphic(Drs))
+    #print(Dp.is_isomorphic(Dm))
+    #print(Dm.is_isomorphic(Drs))
     
-    
+    '''
     G= SymmetricGroup(3)
     G2= DihedralGroup(3)
     print(G.is_isomorphic(G2))

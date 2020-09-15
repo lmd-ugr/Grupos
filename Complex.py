@@ -7,11 +7,11 @@ Created on Sat Aug 22 21:55:57 2020
 """
 import math
 
-from Set import Set
-from Function import Function
-from Group import Group
+#from Set import Set
+#from Function import Function
+#from Group import Group
 
-from sympy import pi
+#from sympy import pi
 import pylab as plt
 import seaborn as sns
 
@@ -91,31 +91,35 @@ class Complex(object):
         #return str(self.real)+","+ str(self.imag)
         return str(self.round3())
     '''
+    
+    
+    '''
     @classmethod
     def RootsOfUnitGroup(cls, n):
-        '''
-        #G = Set(complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
-        G = Set( (np.round(math.cos(2*pi*k/n),3), np.round(math.sin(2*pi*k/n),3)) for k in range(n))
-    
-        def mul(x):
-            #return complex(x[0]*y[0]-x[1]*y[1], x[1]*y[0]+x[0]*y[1])
-            return (np.round(x[0][0]*x[1][0]-x[0][1]*x[1][1],3), np.round(x[0][1]*x[1][0]+x[0][0]*x[1][1],3))
         
-        bin_op=Function(G.cartesian(G),G,lambda x: mul(x), check_well_defined=False)
-        Gr=Group(G,bin_op) 
+        
+        #G = Set(complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
+        #G = Set( (np.round(math.cos(2*pi*k/n),3), np.round(math.sin(2*pi*k/n),3)) for k in range(n))
     
-        return Gr
-        '''
+        #def mul(x):
+            #return complex(x[0]*y[0]-x[1]*y[1], x[1]*y[0]+x[0]*y[1])
+            #return (np.round(x[0][0]*x[1][0]-x[0][1]*x[1][1],3), np.round(x[0][1]*x[1][0]+x[0][0]*x[1][1],3))
+        
+        #bin_op=Function(G.cartesian(G),G,lambda x: mul(x), check_well_defined=False)
+        #Gr=Group(G,bin_op) 
+        #return Gr
+        
+        
         G = Set(Complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
         #print(G)
         bin_op=Function(G.cartesian(G),G,lambda x: x[0].product(x[1]) ,  check_well_defined=False)
         Gr=Group(G,bin_op) 
     
         return Gr
+    '''
 
 
-
-def pretty_print(roots):
+def print_roots(roots):
     
     lroots = roots.Set
         
@@ -140,7 +144,7 @@ def pretty_print(roots):
     plt.ylim(-1.25,1.25)
     plt.xlabel('Re(x)')
     plt.ylabel('Im(x)')
-    plt.savefig('photo.png')
+    plt.savefig('test/photo.png')
         
     plt.show()
     
@@ -148,11 +152,10 @@ def pretty_print(roots):
     
 
 if __name__ == '__main__':
-    
+    '''
     G = Complex.RootsOfUnitGroup(5)
-    pretty_print(G)
+    print_roots(G)
     
     print(G.is_abelian())
-    print(G.gens_group())
-    
+    '''
     

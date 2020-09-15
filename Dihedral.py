@@ -8,9 +8,6 @@ Created on Wed Aug  5 16:18:45 2020
 
 
 
-
-
-
 PROBLEMAS:
 -Los elementos no pueden ser listas ni matrices porque no son hashables.
 Hay que aplicarle la operación binaria y no compila.
