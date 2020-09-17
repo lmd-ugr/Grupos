@@ -1339,13 +1339,61 @@ def RootsOfUnitGroup(n):
 
 
 
-
+def QuaternionGroup2(rep="ijk"):
+    """
+    The quaternion group Q2; its elments are 1,i,j,k and their oposite
+    Example:
+        >>> Q2=QuaternionGroup()
+        >>> list(Q2)
+        ['1', 'i', 'k', 'j', '-i', '-k', '-j', '-1']
+        >>> i=Q2("i")
+        >>> j=Q2("j")
+        >>> i*j
+        'k'
+        >>> j*i
+        '-k'
+    """
+    if rep=="ijk":
+        q2=[ "1", "-1", "i", "-i", "j", "-j", "k", "-k"]
+        table=[[ "1", "-1", "i", "-i", "j", "-j", "k", "-k"],[ "-1", "1", "-i", "i", "-j", "j", "-k", "k"],[ "i", "-i", "-1", "1", "k", "-k", "-j", "j"],[ "-i", "i", "1", "-1", "-k", "k", "j", "-j"],[ "j", "-j", "-k", "k", "-1", "1", "i", "-i"],[ "-j", "j", "k", "-k", "1", "-1", "-i", "i"],[ "k", "-k", "j", "-j", "-i", "i", "-1", "1"],[ "-k", "k", "-j", "j", "i", "-i", "1", "-1"]]
+        def product(a,b):
+            i=q2.index(a)
+            j=q2.index(b)
+            return table[i][j]
+        G=Set(q2)
+        Gr=Group(G,Function(G.cartesian(G),G, lambda x: product(x[0],x[1])))
+        Gr.group_gens=[Gr("i"),Gr("j")]
+        return Gr
+    if rep=="permutations":
+        q1=[permutation([1, 2, 3, 4, 5, 6, 7, 8]), permutation([2, 3, 4, 1, 6, 8, 5, 7]),
+            permutation([3, 4, 1, 2, 8, 7, 6, 5]), permutation([4, 1, 2, 3, 7, 5, 8, 6]),
+            permutation([5, 7, 8, 6, 3, 2, 4, 1]), permutation([6, 5, 7, 8, 4, 3, 1, 2]),
+            permutation([7, 8, 6, 5, 2, 1, 3, 4]), permutation([8, 6, 5, 7, 1, 4, 2, 3])]
+        G=Set(q1)
+        bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+        Gr=Group(G, bin_op)
+        Gr.group_gens=[Gr(permutation([4, 1, 2, 3, 7, 5, 8, 6])),Gr(permutation([6, 5, 7, 8, 4, 3, 1, 2]))]
+        return Gr
+    raise ValueError("The second argument must be 'ijk' or 'permutations'")
 
 
     
 if __name__ == '__main__':
     
     
+    Q2=QuaternionGroup2()
+    print(list(Q2))
+    i=Q2("i")
+    j=Q2("j")
+    
+    
+    print(Q2.generate([i,j]))
+    
+    Q = QuaternionGroup(rep="ijk")
+    #Q2 = QuaternionGroup(rep="permutations")
+    print(Q.is_isomorphic(Q2))
+    
+    '''
     G = RootsOfUnitGroup(5)
     #print_roots(G)
     #print(G.generators())
@@ -1368,6 +1416,9 @@ if __name__ == '__main__':
     #print(Dp.is_isomorphic(Drs))
     #print(Dp.is_isomorphic(Dm))
     #print(Dm.is_isomorphic(Drs))
+    '''
+    
+    
     
     '''
     G= SymmetricGroup(3)

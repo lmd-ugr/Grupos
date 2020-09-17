@@ -6,6 +6,8 @@ from Set import Set
 from Function import Function
 from Group import Group, GroupElem, GroupHomomorphism
 from beautifultable import BeautifulTable
+from IPython.display import display, Image
+import networkx as nx
 
 gens = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 
@@ -86,7 +88,13 @@ class ClassEquivalence(object):
 class CosetTable(object):
     
 
-    def __init__(self, total, gen, rel, gen_H):
+    def __init__(self, *arguments):
+        
+        
+        l = len(arguments)
+        gen = arguments[0][0] if l==1 else arguments[0]
+        rel = arguments[0][1] if l==1 else arguments[1]
+        gen_H = arguments[0][2] if l==1 else arguments[2]
         
         #variables to control memory
         self.M = 1E8
@@ -100,7 +108,7 @@ class CosetTable(object):
         
         ############################
         
-        self.NGENS = total #Generators and inverses
+        self.NGENS = 2*len(gen) #Generators and inverses
         self.p = ClassEquivalence()
         
         
@@ -245,6 +253,8 @@ class CosetTable(object):
             
             k=k+1
         
+        self.pretty_print()
+        
 
 
 
@@ -280,13 +290,13 @@ class CosetTable(object):
         
     def schreier_graph(self):
         
-        import networkx as nx
+        
 
         if self.table == None:
             raise ValueError("Debe llamar primero a la función Todd Cox")
         
         #necesitamos convertir BTRowData to list of list
-        gens = [self.table[0][i] for i in range(0, len(self.table[0]) ,2)]
+        #gens = [self.table[0][i] for i in range(0, len(self.table[0]) ,2)]
         l = [ list(self.table[i]) for i in range(1,len(self.cosets)+1)]
         vertexs = [ self.cosets[i]+1 for i in range(len(self.cosets))]
         cols = [[row[i] for row in l] for i in range (0,len(l[0]),2) ]
@@ -296,18 +306,30 @@ class CosetTable(object):
         Grafo.graph['node']={'shape':'circle'}
         
         for i in vertexs:
-            Grafo.add_node(str(i))
+            Grafo.add_node(i)
         for idx, i in enumerate(vertexs):
             for j in range(len(l[0])//2):
-                Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ str(gens[j]))
-                #print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
-        
-                
+                lab = gens[j] if j%2 == 0 else gens[j+1]
+                Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ str(lab))
+                print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
+        #import matplotlib.pyplot as plt
+
         G = nx.nx_agraph.to_agraph(Grafo)
+
         G.layout('dot')
         G.draw('test/T&C_SchreierGraph.png')
+        display(Image('test/T&C_SchreierGraph.png'))
+        #nx.draw(Grafo)
+        #plt.show()
         
-        
+        #https://stackoverflow.com/questions/20133479/how-to-draw-directed-graphs-using-networkx-in-python
+        '''
+        G=Grafo
+        pos = nx.spring_layout(G)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'))
+        nx.draw_networkx_labels(G, pos)
+        plt.show()
+        '''
         
     
     
@@ -326,9 +348,44 @@ class CosetTable(object):
         ns = self.tab[c]
         
         return self.find(ns[d])
+
+
+
+    def getGenerators(self):
+        '''
+        #En nueva.cosets almacenamos el índice de los vértices que están vivos.
+        #Estos no tienen por qué ser consecutimos, puede ser por ejemplo:
+         #   0,1,4,5,6,8,9
             
-
-
+        #Se tiene la estructura del grafo de Schreier y a partir de las aristas
+        #del grafo es posible construir una permutación
+            
+        #En nueva.cosets se almacenan las clases que son válidas!
+        #recorro cada una de ellas llamando a la función follow.
+        #Esta función toma un vértice c y encuentra al vecino en la dirección 2*g
+        
+        '''
+        perms=[]
+        for g in range(self.NGENS//2):
+            l=[]
+            for i, c in enumerate(self.cosets):
+                l.append(self.cosets.index(self.follow(c, 2*g)))
+            perms.append(l)
+                 
+        #perms = [[nueva.cosets.index(nueva.follow(c, 2*g)) for i, c in enumerate(nueva.cosets)] for g in range(len(gen))]
+     
+        for i in range(len(perms)):
+            for j in range(len(perms[i])):
+                perms[i][j] = perms[i][j]+1
+                    
+        print("\nGenerators of G:")
+        gens=[]
+        for i in range(self.NGENS//2):
+            gens.append(permutation(perms[i]))
+            print("g{} = {}".format(i, permutation(perms[i])))
+        
+        return gens
+        
 '''
 def generate2(gens):
         
@@ -384,88 +441,75 @@ def generate(elems):
 
 
 
-if __name__ == "__main__":
-    
-    file = "Groups/Q2.txt"
+
+
+def readGroup(file):
     try:
-        
         f = open(file, "r")
         rep = {",": " ", "=": " ", "1": " ", "{": " ", "}": " "}
         gen = replace_all(f.readline(), rep).split()
         rels = replace_all(f.readline(), rep).split()
         genH = replace_all(f.readline(), rep).split()
-        
-        nueva = CosetTable(2*len(gen), gen, rels, genH)
-        nueva.CosetEnumeration()
-        
-        big = CosetTable(2*len(gen), gen, rels, [])
-        big.CosetEnumeration()
-
-        print("The order of G is {}".format(big.finalCosets()))
-        print("The index [G:H] is {}".format(nueva.finalCosets()))
-        print("The order of H is {}".format(big.finalCosets()//nueva.finalCosets()))
-        print("Number of used cosets: " , nueva.usedCosets())
-        
-       
-
-       
-        table = nueva.pretty_print()
-        nueva.schreier_graph()
-        
-        if nueva.finalCosets() <= 25:
-            pass
-            print(table)
-           
-        '''
-        En nueva.cosets almacenamos el índice de los vértices que están vivos.
-        Estos no tienen por qué ser consecutimos, puede ser por ejemplo:
-            0,1,4,5,6,8,9
-        
-        Se tiene la estructura del grafo de Schreier y a partir de las aristas
-        del grafo es posible construir una permutación
-        
-        En nueva.cosets se almacenan las clases que son válidas!
-        recorro cada una de ellas llamando a la función follow.
-        Esta función toma un vértice c y encuentra al vecino en la dirección 2*g
-        '''
-        perms=[]
-        for g in range(len(gen)):
-            l=[]
-            for i, c in enumerate(nueva.cosets):
-                l.append(nueva.cosets.index(nueva.follow(c, 2*g)))
-            perms.append(l)
-             
-        #perms = [[nueva.cosets.index(nueva.follow(c, 2*g)) for i, c in enumerate(nueva.cosets)] for g in range(len(gen))]
- 
-        for i in range(len(perms)):
-            for j in range(len(perms[i])):
-                perms[i][j] = perms[i][j]+1
-                
-        print("\nGenerators of G:")
-        gens=[]
-        for i in range(len(gen)):
-            gens.append(permutation(perms[i]))
-            print("g{} = {}".format(i, permutation(perms[i])))
-        
-        
-        print("\n")
-        G = generate(gens)
-        
-        print("Orden del grupo: ", G.order())
-        #print(G.Cayley_table())
-        #print(G.elements_order())
-
-
-        #S = SymmetricGroup(3)
-        #print(S.is_isomorphic(S))
-        '''
-        I = S.find_isomorphism(G)
-        if I==None:
-            print("No son isomorfos")
-        elif I.is_isomorphism():
-            print("Son isomorfos")
-        '''
+    
         f.close()
-        
     except IOError:
         print("Could not read file ", file)
+        
+    return gen, rels, genH
+    
+
+
+
+
+
+
+
+if __name__ == "__main__":
+
+    file = "Groups/klein.txt"
+    
+        
+    l = readGroup(file)
+        
+    nueva = CosetTable(l)
+    nueva.CosetEnumeration()
+    
+    #big = CosetTable(gen, rels, [])
+    #big.CosetEnumeration()
+    
+    print("The order of G is {}".format(nueva.finalCosets()))
+    print("The index [G:H] is {}".format(nueva.finalCosets()))
+    #print("The order of H is {}".format(big.finalCosets()//nueva.finalCosets()))
+    #print("Number of used cosets: " , nueva.usedCosets())
+        
+       
+
+       
+    #table = nueva.pretty_print()
+    table=nueva.table
+    nueva.schreier_graph()
+        
+    if nueva.finalCosets() <= 25:
+        pass
+        print(table)
+           
+
+        
+
+    gens = nueva.getGenerators()
+    G = generate(gens)
+        
+    print("Orden del grupo: ", G.order())
+    #print(G.Cayley_table())
+    #print(G.elements_order())
+
+
+    #S = SymmetricGroup(3)
+    #print(S.is_isomorphic(S))
+    '''
+    I = S.find_isomorphism(G)
+    if I==None:
+        print("No son isomorfos")
+    elif I.is_isomorphism():
+        print("Son isomorfos")
+    '''
