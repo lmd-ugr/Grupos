@@ -4,7 +4,7 @@
 from Permutation import permutation
 from Set import Set
 from Function import Function
-from Group import Group, GroupElem, GroupHomomorphism
+#from Group import Group
 from beautifultable import BeautifulTable
 from IPython.display import display, Image
 import networkx as nx
@@ -288,7 +288,7 @@ class CosetTable(object):
         print(self.tab)
         
         
-    def schreier_graph(self):
+    def schreier_graph(self, notes=True):
         
         
 
@@ -311,7 +311,8 @@ class CosetTable(object):
             for j in range(len(l[0])//2):
                 lab = gens[j] if j%2 == 0 else gens[j+1]
                 Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ str(lab))
-                print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
+                if notes:
+                    print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
         #import matplotlib.pyplot as plt
 
         G = nx.nx_agraph.to_agraph(Grafo)
@@ -378,14 +379,38 @@ class CosetTable(object):
             for j in range(len(perms[i])):
                 perms[i][j] = perms[i][j]+1
                     
-        print("\nGenerators of G:")
+        #print("\nGenerators of G:")
         gens=[]
         for i in range(self.NGENS//2):
             gens.append(permutation(perms[i]))
-            print("g{} = {}".format(i, permutation(perms[i])))
+            #print("g{} = {}".format(i, permutation(perms[i])))
         
         return gens
+   
+
+
+
+
+
+
+
+
+def readGroup(file):
+    try:
+        f = open(file, "r")
+        rep = {",": " ", "=": " ", "1": " ", "{": " ", "}": " "}
+        gen = replace_all(f.readline(), rep).split()
+        rels = replace_all(f.readline(), rep).split()
+        genH = replace_all(f.readline(), rep).split()
+    
+        f.close()
+    except IOError:
+        print("Could not read file ", file)
         
+    return gen, rels, genH
+
+
+     
 '''
 def generate2(gens):
         
@@ -420,42 +445,6 @@ def generate2(gens):
 '''
 
 
-def generate(elems):
-
-    oldG = Set(elems)
-    
-    while True:
-        newG = oldG | Set(a * b for a in oldG for b in oldG)
-        if oldG == newG: 
-            break
-        else: 
-            oldG = newG
-    C = Set(oldG)
-    bin_op = Function(C*C, C, lambda x: x[0]*x[1])
-    
-    G = Group(C, bin_op)
-    #G.group_gens = [ GroupElem(g, G) for g in elems ]
-    G.group_gens = elems
-    return G   
-    
-
-
-
-
-
-def readGroup(file):
-    try:
-        f = open(file, "r")
-        rep = {",": " ", "=": " ", "1": " ", "{": " ", "}": " "}
-        gen = replace_all(f.readline(), rep).split()
-        rels = replace_all(f.readline(), rep).split()
-        genH = replace_all(f.readline(), rep).split()
-    
-        f.close()
-    except IOError:
-        print("Could not read file ", file)
-        
-    return gen, rels, genH
     
 
 
@@ -463,7 +452,7 @@ def readGroup(file):
 
 
 
-
+'''
 if __name__ == "__main__":
 
     file = "Groups/klein.txt"
@@ -506,10 +495,11 @@ if __name__ == "__main__":
 
     #S = SymmetricGroup(3)
     #print(S.is_isomorphic(S))
-    '''
+   
     I = S.find_isomorphism(G)
     if I==None:
         print("No son isomorfos")
     elif I.is_isomorphism():
         print("Son isomorfos")
-    '''
+
+'''

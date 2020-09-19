@@ -15,7 +15,7 @@ from beautifultable import BeautifulTable
 from Dihedral import Dihedral
 from Quaternion import Quaternion
 from Complex import Complex, print_roots
-
+from ToddCoxeter import *
 
 class GroupElem:
     """
@@ -81,6 +81,10 @@ class GroupElem:
         # operation the other way around.
         #except TypeError:
         #    return other.__rmul__(self)
+
+
+
+
 
     def __rmul__(self, other):
         """
@@ -571,19 +575,6 @@ class Group:
 
     def gens_group(self, pr="No"):
         
-        '''
-        #phi Euler
-        x = self.order()
-        
-        #if the group is cyclic
-        if self.Set == Set(range(x)):
-            if x == 1:
-                return 1
-            else:
-                n = [y for y in range(1,x) if math.gcd(x,y)==1]
-                return n
-        else:
-        ''' 
         if len(self.group_gens)==0:
             l = []
             for a in self.group_elems:
@@ -1032,6 +1023,27 @@ class GroupAction: #we should add here check_well_defined, and check_group_axiom
 
 
 
+#This is used for todd coxeter, dont delete
+def generate(elems):
+
+    oldG = Set(elems)
+    
+    while True:
+        newG = oldG | Set(a * b for a in oldG for b in oldG)
+        if oldG == newG: 
+            break
+        else: 
+            oldG = newG
+    C = Set(oldG)
+    bin_op = Function(C*C, C, lambda x: x[0]*x[1])
+    
+    G = Group(C, bin_op)
+    #G.group_gens = [ GroupElem(g, G) for g in elems ]
+    G.group_gens = elems
+    return G   
+    
+
+
 
 
 
@@ -1377,28 +1389,88 @@ def QuaternionGroup2(rep="ijk"):
     raise ValueError("The second argument must be 'ijk' or 'permutations'")
 
 
+
+def QuaternionGroupGeneralised(n):
+
+    #Q_n= < a,b | a^{n}=b^{2},a^{2n}=1,b^{-1}ab=a^{-1} >
+    genG = ['a','b']
+    
+    relsG = ['a'*n + 'BB', 'a'*2*n, 'Baba']
+    genH = []
+    
+    C = CosetTable(genG, relsG, genH)
+    C.CosetEnumeration()
+    gens = C.getGenerators()
+    G = generate(gens)
+    return G
+    
+
+
+
+def KleinGroup(rep="integers"):
+    """
+    The Klein four-group; it can be represented via "integers" as Z_2 x Z_2, and as a subgroup of permutations of A_4
+    Example:
+        >>> K=KleinGroup()
+        >>> KK=KleinGroup("permutations")
+        >>> KK.is_isomorphic(K)
+        True
+        >>> list(K)
+        [(0, 0), (0, 1), (1, 0), (1, 1)]
+        >>> list(KK)
+        [( ),  (1, 4)(2, 3),  (1, 3)(2, 4),  (1, 2)(3, 4)]
+    """
+
+    if rep=="integers":
+        G=CyclicGroup(2)
+        return G.direct_product(G)
+    if rep=="permutations":
+
+        G=Set([permutation([1,2,3,4]),permutation((1,2),(3,4)),permutation((1,3),(2,4)),permutation((1,4),(2,3))])
+        #bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
+        bin_op=AlternatingGroup(4).bin_op.new_domains(G.cartesian(G),G,check_well_defined=False)
+        Gr=Group(G, bin_op, parent=AlternatingGroup(4), group_order=4, group_degree=4)
+        Gr.group_gens=[Gr.parent(permutation((1,2),(3,4))), Gr.parent(permutation((1,3),(2,4)))]
+        return Gr
+    raise ValueError("The second argument can be 'RS' or 'permutations'")
+
+
     
 if __name__ == '__main__':
     
     
+    '''
+    Q = QuaternionGroupGeneralised(2)
+    Q2 = QuaternionGroup()
+    print(Q)
+    print(Q2.is_isomorphic(Q))
+    '''
+    
+    K = KleinGroup()
+    Q = KleinGroup("permutations")
+    #print(K)
+    #print(Q)
+    #print(K.is_isomorphic(Q))
+    
+    
     Q2=QuaternionGroup2()
-    print(list(Q2))
-    i=Q2("i")
-    j=Q2("j")
+    #print(list(Q2))
+    #i=Q2("i")
+    #j=Q2("j")
     
     
-    print(Q2.generate([i,j]))
+    #print(Q2.generate([i,j]))
     
     Q = QuaternionGroup(rep="ijk")
     #Q2 = QuaternionGroup(rep="permutations")
-    print(Q.is_isomorphic(Q2))
+    #print(Q.is_isomorphic(Q2))
     
     '''
     G = RootsOfUnitGroup(5)
     #print_roots(G)
     #print(G.generators())
     print(G.is_abelian())
-    print(G.generators())
+ithu    print(G.generators())
     
     
     
