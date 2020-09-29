@@ -217,13 +217,10 @@ class GroupElem:
     def inverse(self):
         """Returns the inverse of elem"""
         
-        
         if not self in self.group:
             print(self, "no está en " , self.group)
             raise TypeError("Element isn't a GroupElem in the Group")
         
-        #El elemento a debe ser un entero para poder aplicarle
-        #la operación binaria. Lo detecta como groupElem
         for a in self.group.elements():
             if self.group.bin_op((self.elem, a.elem)) == self.group.e.elem:
                 return a
@@ -1665,10 +1662,11 @@ def RootsOfUnitGroup(n):
     
     G = Set(Complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
 
-    bin_op=Function(G.cartesian(G),G,lambda x: x[0].product(x[1]) ,  check_well_defined=False)
+    bin_op=Function(G.cartesian(G), G, lambda x: x[0].product(x[1]) ,  check_well_defined=False)
     Gr=Group(G,bin_op) 
     
-    Gr.gens_group(G.pick())
+
+    Gr.group_gens = [ Gr(G.pick())]
     
     return Gr
 

@@ -93,30 +93,6 @@ class Complex(object):
     '''
     
     
-    '''
-    @classmethod
-    def RootsOfUnitGroup(cls, n):
-        
-        
-        #G = Set(complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
-        #G = Set( (np.round(math.cos(2*pi*k/n),3), np.round(math.sin(2*pi*k/n),3)) for k in range(n))
-    
-        #def mul(x):
-            #return complex(x[0]*y[0]-x[1]*y[1], x[1]*y[0]+x[0]*y[1])
-            #return (np.round(x[0][0]*x[1][0]-x[0][1]*x[1][1],3), np.round(x[0][1]*x[1][0]+x[0][0]*x[1][1],3))
-        
-        #bin_op=Function(G.cartesian(G),G,lambda x: mul(x), check_well_defined=False)
-        #Gr=Group(G,bin_op) 
-        #return Gr
-        
-        
-        G = Set(Complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
-        #print(G)
-        bin_op=Function(G.cartesian(G),G,lambda x: x[0].product(x[1]) ,  check_well_defined=False)
-        Gr=Group(G,bin_op) 
-    
-        return Gr
-    '''
 
 
 def print_roots(roots):

@@ -31,8 +31,7 @@ Se han añadido bastantes métodos para que se puedan realizar operaciones a niv
 
 ## Permutation.py
 
-- Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo
- *Permutation.py*  y añado toda la implementación existente.
+- Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo *Permutation.py*  y añado toda la implementación existente.
 
 - `__mul__`: Se modifica y se simplifica el producto de dos permutaciones.
 
@@ -53,10 +52,10 @@ La descripción del algoritmo se puede encontrar en la memoria del proyecto, la 
 
 - `schreier_graph`: Método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
 
-- `getGenerators`: A partir del grafo de Schreier no es difícil es sencillo calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva a partir de este método.
+- `getGenerators`: A partir del grafo de Schreier no es difícil calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva usando este método.
 
 
-A partir de estos generadores, bastará con multiplicarlos hasta así obtener un conjunto al que le proporcionaremos estructura de grupo. 
+Realizando operaciones con los generadores, se obtendrá el conjunto total de elementos al que le proporcionaremos estructura de grupo. 
 
 - Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
 
@@ -114,43 +113,30 @@ True
 
 
 
-
 ## Diedral.py
+Se ha realizado la implementación del grupo diédrico en el archivo *Dihedral.py*. Ahora, un grupo de orden *2n* estará formado por *n* simetrías y *n* rotaciones.
 
-- Se ha creado una nueva clase para representar el grupo Diédrico de orden 2n. Funciona bien, mostrando todas las matrices
-de rotación y reflexión de cada grupo.
+- Se han incorporado diferentes representaciones del grupo: *RS*, *tuple*, *permutations*
+ -  RS: R0, R1,..., RN,  S0, S1,..., SN.
+ - Tuple: representación mediante tuplas. (representan la matriz del movimiento)
+ - Permutations: representación mediante permutaciones de *permutations.py*. 
 
-- He tenido problemas a la hora de representar las rotaciones y reflexiones con matrices ya que no son hashables
-y no se podía aplicar la operación binaria correctamente. He tenido que usar tuplas que al fin y al cabo representan
-lo mismo.
-
-- La tabla de Cayley para las matrices/tuplas es algo feota por lo que añado otra representación mejorada con R (rotaciones)
-y S (simetrías/reflexiones). Se usa un diccionario para esta representación. RO, R1,...RN, S0, S1,... SN
+Todas estas representaciones son equivalentes:
+```python
+>>> Dr = DihedralGroup(2, rep="RS")
+>>> Dt = DihedralGroup(2, rep="tuple")
+>>> Dp = DihedralGroup(2, rep="permutations")
+>>> Dr.is_isomorphic(Dt)
+True
+>>> Dt.is_isomorphic(Dp)
+True
+>>> Dp.is_isomorphic(Dr)
+True
+```
 
 - Todas las representaciones son equivalentes. Para probarlo se puede aplicar la función 'is_isomorphic', que devuelve True.
 
-- Pulse [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
-Cayley con las tres diferentes representaciones.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- En [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) se puede ver un ejemplo de las llamadas a la tabla de Cayley con las tres diferentes representaciones.
 
 
 
@@ -158,106 +144,39 @@ Cayley con las tres diferentes representaciones.
 
 
 ## Group.py
-
-- Modifico Constructor:
-	-Identidad: Puede ser que se le pase el elemento id erróneo por parámetro por lo que
-	obligo a comprobar cual es el elemento neutro. 
-	-Grupo abeliano. Borro la variable de clase y defino una función que compruebe
-	si el grupo es abeliano (en vez de hacerlo en el constructor __init__)
-	-Elimino la gran mayoría de las variables pasadas como parámetro en el constructor
-	__init__ (check_associativity, check_inverses, identity) ya que el grupo debe
-	cumplir estar 3 propiedades si o si, luego SIEMPRE SE OBLIGA a comprobar que el conjunto
-	con la operación binaria cumplen las 3
-
-- __str__: muestro además los elementos del grupo.
+En los archivos anteriores se han descrito las estructuras de diferentes grupos. Sin embargo, en *Group.py* se encuentran todos los métodos de nuestra librería. Se dividir a su vez en tres clases:
+- Group:
+- GroupElem:
+- GroupAction:
+- GroupHomomorphism:
 
 
-### class GroupElem:
+### Class GroupElem
+Representa un elemento de un grupo. Se ha añadido el método `inverse` a la implementación original. Este método calcula el inverso del elemento.
 
-- Inverse: La función que calcula la inversa de un elemento estaba definida en la clase Grupo en vez
-de en la clase del elemento. Lo modifico.
+- Se ha añadido una implementación alternativa del operador `__pow__` para realizar la exponenciación en *O(log(n))*. 
 
-
-- Siguiendo el libro ComputationalGroup Theory (libro verde), modifico 
-__pow__ para realizar la exponenciación en O(log(n)) y también la
-función order, que calcula el orden de los elementos del grupo con 
-eficiencia O(log(n)^3) como mucho.
+- De igual modo, se ha añadido una implementación alternativa del método `order`, que calcula el orden de un elemento en *O(log(n)^3)* (como mucho).
 
 
-### class Group:
+### Class Group
+- `is_abelian`: En la primera versión, se comprobaba si el grupo era abeliano en el constructor. Elimino la variable de clase y realizo esta comprobación en un método.
 
-- Añado método Cardinality() (creo que ya estaba con el nombre de order() )
+
+- `__str__` y `__repr__`: Se modifican para además mostrar los elementos del grupo (siempre que no teng un orden grande).
+
+- `cosets`: Se optimiza y se simplifica el método.
 
 
 - Table -> Cayley_table  //pip install beautifultable
-Elimino la implementación ENTERA ya que al usar HTML se utilizan librerías
-que necesitan interfaz por lo que en la terminal no funcionaba el método. 
-Además, el código era muy abstracto.
-Simplicidad y optimización de código: En menos de la mitad de líneas realizo la misma funcionalidad
-y se utiliza únicamente python. Funciona perfectamente en la terminal.
-- De cara a funcionalidades próximas quizás es conveniente añadir representación
-de la tabla con "letras".
-
-- Añado función gens_cyclic_group: Obtiene los generadores del grupo.
-Inicialmente estaba orientada para grupos cíclicos (phi Euler) pero
-la he modificado para que funcione con cualquier grupo. 
-Funciona pero aún no está terminada en su optimidad.
-
-
-
-### Los siguientes métodos de subgrupos y normalidad los he modificado en su totalidad:
-
-- El método is_subgroup(other) H <= G está mal, simplemente comprueba que
-sea un subconjunto y que a*b (en G) = a*b (en H) \forall a,b \in G, es decir, que la operación
-binaria se restringe. Pero NO comprueba la definición de subgrupo.
-La he modificado y realizo lo siguiente:
-- 1-Que sea un subconjunto H<=G (como a nivel de conjunto se ha implementado una función que
-calcula los subconjuntos pues basta con comprobar que H es uno de ellos)
-- 2- Si a,b \in H => a*b \in H 
-- 3- Si a,b \in H => a*b^{-1} \in H
-
-
-- Método all_subgroups(order): Recorro el contenedor de subconjuntos y devuelvo una 
-lista con aquellos que sean subgrupos (llamo a la función is_subgroup(other) anterior.
-
-- Método is_normalSubgroup(other): En caso de que sea un subgrupo compruebo 
-que g*h*g**-1 pertenezca en el conjunto \forall g \in G , h in H
-
-
-- Método all_normalSubgroups(order): Recorro el contenedor de subgrupos y a cada uno
-de ellos le aplico is_normalSubgroup(other) devolviendo así todos los que
-sean normales.
-
-- Las funciones que devuelven todos los subgrupos o subgrupos normales llevan
-además un parámetro "order" que nos dan la posibilidad de devolver aquellos subgrupos
-de tamaño n=order indicado
-
-- En todos estos métodos se devuelve una lista, quizás sea conveniente devolver un 
-diccionario...? Por ahora no, funciona perfect.
-
-
-
-
-
-
-
-
 
 
 
 
 ## NEXT ToDo
 
-- Decidirse por una función generate y generators buena.
-- Modificar _pow__ de todas las clases? puede ser conveniente usar la función 
-del libro ComputationalGroup theory por la eficiencia.
-- Posible adición posterior de una representación matricial de los cuaternios.
 - Repasar all_subgroups y all_normalSubgroups()
-- Usar una clase para el grupo Diédrico (¡hecho!) y demás grupos que se vayan programando.
 - Añadir operaciones al grupo diédrico (?)
-- Quizás es conveniendo implementar un order() en cada grupo.
 - Arreglar la doble llamada a Todd Coxeter para obtener |G| y |H|.
-- Interfaz que no sea pocha.
 - Añadir las instrucciones de uso al tutorial de Pedro.
-- Cayley table, subgroups with new graphs??
 
