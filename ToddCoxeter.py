@@ -3,7 +3,6 @@
 
 from Permutation import permutation
 from Set import Set
-from Function import Function
 #from Group import Group
 from beautifultable import BeautifulTable
 from IPython.display import display, Image
@@ -97,7 +96,7 @@ class CosetTable(object):
         gen_H = arguments[0][2] if l==1 else arguments[2]
         
         #variables to control memory
-        self.M = 1E8
+        self.M = 1E6
         self.n = 0
         self.cosets=[]
         
@@ -105,7 +104,7 @@ class CosetTable(object):
         self.q = []
         self.relator = []
         self.generator_of_H = []
-        
+        self
         ############################
         
         self.NGENS = 2*len(gen) #Generators and inverses
@@ -148,6 +147,11 @@ class CosetTable(object):
     
     def undefine(self,k, x):
         self.tab[k][x] = -1
+    
+    
+    def coset_table(self):
+        #return self.tab
+        return self.table if self.table != None else self.tab
     
     def define(self, a, x):
         
@@ -282,7 +286,7 @@ class CosetTable(object):
         self.table = table
         return table
 
-
+   
 
     def pretty_print2(self):
         print(self.tab)
@@ -302,15 +306,14 @@ class CosetTable(object):
         cols = [[row[i] for row in l] for i in range (0,len(l[0]),2) ]
         colors = ['red','blue','green','black','orange','grey','purple','orange'] #max 8 gens
         
-        Grafo = nx.MultiDiGraph()
+        Grafo = nx.MultiDiGraph(engine='circo')
         Grafo.graph['node']={'shape':'circle'}
         
         for i in vertexs:
             Grafo.add_node(i)
         for idx, i in enumerate(vertexs):
             for j in range(len(l[0])//2):
-                lab = gens[j] if j%2 == 0 else gens[j+1]
-                Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ str(lab))
+                Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ gens[2*j])
                 if notes:
                     print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
         #import matplotlib.pyplot as plt
@@ -387,7 +390,6 @@ class CosetTable(object):
         
         return gens
    
-
 
 
 

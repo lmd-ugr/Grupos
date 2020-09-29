@@ -52,10 +52,8 @@ class Set(frozenset):
         #return Set(self.union(other))
         return Set(self | other)
     
-    #A-B
     
 
-    #¿?
     def pick(self):
         """Return an arbitrary element. (The finite Axiom of Choice is true!)"""
         

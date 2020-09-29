@@ -86,7 +86,6 @@ class permutation():
             raise TypeError("expecting a list or sequence of integers or tuples of integers as argument")
 
     def __call__(self,n):
-        #return self.tuple[n-1]
         #return self.tuple[n-1] if 0<n<=self.degree() else n
         if 0 < n <= self.degree():
             return self.tuple[n-1]
@@ -379,10 +378,10 @@ if __name__ == '__main__':
     q = permutation([1])
     print(p.order(), q.order())
     
-    r = permutation((1,2))
+    r = permutation((1,2,3,6,5))
     s = permutation((1,2))
     print(r*s == p)
-    #print(p*q)   
+    print(r(3))
     
     #print(p, "vs" , q)
     

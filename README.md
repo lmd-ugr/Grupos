@@ -8,26 +8,68 @@ Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github
 [absalg](https://github.com/naftaliharris/Abstract-Algebra), respectivamente.
 
 # Breve Descripción
-- Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica las tres propiedades de: asociatividad, existencia de elemento neutro y elemento inverso. Por ello, se usarán 3 ficheros.py principales:
+- Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica los siguientes axiomas: asociatividad, existencia de elemento neutro y existencia de elemento inverso para cada elemento. Por ello, se usarán 3 ficheros.py principales:
 
 - Set: Clase donde se añadirán todas las operaciones a nivel de conjunto.
 - Function: Simula la operación binaria definida en nuestro grupo
 - Group: Clase principal donde se realizarán las operaciones más importante:
 
-- Adicionales: Se han añadido dos clases para representar las permutaciones y el grupo de los cuaternios
+- Ficheros Adicionales: Se han añadido dos clases para representar las permutaciones y el grupo de los cuaternios
 # Modificaciones
 
 ## Set.py
-- Calcular el orden del conjunto
-- Comprobar que el conjunto es finito
-- Calcular los subconjuntos de un conjunto y los subconjuntos de tamaño n. Estas funciones son útiles de cara a la clase Grupo para así calcular los subgrupos y subgrupos de tamaño n con mayor facilidad.
-- Además,se añaden las siguientes funciones que realizan operaciones a nivel de conjunto:
-Unión, intersección, diferencia y diferencia simétrica.
+Se han añadido bastantes métodos para que se puedan realizar operaciones a nivel de conjunto:
+- Unión, diferencia, intersección, producto cartesiano y diferencia simétrica.
+
+- Métodos simples para calcular la cardinalidad del conjunto y comprobar si este es finito.
+
+- Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño \\( n \\). Estas dos funciones serán de mucha utilidad en la clase grupo ya que simplificará mucho el código.
+
 
 ## Function.py
-- Método __str__: Lo implemento de nuevo para realizar una representación 
-"bonita" y clara de nuestra función.
-- El resto por ahora OK.
+- Se ha mantenido en tu totalidad el formato original, a excepción del operador \\( \textbf{\_\_str\_\_ \\) que muestra ahora la función de manera clara y precisa.
+
+
+## Permutation.py
+
+- Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo
+\\( Permutation.py \\) y añado toda la implementación existente.
+
+- Se modifica y simplifica el producto de dos permutaciones, método: \\( \textbf{\_\_mul\_\_} \\).
+
+- El método \\( \textbf{\_\_call\_\_} \\) fallaba cuando se llamaba con la imagen de \\( n\\) (longitud de la permutación). Se soluciona este error.
+
+- Se han añadido métodos para calcular si una permutación es par o impar. Sus respectivos métodos son:
+\\( \textbf{even\_permutation} \\)  y  \\( \textbf{odd\_permutation} \\) 
+
+- Comprobar los nuevos métodos de la clase gruoup con permutaciones.
+
+
+
+
+## Quaternion.py
+
+Se añade la implementación entera de los números cuaternios en el archivo \\( Quaternion.py \\).
+
+- Añado una Clase para encapsular los elementos de los cuaternios.
+
+- Todos los operadores están incluídos así como funciones que nos permiten calcular
+el conjugado, la norma, inverso, traza.
+
+- Se puede instanciar un cuaternio a partir de una tupla o una letra (solo si es única):
+Ejemplo: Quaternion(0,i,0,0) == Quaternion(letter="i")
+
+- Gracias a lo anterior, ahora no es necesario indicar cómo se comporta el producto de los cuaternios pues todas 
+estas operaciones ya están realizadas en la clase (__mul__)
+
+- Se ha añadido un representación bonita de estos cuaternios (métodos __repr__ y __str__).
+Se pueden realizar operaciones como i*k, k*i, j*k ...etc , la tabla de Cayley mostrada es correcta. 
+
+-   >>> print(i*i == j*j == k*k == i*j*k == -1)
+            'True' 
+
+
+
 
 ## Group.py
 
@@ -109,45 +151,10 @@ diccionario...? Por ahora no, funciona perfect.
 
 
 
-## Permutation.py
-
-- En una primera versión, las funciones que crean Simmetric y Alternative group las
-había hecho en un método de clase. Sin embargo he preferido dejar el formato original y 
-mantener esas funciones en el archivo Group.py
-
-- Mágicamente la nueva tabla de Cayley funciona para todos los grupos :))
-
-- He modificado en su totalidad la función __mul__ ya que estaba hecha bastante rara.
-Modifico también la función __call__ para que funcione bien.
-
-- Añado las funciones even_permutation y odd_permutation para saber si una
-permutación es par o impar.
-
-- Compruebo las nuevas funciones realizadas de la clase group (is_normal_group,
-all_subgroups, is_normalSubgroup y all_normalSubgroups) con instancias
-del grupo simétrico y alternado y funcionan perfect.
-
-- Convendría quitar "=" en el __str__ y __repr__
 
 
-## Quaternion.py
 
-- Añado una Clase para encapsular los elementos de los cuaternios.
 
-- Todos los operadores están incluídos así como funciones que nos permiten calcular
-el conjugado, la norma, inverso, traza.
-
-- Se puede instanciar un cuaternio a partir de una tupla o una letra (solo si es única):
-Ejemplo: Quaternion(0,i,0,0) == Quaternion(letter="i")
-
-- Gracias a lo anterior, ahora no es necesario indicar cómo se comporta el producto de los cuaternios pues todas 
-estas operaciones ya están realizadas en la clase (__mul__)
-
-- Se ha añadido un representación bonita de estos cuaternios (métodos __repr__ y __str__).
-Se pueden realizar operaciones como i*k, k*i, j*k ...etc , la tabla de Cayley mostrada es correcta. 
-
--   >>> print(i*i == j*j == k*k == i*j*k == -1)
-            'True' 
 
 
 ## Diedral.py

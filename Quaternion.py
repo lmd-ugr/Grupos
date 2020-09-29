@@ -283,7 +283,10 @@ class Quaternion:
 
 if __name__ == '__main__':
     
-    '''
+    
+    
+    
+    
     i2 = Quaternion(0,1,0,0)
     i = Quaternion(letter="i")
 
@@ -293,10 +296,13 @@ if __name__ == '__main__':
     k2 = Quaternion(0,0,0,1)
     k = Quaternion(letter="k")
     
-    print(i, "*", k, "=", i*k)
+    #print(i, "*", k, "=", i*k)
     
+    from Set import Set
+    l = Set([1,-1,i2,-i2])
+    print(i2 not in l)
     
-    
+    '''
     Q = Quaternion.Group(rep="ijk")
     
     #print(Q.all_normalSubgroups())
