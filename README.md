@@ -23,50 +23,57 @@ Se han añadido bastantes métodos para que se puedan realizar operaciones a niv
 
 - Métodos simples para calcular la cardinalidad del conjunto y comprobar si este es finito.
 
-- Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño \\( n \\). Estas dos funciones serán de mucha utilidad en la clase grupo ya que simplificará mucho el código.
+- Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos funciones serán de mucha utilidad en la clase grupo ya que simplificará mucho el código.
 
 
 ## Function.py
-- Se ha mantenido en tu totalidad el formato original, a excepción del operador \\( \textbf{\_\_str\_\_ \\) que muestra ahora la función de manera clara y precisa.
+- Se ha mantenido en tu totalidad el formato original, a excepción del operador `__str__` que muestra ahora la función de manera clara y precisa.
 
 
 ## Permutation.py
 
 - Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo
-\\( Permutation.py \\) y añado toda la implementación existente.
+ *Permutation.py*  y añado toda la implementación existente.
 
-- Se modifica y simplifica el producto de dos permutaciones, método: \\( \textbf{\_\_mul\_\_} \\).
+- `__mul__`: Se modifica y simplifica el producto de dos permutaciones.
 
-- El método \\( \textbf{\_\_call\_\_} \\) fallaba cuando se llamaba con la imagen de \\( n\\) (longitud de la permutación). Se soluciona este error.
+- `__call__`: Este método fallaba cuando se llamaba con la imagen de \\( n\\) (longitud de la permutación). Se soluciona este error.
 
-- Se han añadido métodos para calcular si una permutación es par o impar. Sus respectivos métodos son:
-\\( \textbf{even\_permutation} \\)  y  \\( \textbf{odd\_permutation} \\) 
-
-- Comprobar los nuevos métodos de la clase gruoup con permutaciones.
-
+- `__even_permutation__`, `__odd_permutation__`: Métodos para calcular si una permutación es par o impar.
 
 
 
 ## Quaternion.py
 
-Se añade la implementación entera de los números cuaternios en el archivo \\( Quaternion.py \\).
+Se realiza una implementación de los números cuaternios en el archivo *Quaternion.py*.
 
-- Añado una Clase para encapsular los elementos de los cuaternios.
+- Se han implementado los principales operadores para trabajar con ellos, es decir, representarlos, sumar, restar, multiplicar, dividir, entre otros: `__repr__`, `__str__`, `__call__`, `__add__`, `__iadd__`, `__sub__`, `__eq__`, `__mull__`, `__div__` ...etc. Cabe destacar la importancia del operador `__mul__` ya que gracias a esta sobrecarga ya no hace falta indicar la tabla de multiplicar a la hora de crear el grupo.
 
-- Todos los operadores están incluídos así como funciones que nos permiten calcular
-el conjugado, la norma, inverso, traza.
+- `conjugate`: Calcular el conjugado de un cuaternio.
 
-- Se puede instanciar un cuaternio a partir de una tupla o una letra (solo si es única):
-Ejemplo: Quaternion(0,i,0,0) == Quaternion(letter="i")
+- `norm`: Norma de un número cuaternio.
 
-- Gracias a lo anterior, ahora no es necesario indicar cómo se comporta el producto de los cuaternios pues todas 
-estas operaciones ya están realizadas en la clase (__mul__)
+- `inverse`: Inverso.
 
-- Se ha añadido un representación bonita de estos cuaternios (métodos __repr__ y __str__).
-Se pueden realizar operaciones como i*k, k*i, j*k ...etc , la tabla de Cayley mostrada es correcta. 
+- `trace`: Traza.
 
--   >>> print(i*i == j*j == k*k == i*j*k == -1)
-            'True' 
+- Para crear un objeto se puede realizar de dos maneras, mediante su representación vectorial o indicando la letra en cuestión:
+```python
+>>> i = Quaternion(0,1,0,0)
+>>> i2 = Quaternion(letter='i')
+>>> i == i2
+True
+```
+
+- Se puede probar de manera sencilla que las partes imaginarias verifican: 
+```python
+>>> i = Quaternion(0,1,0,0)
+>>> j = Quaternion(0,0,1,0)
+>>> j = Quaternion(0,0,0,1)
+>>> i*i == j*j == k*k == i*j*k == -1
+True
+```
+
 
 
 
