@@ -1,7 +1,7 @@
 # Teoría-de-Grupos
 Repositorio para TFG
 
-Implementación de una librería en Python sobre teoría de Grupos de la asignatura ÁlgebraII del [Grado en Matemáticas](http://grados.ugr.es/matematicas/) de la [Universidad de Granada](http://www.ugr.es).
+Implementación de una librería en Python sobre teoría de Grupos de la asignatura Álgebra II del [Grado en Matemáticas](http://grados.ugr.es/matematicas/) de la [Universidad de Granada](http://www.ugr.es).
 
 Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github.com/pedritomelenas), basada en la librería de
 [Naftali Harris](http://www.naftaliharris.com) y disponible en [Algebra-II](https://github.com/pedritomelenas/Algebra-II) y
@@ -12,7 +12,7 @@ Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github
 
 - Set: Clase donde se añadirán todas las operaciones a nivel de conjunto.
 - Function: Simula la operación binaria definida en nuestro grupo
-- Group: Clase principal donde se realizarán las operaciones más importante:
+- Group: Clase principal donde se realizarán las operaciones más importantes:
 
 - Ficheros Adicionales: Se han añadido dos clases para representar las permutaciones y el grupo de los cuaternios
 # Modificaciones
@@ -21,10 +21,9 @@ Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github
 Se han añadido bastantes métodos para que se puedan realizar operaciones a nivel de conjunto:
 - Unión, diferencia, intersección, producto cartesiano y diferencia simétrica.
 
-- Métodos simples para calcular la cardinalidad del conjunto y comprobar si este es finito.
+- `cardinality`, `is_finite`: Métodos para calcular la cardinalidad del conjunto y comprobar si este es finito.
 
-- Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos funciones serán de mucha utilidad en la clase grupo ya que simplificará mucho el código.
-
+- `subsets`, `subsets_n`: Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos métodos serán de mucha utilidad en la clase Grupo ya que simplificará mucho las operaciones.
 
 ## Function.py
 - Se ha mantenido en tu totalidad el formato original, a excepción del operador `__str__` que muestra ahora la función de manera clara y precisa.
@@ -35,11 +34,39 @@ Se han añadido bastantes métodos para que se puedan realizar operaciones a niv
 - Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo
  *Permutation.py*  y añado toda la implementación existente.
 
-- `__mul__`: Se modifica y simplifica el producto de dos permutaciones.
+- `__mul__`: Se modifica y se simplifica el producto de dos permutaciones.
 
-- `__call__`: Este método fallaba cuando se llamaba con la imagen de \\( n\\) (longitud de la permutación). Se soluciona este error.
+- `__call__`: Este método fallaba cuando se llamaba con la imagen de *n* (longitud de la permutación). Se soluciona este error.
 
 - `__even_permutation__`, `__odd_permutation__`: Métodos para calcular si una permutación es par o impar.
+
+
+## ToddCoxeter.py
+
+El algoritmo de **Todd Coxeter** es un algoritmo que resuelve el *problema de palabras* (*word problem*) para un grupo **G** mediante la enumeración de clases del grupo cociente **G/H**, donde **H** es un subgrupo de **G**.
+
+La descripción del algoritmo se puede encontrar en la memoria del proyecto, la implementación en *ToddCoxeter.py* y un tutorial de su uso en *linkJupyter*. 
+
+- `readGroup`: Implementación de una función que nos ayudará a leer los grupos por ficheros. Por orden, se leeran los generadores del grupo **G**, sus relaciones y los generadores del subgrupo **H**. En el directorio *Group* se proporcionaran ejemplos de grupos estudiados.
+
+- `CosetEnumeration`: Método principal para llamar al algoritmo y obtener la tabla de clases de **G/H**.
+
+- `schreier_graph`: Método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
+
+- `getGenerators`: A partir del grafo de Schreier no es difícil es sencillo calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva a partir de este método.
+
+
+A partir de estos generadores, bastará con multiplicarlos hasta así obtener un conjunto al que le proporcionaremos estructura de grupo. 
+
+- Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
+
+
+
+## Complex.py
+Se ha realizado una implementación del grupo de las raíces n-ésimas de la unidad. Para ello, se ha 
+implementado la clase número complejo junto a todos sus operadores que nos permiten sumar, restar, dividir, multiplicar...etc.
+
+- `print_roots(roots)`: Función que representa las raíces *roots* pasadas como parámetro en el plano complejo.
 
 
 
@@ -73,6 +100,58 @@ True
 >>> i*i == j*j == k*k == i*j*k == -1
 True
 ```
+
+- Se verifican el resto de propiedades, como por ejemplo:
+```python
+>>> q = Quaternion(50,12,3,-9)
+>>> r = Quaternion(-8,-2,2,32)
+>>> (q*r).conjugate() == r.conjugate()*q.conjugate()
+True
+>>> (q*r).trace() == (r*q).trace()
+True
+```
+
+
+
+
+
+## Diedral.py
+
+- Se ha creado una nueva clase para representar el grupo Diédrico de orden 2n. Funciona bien, mostrando todas las matrices
+de rotación y reflexión de cada grupo.
+
+- He tenido problemas a la hora de representar las rotaciones y reflexiones con matrices ya que no son hashables
+y no se podía aplicar la operación binaria correctamente. He tenido que usar tuplas que al fin y al cabo representan
+lo mismo.
+
+- La tabla de Cayley para las matrices/tuplas es algo feota por lo que añado otra representación mejorada con R (rotaciones)
+y S (simetrías/reflexiones). Se usa un diccionario para esta representación. RO, R1,...RN, S0, S1,... SN
+
+- Todas las representaciones son equivalentes. Para probarlo se puede aplicar la función 'is_isomorphic', que devuelve True.
+
+- Pulse [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
+Cayley con las tres diferentes representaciones.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -164,37 +243,7 @@ diccionario...? Por ahora no, funciona perfect.
 
 
 
-## Diedral.py
 
-- Se ha creado una nueva clase para representar el grupo Diédrico de orden 2n. Funciona bien, mostrando todas las matrices
-de rotación y reflexión de cada grupo.
-
-- He tenido problemas a la hora de representar las rotaciones y reflexiones con matrices ya que no son hashables
-y no se podía aplicar la operación binaria correctamente. He tenido que usar tuplas que al fin y al cabo representan
-lo mismo.
-
-- La tabla de Cayley para las matrices/tuplas es algo feota por lo que añado otra representación mejorada con R (rotaciones)
-y S (simetrías/reflexiones). Se usa un diccionario para esta representación. RO, R1,...RN, S0, S1,... SN
-
-- Todas las representaciones son equivalentes. Para probarlo se puede aplicar la función 'is_isomorphic', que devuelve True.
-
-- Pulse [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) para ver un ejemplo de las llamadas a la tabla de
-Cayley con las tres diferentes representaciones.
-
-
-## ToddCoxeter.py 
-
-- Algoritmo de Todd Coxeter para resolver el problema de la palabra mediante la enumeración de clases.
-
-- Se puede elegir el grupo del directorio 'Groups', devolviendo una tabla de Cosets de G/H y su cardinal, que 
-como bien sabemos, coincide con el índice de G:H 
-
-- Realizo otro pequeño algoritmo para obtener los generadores del grupo y, a partir de esos, se le da estructura de grupo.
-
-- Funciona correctamente. Se puede dar un grupo por presentación y el mismo grupo dando los elementos. Al aplicar
-is_isomorphic devuelve True.
-
-- Añado función que calcula el Grafo de Schreier a partir de la tabla de cosets resultante tras aplicar el Algoritmo de Todd Coxeter.
 
 
 ## NEXT ToDo

@@ -1668,7 +1668,6 @@ def RootsOfUnitGroup(n):
     bin_op=Function(G.cartesian(G),G,lambda x: x[0].product(x[1]) ,  check_well_defined=False)
     Gr=Group(G,bin_op) 
     
-    Gr.gens_group()
     Gr.gens_group(G.pick())
     
     return Gr
