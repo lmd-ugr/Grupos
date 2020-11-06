@@ -5,12 +5,9 @@ Created on Mon Aug  3 16:37:32 2020
 @author: Alberto
 """
 
-
 import functools
 import operator
 import math
-
-
 
 class permutation():
     """
@@ -42,11 +39,16 @@ class permutation():
             True
 
         """
-        
-        
+
+
         def cycle2perm(c):
-            """Returns a permutation corresponding to the cycle 
-            given by the tuple c"""
+            """
+            Returns a permutation corresponding to the cycle
+            given by the tuple c.
+            
+            Args:
+                c : tuple
+            """
             m=len(c)
             if len==0: #this will not happen
                 return tuple([1])
@@ -56,9 +58,9 @@ class permutation():
                 if (i in c):
                     p[i-1]=c[(c.index(i)+1)%m]
             return permutation(p)
-        
-        
-        
+
+
+
         if len(els)==1:
             t=els[0]
         else:
@@ -86,21 +88,25 @@ class permutation():
             raise TypeError("expecting a list or sequence of integers or tuples of integers as argument")
 
     def __call__(self,n):
+        #return self.tuple[n-1]
         #return self.tuple[n-1] if 0<n<=self.degree() else n
         if 0 < n <= self.degree():
             return self.tuple[n-1]
         else:
             return n
-    
+
 
     def __hash__(self):
+        """ 
+        Returns the hash of self.tuple
+        """
         return hash(self.tuple)
 
     '''
     def __str__(self):
-        
+
         s=str(list(self.tuple))+" = "
-        
+
         s2=str(" ")
         for c in self.disjoint_cycles():
             if len(c)>1:
@@ -123,7 +129,9 @@ class permutation():
     __str__ = __repr__
 
     def __eq__(self, other):
-        """Tests if the permutations are identical (with the same length)"""
+        """
+        Tests if the permutations are identical (with the same length).
+        """
 
         if not isinstance(other, permutation):
             raise TypeError("other is not a permutation")
@@ -133,14 +141,21 @@ class permutation():
 
 
     def __ne__(self, other):
+        """
+        Tests if the permutations are identical  or not (with the same length).
+        """
+
         return not self == other
 
     def degree(self):
+        """ 
+        Returns the len of the permutation.
+        """
         return len(self.tuple)
 
     def __mul__(self,other):
         """
-        Composition of permutations
+        Composition of permutations.
 
         Example:
             >>> p=permutation((1,3))
@@ -148,32 +163,19 @@ class permutation():
             >>> p*q
              (1, 2, 3)
         """
-        
+
         if not(isinstance(other,permutation)):
             raise TypeError("other must also be a permutation")
-        '''
-        p=list(self.tuple)
-        q=list(other.tuple)
-        n=len(p)
-        m=len(q)
-        mx=max([n,m])
-        if n>m:
-            q=q+list(range(m+1,n+1))
-        if m>n:
-            p=p+list(range(n+1,m+1))
-        o=[p[q[i-1]-1] for i in range(1,mx+1)]
-        return permutation(o)
-        '''
-        
+
         l = []
         for i in range(max(self.degree(), other.degree())):
             l.append(self(other(i+1)))
-            
+
         return permutation(l)
-        
+
     def inverse(self):
         """
-        Inverse of a permutation (as a function)
+        Inverse of a permutation (as a function).
 
         Example:
             >>> q=permutation([2,3,1])
@@ -187,8 +189,10 @@ class permutation():
 
     def __pow__(self, n):
         """
-        Returns the composition of a permutation n times
-
+        Returns the composition of a permutation n times.
+        
+        Args:
+            n : integer
         Example:
             >>> q=permutation([2,3,1])
             >>> q**3
@@ -208,9 +212,9 @@ class permutation():
             return self * (self ** (n - 1))
         else:
             return (self * self) ** (n // 2)
-    
+
     __xor__=__pow__
-    
+
     def disjoint_cycles(self):
         """
         Returns a list of disjoint cycles (as tuples) whose product is the given permutation (argument)
@@ -243,7 +247,7 @@ class permutation():
             [(1, 3), (2, 3)]
         """
         p=list(self.tuple)
-        
+
         return [tuple([i,j]) for i in range(1,len(p)+1) for j in range(i+1,len(p)+1) if p[i-1]>p[j-1]]
 
     def sign(self):
@@ -269,9 +273,9 @@ class permutation():
         l=[len(c) for c in self.disjoint_cycles()]
         if len(l)==1:
             return l[0]
-        
+
         return (functools.reduce(operator.mul,l))//(functools.reduce(math.gcd,l))
-    
+
     def extend(self,n):
         """
         Extends the permutation to a permutation of the set {1..n} leaving the elements above its length untouched
@@ -285,103 +289,47 @@ class permutation():
 
 
     def even_permutation(self):
+        """ 
+        Checks if self is even permutation.
+        """
         dev=0
         for c in self.disjoint_cycles():
             dev= dev + len(c)-1
         return True if dev%2==0 else False
-    
-    
-    def odd_permutation(self):
-        return not self.even_permutation()
-    
-    
-    
-    
-    '''
-    @classmethod 
-    def SymmetricGroup(cls, n):
-        """
-        Returns the symmetric group of order n!
-        Example:
-            >>> S3=SymmetricGroup(3)
-            >>> S3.group_elems
-            Set([ (2, 3),  (1, 3),  (1, 2),  (1, 3, 2), ( ),  (1, 2, 3)])
-        """
-    
-        G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))))
-        bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
-    
-        if n>2:
-            Gr = Group(G, bin_op, identity=permutation(list(range(1,n+1))), 
-            group_order=math.factorial(n), group_degree=n)
-            Gr.group_gens=[Gr(permutation([tuple(range(1,n+1))])),Gr(permutation((1,2)).extend(n))]
-            return Gr
-        if n==2:
-            Gr = Group(G, bin_op, identity=permutation(list(range(1,3))), 
-            group_order=2, group_degree=2)
-            Gr.group_gens=[Gr(permutation([tuple(range(1,3))]))]
-        if n==1:
-            Gr = Group(G, bin_op, identity=permutation(list(range(1,2))), 
-            group_order=1, group_degree=1)
-            Gr.group_gens=[Gr(permutation([tuple(range(1,2))]))]
-        return Gr
-    
-    
-    @classmethod
-    def AlternatingGroup(cls, n):
-        """
-        Returns the alternating group: the subgroup of even permutations of SymmetricGroup(n)
-    
-        Example:
-            >>> A3=AlternatingGroup(3)
-            >>> A3<=S3
-            True
-            >>> A3.is_normal_subgroup(S3)
-            True
-            >>> Q=S3/A3
-            >>> Q.Set
-            Set([Set([ (2, 3),  (1, 2),  (1, 3)]), Set([ (1, 2, 3),  (1, 3, 2), ( )])])
-        """
-    
-        #G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))) if permutation(list(g)).sign()==1)
-        G = Set(permutation(list(g)) for g in itertools.permutations(list(range(1,n+1))) if permutation(list(g)).even_permutation())
 
-        bin_op = Function(G.cartesian(G), G, lambda x: x[0]*x[1])
-        if n>2:
-            Gr=Group(G, bin_op,identity=permutation(list(range(1,n+1))),
-            group_order=math.factorial(n)//2, group_degree=n)
-            Gr.group_gens=[Gr.parent(permutation((i,i+1,i+2)).extend(n)) for i in range(1,n-1)]
-        if n==2:
-            Gr = Group(G, bin_op, identity=permutation(list(range(1,3))),
-            group_order=1, group_degree=2)
-            Gr.group_gens=[Gr.parent(permutation(list(range(1,3))))]
-        return Gr
-    '''
+
+    def odd_permutation(self):
+        """ 
+        Checks if self is odd permutation.
+        """
+        return not self.even_permutation()
+
+
 
 
 
 
 if __name__ == '__main__':
-    
-    
-    
+
+
+
     #S = permutation.SymmetricGroup(3)
     #A = permutation.AlternatingGroup(3)
-    
-    
+
+
     #print(A.is_abelian())
     #print(S.gens_cyclic_group())
     #print(A.is_normalSubgroup(S))
-    
+
     #print(A.all_normalSubgroups())
-    p = permutation([1])
-    q = permutation([1])
-    print(p.order(), q.order())
-    
-    r = permutation((1,2,3,6,5))
-    s = permutation((1,2))
-    print(r*s == p)
-    print(r(3))
-    
+    #p = permutation((1,2),(2,3))
+    p = permutation((1,3))
+    q = permutation((2,1,3))
+    print(p*q)
+
+    #r = permutation((1,2))
+    #s = permutation((1,2))
+    #print(r*s == p)
+    #print(p*q)
+
     #print(p, "vs" , q)
-    
