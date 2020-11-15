@@ -135,6 +135,9 @@ class Quaternion:
         return self
 
     def __add__(self, other):
+        """ 
+        Add the two quaternion numbers self+other.
+        """
         if not isinstance(other,Quaternion):
             raise TypeError(other, "is not a Quaternion")
 
@@ -148,14 +151,25 @@ class Quaternion:
         return self
 
     def __sub__(self, other):
+        """ 
+        Substract self-other and returns that quaternion number
+        """
         if not isinstance(other,Quaternion):
             raise TypeError(other, "is not a Quaternion")
 
         return Quaternion(self.real - other.real, self.imag_i - other.imag_i,
                           self.imag_j - other.imag_j, self.imag_k - other.imag_k)
 
-
+    def __isub__(self, other):
+        self.assign_real(self.real - other.real)
+        self.assign_imags(self.imag_i - other.imag_i, self.imag_j - other.imag_j,
+                          self.imag_k - other.imag_k)
+        return self
+    
     def __eq__(self, other):
+        """ 
+        Checks if the quaternion number self is equal to other.
+        """
         if isinstance(other, int) or isinstance(other, float):
             conditions = (self.real==other and self.imag_i==0 and self.imag_j==0 and self.imag_k==0)
             return True if conditions else False
@@ -165,6 +179,9 @@ class Quaternion:
 
 
     def __mul__(self, other):
+        """ 
+        Returns the quaternion number after dividing self by other.
+        """
         if isinstance(other, Quaternion):
             return Quaternion(
 
@@ -192,6 +209,9 @@ class Quaternion:
 
 
     def __imul__(self, other):
+        """ 
+        Returns the quaternion number after dividing self by other.
+        """
         if not isinstance(other,Quaternion):
             raise TypeError(other, "is not a Quaternion")
 
@@ -214,6 +234,9 @@ class Quaternion:
 
 
     def __rmul__(self, number):
+        """ 
+        Returns number * self as quaternion.
+        """
         if not isinstance(number,numbers.Number):
             raise TypeError(number, "is not a number")
 
@@ -222,10 +245,16 @@ class Quaternion:
 
 
     def __neg__(self):
-         return Quaternion(-self.real, -self.imag_i, -self.imag_j, -self.imag_k)
+        """
+        Returns -self quaternion.
+        """
+        return Quaternion(-self.real, -self.imag_i, -self.imag_j, -self.imag_k)
 
 
     def __div__(self, other):
+        """ 
+        Returns the quaternion number after dividing self by other.
+        """
         return Quaternion(self.real/other, self.imag_i/other, self.imag_j/other, self.imag_k/other)
 
     __truediv__ = __div__
@@ -260,23 +289,4 @@ class Quaternion:
         returns the trace of self.
         """
         return self+self.conjugate()
-
-
-
-if __name__ == '__main__':
-
-
-    uno = Quaternion(1,0,0,0)
-    i2 = Quaternion(0,1,0,0)
-    i = Quaternion(letter="i")
-
-    j2 = Quaternion(0,0,1,0)
-    j = Quaternion(letter="j")
-
-    k2 = Quaternion(0,0,0,1)
-    k = Quaternion(letter="k")
-
-
-    c = Quaternion(2,3,0,-1)
-    print(c)
 

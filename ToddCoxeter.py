@@ -170,6 +170,7 @@ class CosetTable(object):
         """
         return len(self.tab)
 
+
     def isAlive(self, k):
         """
         k : coset (int)
@@ -177,6 +178,7 @@ class CosetTable(object):
         checks if coset k is alive, i.e., p[k]=k.
         """
         return self.p[k]==k
+
 
     def isDefined(self, k, x):
         """ 
@@ -186,6 +188,7 @@ class CosetTable(object):
         returns True if x^k is defined.                              
         """
         return self.tab[k][x]>=0
+
 
     def undefine(self,k, x):
         """ 
@@ -202,6 +205,7 @@ class CosetTable(object):
         returns the coset table.
         """
         return self.table if self.table != None else self.tab
+
 
     def define(self, k, x):
         """
@@ -348,6 +352,7 @@ class CosetTable(object):
         """ 
         returns the Coset table
         """
+        
         table = BeautifulTable()
 
         head= [gens[i] for i in range(0, self.NGENS)]
@@ -384,8 +389,6 @@ class CosetTable(object):
         if self.table == None:
             raise ValueError("Debe llamar primero a la función Todd Cox")
         
-        #necesitamos convertir BTRowData to list of list
-        #gens = [self.table[0][i] for i in range(0, len(self.table[0]) ,2)]
         l = [ list(self.table[i]) for i in range(1,len(self.cosets)+1)]
         vertexs = [ self.cosets[i]+1 for i in range(len(self.cosets))]
         cols = [[row[i] for row in l] for i in range (0,len(l[0]),2) ]
@@ -401,52 +404,21 @@ class CosetTable(object):
                 Grafo.add_edge(i, cols[j][idx], color= colors[j], label=" "+ gens[2*j])
                 if notes:
                     print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
-        #import matplotlib.pyplot as plt
 
         G = nx.nx_agraph.to_agraph(Grafo)
-
         G.layout('dot')
         G.draw('test/T&C_SchreierGraph.png')
         display(Image('test/T&C_SchreierGraph.png'))
-        #nx.draw(Grafo)
-        #plt.show()
-        
-        #https://stackoverflow.com/questions/20133479/how-to-draw-directed-graphs-using-networkx-in-python
-        '''
-        G=Grafo
-        pos = nx.spring_layout(G)
-        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'))
-        nx.draw_networkx_labels(G, pos)
-        plt.show()
-        '''
-  
-
-
-
-    """
-    def find(self,c):
-        c2 = self.p[c]
-        if c == c2:
-            return c
-        else:
-            c2 = self.find(c2)
-            self.p[c] = c2
-            return c2
-
-    def follow(self, c, d):
-        c = self.find(c)
-        ns = self.tab[c]
-
-        return self.find(ns[d])
-    """
+    
 
 
     def follow(self, c, d):
         """
+        It follows the path of the cosets given and returns a permutation.
+        
         Args:
             c : coset (int)
             d : coset (int)
-        It follow the path of the cosets given a return a permutation
         """
         c = self.p.rep(c)
         k = self.tab[c]
@@ -507,33 +479,3 @@ def readGroup(file):
 
 
 
-
-
-
-if __name__ == "__main__":
-
-    file = "Groups/klein.txt"
-
-
-    l = readGroup(file)
-
-    nueva = CosetTable(l)
-    nueva.CosetEnumeration()
-
-
-    print("The order of G is {}".format(nueva.finalCosets()))
-    print("The index [G:H] is {}".format(nueva.finalCosets()))
-
-    #table = nueva.pretty_print()
-    table=nueva.table
-    nueva.schreier_graph()
-
-    if nueva.finalCosets() <= 25:
-        pass
-        print(table)
-
-
-
-
-    gens = nueva.getGenerators()
-    print(gens)

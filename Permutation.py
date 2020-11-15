@@ -60,7 +60,6 @@ class permutation():
             return permutation(p)
 
 
-
         if len(els)==1:
             t=els[0]
         else:
@@ -88,8 +87,6 @@ class permutation():
             raise TypeError("expecting a list or sequence of integers or tuples of integers as argument")
 
     def __call__(self,n):
-        #return self.tuple[n-1]
-        #return self.tuple[n-1] if 0<n<=self.degree() else n
         if 0 < n <= self.degree():
             return self.tuple[n-1]
         else:
@@ -304,32 +301,3 @@ class permutation():
         """
         return not self.even_permutation()
 
-
-
-
-
-
-if __name__ == '__main__':
-
-
-
-    #S = permutation.SymmetricGroup(3)
-    #A = permutation.AlternatingGroup(3)
-
-
-    #print(A.is_abelian())
-    #print(S.gens_cyclic_group())
-    #print(A.is_normalSubgroup(S))
-
-    #print(A.all_normalSubgroups())
-    #p = permutation((1,2),(2,3))
-    p = permutation((1,3))
-    q = permutation((2,1,3))
-    print(p*q)
-
-    #r = permutation((1,2))
-    #s = permutation((1,2))
-    #print(r*s == p)
-    #print(p*q)
-
-    #print(p, "vs" , q)

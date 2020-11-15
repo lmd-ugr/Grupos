@@ -14,7 +14,8 @@ Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github
 - Function: Simula la operación binaria definida en nuestro grupo
 - Group: Clase principal donde se realizarán las operaciones más importantes:
 
-- Ficheros Adicionales: Se han añadido dos clases para representar las permutaciones y el grupo de los cuaternios
+- Ficheros Adicionales: Se han añadido clases para representar el grupo de Permutaciones, Cuaternios, grupo de las raíces n-ésimas de la unidad y grupo Diédrico.
+
 # Modificaciones
 
 ## Set.py
@@ -23,10 +24,87 @@ Se han añadido bastantes métodos para que se puedan realizar operaciones a niv
 
 - `cardinality`, `is_finite`: Métodos para calcular la cardinalidad del conjunto y comprobar si este es finito.
 
-- `subsets`, `subsets_n`: Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos métodos serán de mucha utilidad en la clase Grupo ya que simplificará mucho las operaciones.
+- `subsets`: Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos métodos serán de mucha utilidad en la clase Grupo ya que simplificará mucho las operaciones.
 
 ## Function.py
 - Se ha mantenido en tu totalidad el formato original, a excepción del operador `__str__` que muestra ahora la función de manera clara y precisa.
+
+
+```python
+>>> S = Set({0,1,2})
+>>> F = Function(S*S, S,lambda x: (x[0]+x[1])%3)
+>>> print(F)
+f((0, 1))=1   f((1, 2))=0   f((2, 1))=0
+f((0, 0))=0   f((1, 1))=2   f((2, 0))=2
+f((0, 2))=2   f((2, 2))=1   f((1, 0))=1
+```
+
+
+## Group.py
+En los archivos anteriores se han descrito las estructuras de diferentes grupos. Sin embargo, en *Group.py* se encuentran todos los métodos de nuestra librería. Se divide a su vez en estas clases:
+- Group:
+- GroupElem:
+- GroupAction:
+- GroupHomomorphism:
+
+
+### Class GroupElem
+Representa un elemento de un grupo. Se ha añadido el método `inverse` a la implementación original. Este método calcula el inverso del elemento.
+
+- Se ha añadido una implementación alternativa del operador `__pow__` para realizar la exponenciación en *O(log(n))*. 
+
+- De igual modo, se ha añadido una implementación alternativa del método `order`, que calcula el orden de un elemento en *O(log(n)^3)* (como mucho).
+
+
+### Class Group
+
+- `__str__` y `__repr__`: Se modifican para además mostrar los elementos del grupo (siempre que no tengan un orden grande).
+
+- `__init__`: Se modifica el constructor para poder definir grupos de varias formas:
+ - Definición axiomatizada: Se comprueba que el par (Set,Function) pasado por argumento satisface los axiomas de grupo (asociatividad, identidad e inversos).
+
+```python
+>>> S = Set({0,1,2,3})
+>>> F = Function(S*S, S,lambda x: (x[0]+x[1])%4)
+>>> Z4 = Group(S,F)
+>>> print(Z4)
+Group with 4 elements: {0, 1, 2, 3}
+```
+
+ - Definición en términos de generadores y relatores. Sea un grupo $`\langle X \mid R \rangle`$. Se pasa por argumento el conjunto de generadores *X* y relaciones *R* que definen al grupo. El constructor se encarga de aplicar el **Algoritmo Todd Coxeter** y darle estructura de grupo de Permutaciones al grupo *G*.
+
+```python
+>>> gens = ['a']
+>>> rels = ['aaaa'] #a^4=1
+>>> G  = Group(gensG=gens, relsG=rels)
+>>> print(G)
+Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
+```
+
+Naturalmente, y aunque la forma de definir ambos grupos anteriores es distinta, son isomorfos:
+```python
+>>> G.is_isomorphic(Z4)
+True
+```
+
+Por último, se añadirá una tercera forma de definir un grupo. SeaYunconjunto de elementos, entonces el grupo *G* se definirá como el grupo generado por$`\langle Y \rangle`$. En el siguiente ejemplo tomaremos un conjunto conuna única permutación, sin embargo, no exigimos que los elementossean permutaciones.
+```python
+>>> p = permutation((1,2,3,4))
+>>> G = Group(elems=[p])
+>>> print(G)
+Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
+```
+
+- `is_abelian`: En la primera versión, se comprobaba si el grupo era abeliano en el constructor. Elimino la variable de clase y realizo esta comprobación en un método.
+
+- `identity`: Del  mismo  modo  que  en *is_abelian*,  se  añade  un  nuevo  método para calcular la identidad del grupo.
+
+
+- `cosets`:  Método  que  calcula  las  clases  laterales  de  un  grupo *G* sobre  un subgrupo *H*. Se optimiza y se simplifica.
+
+
+
+
 
 
 ## Permutation.py
@@ -40,32 +118,13 @@ Se han añadido bastantes métodos para que se puedan realizar operaciones a niv
 - `__even_permutation__`, `__odd_permutation__`: Métodos para calcular si una permutación es par o impar.
 
 
-## ToddCoxeter.py
-
-El algoritmo de **Todd Coxeter** es un algoritmo que resuelve el *problema de palabras* (*word problem*) para un grupo **G** mediante la enumeración de clases del grupo cociente **G/H**, donde **H** es un subgrupo de **G**.
-
-La descripción del algoritmo se puede encontrar en la memoria del proyecto, la implementación en *ToddCoxeter.py* y un tutorial de su uso en *linkJupyter*. 
-
-- `readGroup`: Implementación de una función que nos ayudará a leer los grupos por ficheros. Por orden, se leeran los generadores del grupo **G**, sus relaciones y los generadores del subgrupo **H**. En el directorio *Group* se proporcionaran ejemplos de grupos estudiados.
-
-- `CosetEnumeration`: Método principal para llamar al algoritmo y obtener la tabla de clases de **G/H**.
-
-- `schreier_graph`: Método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
-
-- `getGenerators`: A partir del grafo de Schreier no es difícil calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva usando este método.
-
-
-Realizando operaciones con los generadores, se obtendrá el conjunto total de elementos al que le proporcionaremos estructura de grupo. 
-
-- Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
-
 
 
 ## Complex.py
 Se ha realizado una implementación del grupo de las raíces n-ésimas de la unidad. Para ello, se ha 
 implementado la clase número complejo junto a todos sus operadores que nos permiten sumar, restar, dividir, multiplicar...etc.
 
-- `print_roots(roots)`: Función que representa las raíces *roots* pasadas como parámetro en el plano complejo.
+- `plot(roots)`: Función que representa las raíces *roots* pasadas como parámetro en el plano complejo.
 
 
 
@@ -111,6 +170,29 @@ True
 ```
 
 
+La función que se encarga de crear el grupo de los cuaternios es *QuaternionGroup, donde únicamente se le ha de pasar por argumento una de las dos representaciones siguientes:
+
+```python
+>>> Q = QuaternionGroup(rep="ijk")
+>>> print(Q)
+Group with 8 elements: { 1,  i,  j,  k,  -k,  -j,  -i,  -1}
+```
+
+```python
+>>> Q2 = QuaternionGroup(rep="permutations")
+>>> print(Q2)
+Group with 8 elements: {(1, 4, 3, 2)(5, 7, 8, 6), (1, 7, 3,6)(2, 8, 4, 5), (1, 6, 3, 7)(2, 5, 4, 8), (1, 8, 3, 5)(2, 6,4, 7), (1, 2, 3, 4)(5, 6, 8, 7), (1, 5, 3, 8)(2, 7, 4, 6),(), (1, 3)(2, 4)(5, 8)(6, 7)}
+```
+
+```python
+>>> Q.is_isomorphic(Q2)
+True
+```
+
+- QuaternionGroupGeneralised(n): define el grupo generalizado de los cuaternios, con presentación:
+$`Q_n = \langle a,b \mid a^n = b^2, a^{2n}=1,
+b^{-1}ab=a^{-1} `$.
+
 
 
 ## Diedral.py
@@ -141,42 +223,31 @@ True
 
 
 
+## ToddCoxeter.py
+
+El  de **Algoritmo Todd Coxeter** es un algoritmo que resuelve el *Problema de Palabras* (*Word Problem*) para un grupo *G* mediante la enumeración de clases del grupo cociente *G/H* (a derechas), donde *H* es un subgrupo de *G*.
+
+La descripción del algoritmo se puede encontrar en la memoria del proyecto, la implementación en [ToddCoxeter.py](https://github.com/lmd-ugr/Grupos/blob/master/ToddCoxeter.py) y un tutorial de su uso en [Jupyter](https://github.com/lmd-ugr/Grupos/blob/master/Tutorial.ipynb). 
+
+- `readGroup`: Implementación de una función que nos ayudará a leer los grupos por ficheros. Por orden, se leeran los generadores del grupo *G*, sus relaciones y los generadores del subgrupo *H*. En el directorio *Group* se proporcionaran ejemplos de grupos estudiados.
+
+- `CosetEnumeration`: Método principal para llamar al algoritmo y obtener la tabla de clases de *G/H*.
+
+- `schreier_graph`: Método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
+
+- `getGenerators`: A partir del grafo de Schreier no es difícil calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva usando este método.
 
 
-## Group.py
-En los archivos anteriores se han descrito las estructuras de diferentes grupos. Sin embargo, en *Group.py* se encuentran todos los métodos de nuestra librería. Se dividir a su vez en tres clases:
-- Group:
-- GroupElem:
-- GroupAction:
-- GroupHomomorphism:
+Realizando operaciones con los generadores, se obtendrá el conjunto total de elementos al que le proporcionaremos estructura de grupo. 
 
-
-### Class GroupElem
-Representa un elemento de un grupo. Se ha añadido el método `inverse` a la implementación original. Este método calcula el inverso del elemento.
-
-- Se ha añadido una implementación alternativa del operador `__pow__` para realizar la exponenciación en *O(log(n))*. 
-
-- De igual modo, se ha añadido una implementación alternativa del método `order`, que calcula el orden de un elemento en *O(log(n)^3)* (como mucho).
-
-
-### Class Group
-- `is_abelian`: En la primera versión, se comprobaba si el grupo era abeliano en el constructor. Elimino la variable de clase y realizo esta comprobación en un método.
-
-
-- `__str__` y `__repr__`: Se modifican para además mostrar los elementos del grupo (siempre que no teng un orden grande).
-
-- `cosets`: Se optimiza y se simplifica el método.
-
-
-- Table -> Cayley_table  //pip install beautifultable
+- Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
 
 
 
 
-## NEXT ToDo
 
-- Repasar all_subgroups y all_normalSubgroups()
-- Añadir operaciones al grupo diédrico (?)
-- Arreglar la doble llamada a Todd Coxeter para obtener |G| y |H|.
-- Añadir las instrucciones de uso al tutorial de Pedro.
+
+
+
+
 

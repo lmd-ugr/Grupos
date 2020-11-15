@@ -254,16 +254,28 @@ class Group:
             3-applying T.Coxeter algorithm if group is given as generators and relators.
             
         Example: 
-        S = Set(range(5))
-        b_op = Function(S.cartesian(S),S,lambda x: (x[0]+x[1])%5)
-        G = Group(S,b_op)
+        >>> S = Set({0,1,2,3})
+        >>> F = Function(S*S, S,lambda x: (x[0]+x[1])%4)
+        >>> Z4 = Group(S,F)
+        >>> print(Z4)
+        Group with 4 elements: {0, 1, 2, 3}
         
-        p = permutation((1,2,3,4))
-        G2 = Group(elems=[p])
+        >>> p = permutation((1,2,3,4))
+        >>> G1 = Group(elems=[p])
+        >>> print(G1)
+        Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
+                
+        >>> gens = ['a']
+        >>> rels = ['aaaa'] #a^4=1
+        >>> G2  = Group(gensG=gens, relsG=rels)
+        >>> print(G2)
+        Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
         
-        g = ['a','b']
-        r = ['aa','bb',abAB]
-        G3 = Group(gensG=r, relsG = g)
+        Although the way to define the groups is different, they are isomorphic:
+        >>>Z4.is_isomorphic(G1)
+        True
+        >>>G1.is_isomorphic(G2)
+        True        
         """
         
 
@@ -1487,14 +1499,23 @@ class GroupHomomorphism(Function): #we should add here check_well_defined, and c
         return Group(G, self.codomain.bin_op.new_domains(G.cartesian(G), G, check_well_defined=False),parent=self.codomain, check_ass=False,check_inv=False,identity=self.codomain.e.elem)
 
     def is_isomorphism(self):
+        """ 
+        Checks if self is isomorphism.
+        """
         return self.is_bijective()
 
     def homomorphism_compose(self,other):
+        """ 
+        Returns the composition of self and other.
+        """
         if not self.domain == other.codomain:
             raise ValueError("codomain of other must match domain of self")
         return GroupHomomorphism(other.domain, self.codomain,lambda x: self(other(x)), check_morphism_axioms=False)
 
     def automorphism_inverse(self):
+        """ 
+        Returns the inverse of self.
+        """
         if not self.function.is_bijective():
             raise ValueError("self must be bijective")
         l={}
@@ -1561,7 +1582,7 @@ class GroupAction: #we should add here check_well_defined, and check_group_axiom
 
     def __call__(self,g,el):
         """ 
-        Returns the element after applying g over el.
+        Returns the element after applying 'g' over 'el'.
         
         Args: 
             g, el : elements.
@@ -1917,7 +1938,7 @@ def ElementaryDivisors(n):
 
 
 
-def AbelianGroups(n,option="ElementaryDivisors"):
+def AbelianGroups(n, option="ElementaryDivisors"):
 
     if option=="ElementaryDivisors":
         E=ElementaryDivisors(n)
@@ -2116,7 +2137,7 @@ def RootsOfUnitGroup(n):
 
     G = Set(Complex( math.cos(2*pi*k/n), math.sin(2*pi*k/n)) for k in range(n))
 
-    bin_op=Function(G.cartesian(G), G, lambda x: x[0].product(x[1]) ,  check_well_defined=False)
+    bin_op=Function(G.cartesian(G), G, lambda x: x[0].product(x[1]), check_well_defined=False)
     Gr=Group(G,bin_op)
 
 
@@ -2181,45 +2202,5 @@ def generate(elems):
 
 
 
-
-if __name__ == "__main__": 
-          
-    N = AbelianGroups(6)
-    print(N)
-    
-    gen = ['a']
-    rels = ['aaaa']
-    
-    G = Group(gensG=gen, relsG=rels)
-    #print(G)
-    '''
-    R = RootsOfUnitGroup(6)
-    print(R)
-    print_roots(R)
-    '''
-    
-    '''
-    i = Quaternion(0,1,0,0)
-    j = Quaternion(0,0,1,0)
-    
-    generators = [i,j]
-    Q1 = Group(elems=generators)
-    print(Q1)
-    '''
-    #Q2 = QuaternionGroupGeneralised(2)
-    #print(Q2)
-    '''
-    Q3 = QuaternionGroup(rep="ijk")
-    print(Q3)
-    
-    Q4 = QuaternionGroup(rep="permutations")
-    print(Q3)
-    
-    print(Q1.is_isomorphic(Q2))
-    print(Q2.is_isomorphic(Q3))
-    print(Q3.is_isomorphic(Q4))
-    '''
-    
-    
     
     
