@@ -71,7 +71,7 @@ Representa un elemento de un grupo. Se ha añadido el método `inverse` a la imp
 Group with 4 elements: {0, 1, 2, 3}
 ```
 
- - Definición en términos de generadores y relatores. Sea un grupo $`\langle X \mid R \rangle`$. Se pasa por argumento el conjunto de generadores *X* y relaciones *R* que definen al grupo. El constructor se encarga de aplicar el **Algoritmo Todd Coxeter** y darle estructura de grupo de Permutaciones al grupo *G*.
+ - Definición en términos de generadores y relatores. Sea un grupo *< X | R >*. Se pasa por argumento el conjunto de generadores *X* y relaciones *R* que definen al grupo. El constructor se encarga de aplicar el **Algoritmo Todd Coxeter** y darle estructura de grupo de Permutaciones al grupo *G*.
 
 ```python
 >>> gens = ['a']
@@ -87,7 +87,7 @@ Naturalmente, y aunque la forma de definir ambos grupos anteriores es distinta, 
 True
 ```
 
-Por último, se añadirá una tercera forma de definir un grupo. SeaYunconjunto de elementos, entonces el grupo *G* se definirá como el grupo generado por$`\langle Y \rangle`$. En el siguiente ejemplo tomaremos un conjunto conuna única permutación, sin embargo, no exigimos que los elementossean permutaciones.
+Por último, se añadirá una tercera forma de definir un grupo. SeaYunconjunto de elementos, entonces el grupo *G* se definirá como el grupo generado por *< Y >*. En el siguiente ejemplo tomaremos un conjunto conuna única permutación, sin embargo, no exigimos que los elementossean permutaciones.
 ```python
 >>> p = permutation((1,2,3,4))
 >>> G = Group(elems=[p])
@@ -126,7 +126,11 @@ implementado la clase número complejo junto a todos sus operadores que nos perm
 
 - `plot(roots)`: Función que representa las raíces *roots* pasadas como parámetro en el plano complejo.
 
-
+```python
+>>> G = RootsOfUnitGroup(5)
+>>> plot(G)
+```
+<img src="test/raiz.png" width="350"/>
 
 ## Quaternion.py
 
@@ -190,8 +194,8 @@ True
 ```
 
 - QuaternionGroupGeneralised(n): define el grupo generalizado de los cuaternios, con presentación:
-$`Q_n = \langle a,b \mid a^n = b^2, a^{2n}=1,
-b^{-1}ab=a^{-1} `$.
+ *Q_n = < a,b | a^n = b^2, a^{2n}=1,
+b^{-1}ab=a^{-1} >*
 
 
 
@@ -229,13 +233,15 @@ El  de **Algoritmo Todd Coxeter** es un algoritmo que resuelve el *Problema de P
 
 La descripción del algoritmo se puede encontrar en la memoria del proyecto, la implementación en [ToddCoxeter.py](https://github.com/lmd-ugr/Grupos/blob/master/ToddCoxeter.py) y un tutorial de su uso en [Jupyter](https://github.com/lmd-ugr/Grupos/blob/master/Tutorial.ipynb). 
 
-- `readGroup`: Implementación de una función que nos ayudará a leer los grupos por ficheros. Por orden, se leeran los generadores del grupo *G*, sus relaciones y los generadores del subgrupo *H*. En el directorio *Group* se proporcionaran ejemplos de grupos estudiados.
+- `CosetTable`: Crea una instancia de la tabla de clases a partir del archivo pasado por argumento.
 
-- `CosetEnumeration`: Método principal para llamar al algoritmo y obtener la tabla de clases de *G/H*.
+- `readGroup`: implementación de una función que nos ayudará a leer los grupos por ficheros. Por orden, se leeran los generadores del grupo *G*, sus relaciones y los generadores del subgrupo *H*. En el directorio *Group* se proporcionaran ejemplos de grupos estudiados.
 
-- `schreier_graph`: Método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
+- `CosetEnumeration`: método principal para llamar al algoritmo y obtener la tabla de clases de *G/H*.
 
-- `getGenerators`: A partir del grafo de Schreier no es difícil calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva usando este método.
+- `schreier_graph`: método que calcula el grafo de schreier resultante a partir de la tabla de clases laterales obtenidas del método anterior `CosetEnumeration`.
+
+- `getGenerators`: a partir del grafo de Schreier no es difícil calcular el número de elementos del grupo. Para ello, calculamos sus generadores de forma recursiva usando este método.
 
 
 Realizando operaciones con los generadores, se obtendrá el conjunto total de elementos al que le proporcionaremos estructura de grupo. 
@@ -243,9 +249,56 @@ Realizando operaciones con los generadores, se obtendrá el conjunto total de el
 - Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
 
 
+Realizamos un ejemplo de ejecución. Consideramos *G = < a,b | a²=1, b³=1, (ab)³=1 > * y el subgrupo H = < ab >. 
 
 
+```python
+>>> f = readGroup("Groups/Libro2.txt")
+>>> print(f)
+(['a', 'b'], ['aa', 'bbb', 'ababab'], ['ab'])
+```
 
+Creamos la tabla de clases y llamamos al método principal, que nos devolverá la tabla de clases laterales.
+
+```python
+>>> G = CosetTable(f)
+>>> G.CosetEnumeration()
+>>> print(G.coset_table())
+```
+<img src="test/tut1.png" width="350"/>
+
+Esta tabla equivale al siguiente grafo de Schreier, que refleja la acción de G sobre G/H.
+
+```python
+>>> G.schreier_graph(notes=False)
+```
+<img src="test/tut2.png" width="350"/>
+
+En primer lugar, obtenemos los generadores de Schreier; después, definimos G como el grupo generado
+por éstos.
+
+```python
+>>> generators = G.getGenerators()
+>>> group = Group(elems=generators)
+>>> print(group)
+Group with 12 elements: {(2, 4, 3), (1, 4, 3), (2, 3, 4), (1, 2, 3), (), (1, 3, 2), (1, 3, 4), (1, 2, 4), (1, 2)(3, 4), (1, 4)(2, 3), (1, 4, 2), (1, 3)(2, 4)}
+```
+
+Se trata de un grupo no abeliano de orden 12, por ello, debe ser isomorfo al grupo Alternado A_4, grupo Diédrico D_6 o grupo de los Cuaternios Q_2.
+
+```python
+>>> A = AlternatingGroup(4)
+>>> D = DihedralGroup(6)
+>>> Q = QuaternionGroupGeneralised(3)
+
+>>> print(group.is_isomorphic(A))
+True
+>>> print(group.is_isomorphic(D))
+False
+>>> print(group.is_isomorphic(Q))
+False
+```
+ 
 
 
 
