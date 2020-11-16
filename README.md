@@ -130,7 +130,7 @@ implementado la clase número complejo junto a todos sus operadores que nos perm
 >>> G = RootsOfUnitGroup(5)
 >>> plot(G)
 ```
-<img src="test/raiz.png" width="350"/>
+<img src="test/raiz.png" width="500"/>
 
 ## Quaternion.py
 
@@ -194,8 +194,7 @@ True
 ```
 
 - QuaternionGroupGeneralised(n): define el grupo generalizado de los cuaternios, con presentación:
- *Q_n = < a,b | a^n = b^2, a^{2n}=1,
-b^{-1}ab=a^{-1} >*
+ *Q_n = < a,b | a^n = b^2, a^{2n}=1, b^{-1}ab=a^{-1} >*
 
 
 
@@ -249,7 +248,7 @@ Realizando operaciones con los generadores, se obtendrá el conjunto total de el
 - Se usará el *Teorema de Cayley* para representar cada grupo como grupo de permutaciones (usando las funcionalidades de *Permutation.py* y así usar una representación alternativa.
 
 
-Realizamos un ejemplo de ejecución. Consideramos *G = < a,b | a²=1, b³=1, (ab)³=1 > * y el subgrupo H = < ab >. 
+Realizamos un ejemplo de ejecución. Consideramos G = < a,b | a²=1, b³=1, (ab)³=1 >  y el subgrupo H = < ab >. 
 
 
 ```python
@@ -265,14 +264,14 @@ Creamos la tabla de clases y llamamos al método principal, que nos devolverá l
 >>> G.CosetEnumeration()
 >>> print(G.coset_table())
 ```
-<img src="test/tut1.png" width="350"/>
+<img src="test/tut1.png" width="250"/>
 
 Esta tabla equivale al siguiente grafo de Schreier, que refleja la acción de G sobre G/H.
 
 ```python
 >>> G.schreier_graph(notes=False)
 ```
-<img src="test/tut2.png" width="350"/>
+<img src="test/tut2.png" width="250"/>
 
 En primer lugar, obtenemos los generadores de Schreier; después, definimos G como el grupo generado
 por éstos.
@@ -281,7 +280,8 @@ por éstos.
 >>> generators = G.getGenerators()
 >>> group = Group(elems=generators)
 >>> print(group)
-Group with 12 elements: {(2, 4, 3), (1, 4, 3), (2, 3, 4), (1, 2, 3), (), (1, 3, 2), (1, 3, 4), (1, 2, 4), (1, 2)(3, 4), (1, 4)(2, 3), (1, 4, 2), (1, 3)(2, 4)}
+Group with 12 elements: {(2, 4, 3), (1, 4, 3), (2, 3, 4), (1, 2, 3), (), (1, 3, 2), 
+(1, 3, 4), (1, 2, 4), (1, 2)(3, 4), (1, 4)(2, 3), (1, 4, 2), (1, 3)(2, 4)}
 ```
 
 Se trata de un grupo no abeliano de orden 12, por ello, debe ser isomorfo al grupo Alternado A_4, grupo Diédrico D_6 o grupo de los Cuaternios Q_2.
