@@ -1,12 +1,13 @@
 # Teoría-de-Grupos
-Repositorio para TFG
+Repositorio para TFG, realizado por [Alberto Jesús Durán López](https://github.com/thealberteitor).
 
-Implementación de una librería en Python sobre teoría de Grupos de la asignatura Álgebra II del [Grado en Matemáticas](http://grados.ugr.es/matematicas/) de la [Universidad de Granada](http://www.ugr.es).
+Implementación de una librería en Python sobre Teoría de Grupos de la asignatura Álgebra II del [Grado en Matemáticas](http://grados.ugr.es/matematicas/) de la [Universidad de Granada](http://www.ugr.es). 
 
 Extensión de la librería de José Luis Bueso y [pedritomelenas](https://github.com/pedritomelenas), basada en la librería de
 [Naftali Harris](http://www.naftaliharris.com) y disponible en [Algebra-II](https://github.com/pedritomelenas/Algebra-II) y
 [absalg](https://github.com/naftaliharris/Abstract-Algebra), respectivamente.
 
+Un tutorial de uso está disponible en [Jupyter](https://github.com/lmd-ugr/Grupos/blob/master/Tutorial.ipynb).
 # Breve Descripción
 - Un grupo es un conjunto G no vacío junto a una operación binaria * que verifica los siguientes axiomas: asociatividad, existencia de elemento neutro y existencia de elemento inverso para cada elemento. Por ello, se usarán 3 ficheros.py principales:
 
