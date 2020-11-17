@@ -19,7 +19,7 @@ from sympy.utilities.iterables import flatten
 
 #import sys
 #sys.path.insert(1, './ToddCoxeter')
-from ToddCoxeter import CosetTable
+from ToddCoxeter import CosetTable, readGroup
 
 class GroupElem:
     """
@@ -207,7 +207,7 @@ class GroupElem:
         
         G=self.group
         if not  self in G:
-            raise ValueError
+            raise ValueError("self not in G")
         identity = G(G.e.elem)
         if self == identity:
             return 1
@@ -225,16 +225,13 @@ class GroupElem:
         """
 
         if not self in self.group:
-            print(self, "no está en " , self.group)
+            print(self, " not in " , self.group)
             raise TypeError("Element isn't a GroupElem in the Group")
 
         for a in self.group.elements():
             if self.group.bin_op((self.elem, a.elem)) == self.group.e.elem:
                 return a
         raise RuntimeError("Didn't find an inverse for g")
-
-
-
 
 
 
@@ -2207,9 +2204,4 @@ def generate(elems):
     return G
 
 
-
-
-
-
-    
     

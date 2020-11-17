@@ -406,7 +406,7 @@ class CosetTable(object):
                     print("Arrow from", i, " to ", cols[j][idx], " coloured of ", colors[j])
 
         G = nx.nx_agraph.to_agraph(Grafo)
-        G.layout('dot')
+        G.layout('circo') #circo
         G.draw('test/T&C_SchreierGraph.png')
         display(Image('test/T&C_SchreierGraph.png'))
     

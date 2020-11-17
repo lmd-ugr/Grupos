@@ -23,12 +23,29 @@ Un tutorial de uso está disponible en [Jupyter](https://github.com/lmd-ugr/Grup
 Se han añadido bastantes métodos para que se puedan realizar operaciones a nivel de conjunto:
 - Unión, diferencia, intersección, producto cartesiano y diferencia simétrica.
 
+```python
+>>> A = Set({1,2,3})
+>>> B = Set({2,4})
+>>> C = A*B 
+>>> print(C)
+{(2, 4), (1, 2), (3, 4), (2, 2), (3, 2), (1, 4)}
+```
+
+
 - `cardinality`, `is_finite`: Métodos para calcular la cardinalidad del conjunto y comprobar si este es finito.
 
 - `subsets`: Métodos para calcular los subconjuntos de un conjunto y subconjunto de tamaño *n* . Estas dos métodos serán de mucha utilidad en la clase Grupo ya que simplificará mucho las operaciones.
 
+```python
+>>> A.subsets()
+[{1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}]
+>>> A.subsets(2)
+[{1, 2}, {1, 3}, {2, 3}]
+```
+
+
 ## Function.py
-- Se ha mantenido en tu totalidad el formato original, a excepción del operador `__str__` que muestra ahora la función de manera clara y precisa.
+- Se ha mantenido en tu totalidad el formato original, a excepción del operador `__str__` que muestra ahora la función de manera clara y precisa. Se usarán las funciones lambda que ofrece Python.
 
 
 ```python
@@ -42,26 +59,15 @@ f((0, 2))=2   f((2, 2))=1   f((1, 0))=1
 
 
 ## Group.py
-En los archivos anteriores se han descrito las estructuras de diferentes grupos. Sin embargo, en *Group.py* se encuentran todos los métodos de nuestra librería. Se divide a su vez en estas clases:
-- Group:
-- GroupElem:
-- GroupAction:
-- GroupHomomorphism:
-
-
-### Class GroupElem
-Representa un elemento de un grupo. Se ha añadido el método `inverse` a la implementación original. Este método calcula el inverso del elemento.
-
-- Se ha añadido una implementación alternativa del operador `__pow__` para realizar la exponenciación en *O(log(n))*. 
-
-- De igual modo, se ha añadido una implementación alternativa del método `order`, que calcula el orden de un elemento en *O(log(n)^3)* (como mucho).
 
 
 ### Class Group
 
-- `__str__` y `__repr__`: Se modifican para además mostrar los elementos del grupo (siempre que no tengan un orden grande).
+Esta clase es la encargada de definir un grupo arbitrario.
 
-- `__init__`: Se modifica el constructor para poder definir grupos de varias formas:
+- `__str__` y `__repr__`: se modifican para mostrar además los elementos del grupo (siempre que no tengan un orden grande).
+
+- `__init__`: el constructor se modifica para poder definir grupos de varias formas:
  - Definición axiomatizada: Se comprueba que el par (Set,Function) pasado por argumento satisface los axiomas de grupo (asociatividad, identidad e inversos).
 
 ```python
@@ -88,7 +94,7 @@ Naturalmente, y aunque la forma de definir ambos grupos anteriores es distinta, 
 True
 ```
 
-Por último, se añadirá una tercera forma de definir un grupo. SeaYunconjunto de elementos, entonces el grupo *G* se definirá como el grupo generado por *< Y >*. En el siguiente ejemplo tomaremos un conjunto conuna única permutación, sin embargo, no exigimos que los elementossean permutaciones.
+ - Por último, se añadirá una tercera forma de definir un grupo. Sea Y un conjunto de elementos, entonces el grupo *G* se definirá como el grupo generado por *< Y >*. En el siguiente ejemplo tomaremos un conjunto con una única permutación, sin embargo, no exigimos que los elementos sean permutaciones.
 ```python
 >>> p = permutation((1,2,3,4))
 >>> G = Group(elems=[p])
@@ -98,8 +104,17 @@ Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
 
 - `is_abelian`: En la primera versión, se comprobaba si el grupo era abeliano en el constructor. Elimino la variable de clase y realizo esta comprobación en un método.
 
+```python
+>>> Z4.is_abelian()
+True
+```
+
 - `identity`: Del  mismo  modo  que  en *is_abelian*,  se  añade  un  nuevo  método para calcular la identidad del grupo.
 
+```python
+>>> G.identity()
+()
+```
 
 - `cosets`:  Método  que  calcula  las  clases  laterales  de  un  grupo *G* sobre  un subgrupo *H*. Se optimiza y se simplifica.
 
@@ -110,7 +125,7 @@ Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
 
 ## Permutation.py
 
-- Es la clase que construye el grupo simétrico y alternado. Para una mejor comprensión, creo el archivo *Permutation.py*  y añado toda la implementación existente.
+- Es la clase que construye el grupo Simétrico y Alternado. 
 
 - `__mul__`: Se modifica y se simplifica el producto de dos permutaciones.
 
@@ -118,7 +133,12 @@ Group with 4 elements: {(), (1, 2, 3, 4), (1, 4, 3, 2), (1,3)(2, 4)}
 
 - `__even_permutation__`, `__odd_permutation__`: Métodos para calcular si una permutación es par o impar.
 
-
+```python
+>>> p = permutation((1,3),(5,2))
+>>> p.odd_permutation()
+False
+```
+ 
 
 
 ## Complex.py
@@ -131,7 +151,7 @@ implementado la clase número complejo junto a todos sus operadores que nos perm
 >>> G = RootsOfUnitGroup(5)
 >>> plot(G)
 ```
-<img src="test/raiz.png" width="500"/>
+<img src="test/raiz.png" width="530"/>
 
 ## Quaternion.py
 
@@ -143,9 +163,9 @@ Se realiza una implementación de los números cuaternios en el archivo *Quatern
 
 - `norm`: Norma de un número cuaternio.
 
-- `inverse`: Inverso.
+- `inverse`: Inverso de un cuaternio.
 
-- `trace`: Traza.
+- `trace`: Traza de un cuaternio.
 
 - Para crear un objeto se puede realizar de dos maneras, mediante su representación vectorial o indicando la letra en cuestión:
 ```python
@@ -175,7 +195,7 @@ True
 ```
 
 
-La función que se encarga de crear el grupo de los cuaternios es *QuaternionGroup, donde únicamente se le ha de pasar por argumento una de las dos representaciones siguientes:
+La función que se encarga de crear el grupo de los cuaternios es *QuaternionGroup*, donde únicamente se le ha de pasar por argumento una de las dos representaciones siguientes: "ijk" o "permutations".
 
 ```python
 >>> Q = QuaternionGroup(rep="ijk")
@@ -189,14 +209,22 @@ Group with 8 elements: { 1,  i,  j,  k,  -k,  -j,  -i,  -1}
 Group with 8 elements: {(1, 4, 3, 2)(5, 7, 8, 6), (1, 7, 3,6)(2, 8, 4, 5), (1, 6, 3, 7)(2, 5, 4, 8), (1, 8, 3, 5)(2, 6,4, 7), (1, 2, 3, 4)(5, 6, 8, 7), (1, 5, 3, 8)(2, 7, 4, 6),(), (1, 3)(2, 4)(5, 8)(6, 7)}
 ```
 
+Aunque la representación del grupo sea distinta, ambos deben ser isomorfos:
+
 ```python
 >>> Q.is_isomorphic(Q2)
 True
 ```
 
-- QuaternionGroupGeneralised(n): define el grupo generalizado de los cuaternios, con presentación:
- *Q_n = < a,b | a^n = b^2, a^{2n}=1, b^{-1}ab=a^{-1} >*
+- QuaternionGroupGeneralised(n): define el grupo generalizado de los Cuaternios, con presentación:
+ *Q_n = < a,b | a^n = b², a^{2n}=1, b^{-1}ab=a^{-1} >*. Su elementos serán permutaciones, y claramente cuando n=2 se tendrá el grupo de los Cuaternios Q_2.
 
+
+```python
+>>> Q = QuaternionGroupGeneralised(2)
+>>> Q.is_isomorphic(Q2)
+True
+```
 
 
 ## Diedral.py
@@ -219,8 +247,6 @@ True
 >>> Dp.is_isomorphic(Dr)
 True
 ```
-
-- Todas las representaciones son equivalentes. Para probarlo se puede aplicar la función 'is_isomorphic', que devuelve True.
 
 - En [aquí](https://github.com/lmd-ugr/Grupos/blob/master/test/test_dihedral.png) se puede ver un ejemplo de las llamadas a la tabla de Cayley con las tres diferentes representaciones.
 
@@ -265,14 +291,14 @@ Creamos la tabla de clases y llamamos al método principal, que nos devolverá l
 >>> G.CosetEnumeration()
 >>> print(G.coset_table())
 ```
-<img src="test/tut1.png" width="250"/>
+<img src="test/tut1.png" width="230"/>
 
 Esta tabla equivale al siguiente grafo de Schreier, que refleja la acción de G sobre G/H.
 
 ```python
 >>> G.schreier_graph(notes=False)
 ```
-<img src="test/tut2.png" width="250"/>
+<img src="test/tut2.png" width="275"/>
 
 En primer lugar, obtenemos los generadores de Schreier; después, definimos G como el grupo generado
 por éstos.
