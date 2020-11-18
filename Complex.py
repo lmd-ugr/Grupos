@@ -80,7 +80,7 @@ def plot(roots, mode="exp"):
         roots: instance of GroupOfUnitGroup
         mode:
             'exp' if user wants representation with e^{pi i k/n} or
-            'real' if user want real representation (a+bj).
+            'binom' if user want binomial representation (a+bj).
     """
 
     lroots = list(roots.Set)
