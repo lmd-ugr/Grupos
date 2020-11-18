@@ -13,49 +13,43 @@ import sympy as sym
 
 
 
-class Complex(object):
+class Complex:
     def __init__(self, real, imag=0.0):
         self.real = round(real, 3)
         self.imag = round(imag, 3)
 
 
-    def __add__(self, other):
-        return Complex(self.real + other.real,
-                       self.imag + other.imag)
+    def __add__(self, c2):
+        return Complex(self.real + c2.real,
+                       self.imag + c2.imag)
 
-    def __sub__(self, other):
-        return Complex(self.real - other.real,
-                       self.imag - other.imag)
+    def __sub__(self, c2):
+        return Complex(self.real - c2.real,
+                       self.imag - c2.imag)
 
-    def __mul__(self, other):
-        return Complex(self.real*other.real - self.imag*other.imag,
-                       self.imag*other.real + self.real*other.imag)
+    def __mul__(self, c2):
+        return Complex(self.real*c2.real - self.imag*c2.imag,
+                       self.imag*c2.real + self.real*c2.imag)
 
-    def __div__(self, other):
-        sr, si, orr, oi = self.real, self.imag, other.real, other.imag # short forms
-        r = float(orr**2 + oi**2)
-        return Complex((sr*orr+si*oi)/r, (si*orr-sr*oi)/r)
+    def __div__(self, c2):
+        r = float(c2.real**2 + c2.imag**2)
+        return Complex((self.real*c2.real+self.imag*c2.imag)/r, (self.imag*c2.real-self.real*c2.imag)/r)
 
     def __abs__(self):
         return math.sqrt(self.real**2 + self.imag**2)
 
-    def __neg__(self):   # defines -c (c is Complex)
+    def __neg__(self):
         return Complex(-self.real, -self.imag)
 
-    def __eq__(self, other):
-        #return self.real == other.real and self.imag == other.imag
-        return abs(self.real-other.real<0.01) and abs(self.imag-other.imag<0.01)
+    def __eq__(self, c2):
+        return abs(self.real-c2.real<0.01) and abs(self.imag-c2.imag<0.01)
 
-    def __ne__(self, other):
-        return not self.__eq__(other)
+    def __ne__(self, c2):
+        return not self.__eq__(c2)
 
-    def product(self,other):
-        return Complex(self.real*other.real - self.imag*other.imag,
-                       self.imag*other.real + self.real*other.imag)
-
-    def __pow__(self, power):
-        raise NotImplementedError('self**power is not implemented for Complex')
-
+    def product(self,c2):
+        return Complex(self.real*c2.real - self.imag*c2.imag,
+                       self.imag*c2.real + self.real*c2.imag)
 
     def __hash__(self):
         if not self.imag:
@@ -70,12 +64,8 @@ class Complex(object):
 
     def __str__(self):
         return "({},{}j)".format(self.real, self.imag)
-    
-    
-    '''
-    def __str__(self):
-        return '(%g, %g)' % (self.real, self.imag)
-    '''
+
+
 
 
 
@@ -83,16 +73,16 @@ class Complex(object):
 
 
 def plot(roots, mode="exp"):
-    """ 
+    """
     Plot the n roots of unit of group GroupOfUnitGroup
-    
-    Args: 
+
+    Args:
         roots: instance of GroupOfUnitGroup
-        mode: 
+        mode:
             'exp' if user wants representation with e^{pi i k/n} or
             'real' if user want real representation (a+bj).
     """
-            
+
     lroots = list(roots.Set)
     lreal = [ r.real for r in lroots]
     limag = [ r.imag for r in lroots]
@@ -101,13 +91,13 @@ def plot(roots, mode="exp"):
     colors = sns.color_palette("hls", n)
     plt.axis('square')
     plt.scatter(lreal, limag, c=colors) #plot the roots
-    
+
     k = 0
     for root,c in zip(lroots,colors):
         t=t+0.25/n
         k=k+1
 
-        if mode == "exp" :        
+        if mode == "exp" :
             z = sym.exp(2*sym.pi * sym.I*k/n)
             plt.text(sym.re(z)+.04, sym.im(z)-.025, z)
         elif mode == "binom":
@@ -119,7 +109,6 @@ def plot(roots, mode="exp"):
     plt.ylim(-1.25,1.25)
     plt.xlabel('Re(x)')
     plt.ylabel('Im(x)')
-    plt.savefig('test/photo2.png')
+    plt.savefig('roots.png')
 
     plt.show()
-

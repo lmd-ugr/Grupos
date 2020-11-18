@@ -5,10 +5,9 @@
 from beautifultable import BeautifulTable
 from IPython.display import display, Image
 import networkx as nx
-
-import sys
-sys.path.insert(1, '../')
 from Permutation import permutation
+
+
 
 gens = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ"
 
@@ -37,10 +36,10 @@ def replace_all(text, rep):
 class EquivalenceClass(object):
     """
     It controls the equivalence class of coset/vertexs
-    We represent each vertex as the representant of it equivalence class. 
+    We represent each vertex as the representant of it equivalence class.
     If a coincidence is found, we need to delete the coset with
     the higher value.
-    """    
+    """
 
     def __init__(self):
         self.p = [0]
@@ -90,7 +89,7 @@ class EquivalenceClass(object):
         Returns the representent of both cosets or false
         if the cosets are equals.
         """
-        
+
         v = self.rep(k)
         c = self.rep(l)
 
@@ -113,7 +112,7 @@ class CosetTable(object):
 
     def __init__(self, *arguments):
         """
-        *arguments: admits multiples ways to read a group G given 
+        *arguments: admits multiples ways to read a group G given
             as generators and relators and a subgroup H given as generators.
         """
 
@@ -174,28 +173,28 @@ class CosetTable(object):
     def isAlive(self, k):
         """
         k : coset (int)
-        
+
         checks if coset k is alive, i.e., p[k]=k.
         """
         return self.p[k]==k
 
 
     def isDefined(self, k, x):
-        """ 
+        """
         k : coset (int)
         x : element of A:= X^{+1} \cup X^{-1}
-            
-        returns True if x^k is defined.                              
+
+        returns True if x^k is defined.
         """
         return self.tab[k][x]>=0
 
 
     def undefine(self,k, x):
-        """ 
+        """
         k : coset (int)
         x : element of A:= X^{+1} \cup X^{-1}
-            
-        undefine x^k.                           
+
+        undefine x^k.
         """
         self.tab[k][x] = -1
 
@@ -212,7 +211,7 @@ class CosetTable(object):
         Args:
             k : coset (int)
             x : generator of X or inverse.
-        
+
         New definition, k^x = new available natural.
         """
         if self.n==self.M:
@@ -238,21 +237,21 @@ class CosetTable(object):
         Returns the representent of both cosets or nothing
         if the cosets are equals.
         """
-        
+
         var, u = self.p.merge(k,l)
         if var:
             self.q.append(u)  #q is queue
 
 
     def coincidence(self, a, b):
-        """ 
+        """
         Args:
             a : coset (int)
             b : coset (int)
-        
+
         It processes a coincidence between coset a and b
         """
-        
+
         self.merge(a,b)
 
         while not len(self.q)==0: #mientras que no sea empty
@@ -282,8 +281,8 @@ class CosetTable(object):
         Args:
             a : coset (int)
             w : word (list)
-            
-        Scans the word w over the coset a. 
+
+        Scans the word w over the coset a.
         This method defines new cosets if needed.
         """
 
@@ -319,7 +318,7 @@ class CosetTable(object):
 
     def CosetEnumeration(self):
         """
-        HLT Method for Todd Coxeter algorithm. 
+        HLT Method for Todd Coxeter algorithm.
         """
 
         for i in self.generator_of_H:
@@ -349,10 +348,10 @@ class CosetTable(object):
 
 
     def pretty_print(self):
-        """ 
+        """
         returns the Coset table
         """
-        
+
         table = BeautifulTable()
 
         head= [gens[i] for i in range(0, self.NGENS)]
@@ -382,21 +381,21 @@ class CosetTable(object):
         """
         Args:
             notes : boolean
-        
+
         Return the Schreier graph of self.
         """
-        
+
         if self.table == None:
             raise ValueError("Debe llamar primero a la función Todd Cox")
-        
+
         l = [ list(self.table[i]) for i in range(1,len(self.cosets)+1)]
         vertexs = [ self.cosets[i]+1 for i in range(len(self.cosets))]
         cols = [[row[i] for row in l] for i in range (0,len(l[0]),2) ]
         colors = ['red','blue','green','black','orange','grey','purple','orange'] #max 8 gens
-        
+
         Grafo = nx.MultiDiGraph(engine='circo')
         Grafo.graph['node']={'shape':'circle'}
-        
+
         for i in vertexs:
             Grafo.add_node(i)
         for idx, i in enumerate(vertexs):
@@ -407,15 +406,15 @@ class CosetTable(object):
 
         G = nx.nx_agraph.to_agraph(Grafo)
         G.layout('circo') #circo
-        G.draw('test/T&C_SchreierGraph.png')
-        display(Image('test/T&C_SchreierGraph.png'))
-    
+        G.draw('T&C_SchreierGraph.png')
+        display(Image('T&C_SchreierGraph.png'))
+
 
 
     def follow(self, c, d):
         """
         It follows the path of the cosets given and returns a permutation.
-        
+
         Args:
             c : coset (int)
             d : coset (int)
@@ -432,7 +431,7 @@ class CosetTable(object):
         Return the Schreier generators after executing the Todd Coxeter algorithm.
         We can use these generators to obtain a permutation representation of G.
         """
-    
+
         perms=[]
         for g in range(self.NGENS//2):
             l=[]
@@ -456,13 +455,13 @@ def readGroup(file):
     Read a group G given as generators and relators and a subgroup H given as generators.
     Args:
         file: a path
-    
+
     Example:
         >>> f = readGroup("Groups/S3.txt")
         >>> print(f)
         (['a', 'b'], ['aaa', 'bb', 'abAAB'], [])
     """
-    
+
     try:
         f = open(file, "r")
         rep = {",": " ", "=": " ", "1": " ", "{": " ", "}": " "}
@@ -475,7 +474,3 @@ def readGroup(file):
         print("Could not read file ", file)
 
     return gen, rels, genH
-
-
-
-

@@ -9,7 +9,7 @@ import functools
 import operator
 import math
 
-class permutation():
+class permutation:
     """
     This is the class of permutations of the set {1..n}
 
