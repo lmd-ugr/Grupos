@@ -1,0 +1,874 @@
+
+En primer lugar, importamos las librerías que se utilizarán:
+\begin{itemize}
+    \item  \texttt{Group}: fichero principal de la librería. En él se encuentran las principales clases y funciones para definir los diferentes grupos y sirve para identificar y dar estructura de grupo al conjunto de generadores y relatores dados como entrada. 
+    \item  \texttt{ToddCoxeter}: contiene la implementación del \textit{Algoritmo de Todd Coxeter} junto a todas las funcionalidades descritas anteriormente. 
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+%\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{Group} \PY{k+kn}{import} \PY{o}{*}
+\PY{k+kn}{from} \PY{n+nn}{ToddCoxeter} \PY{k+kn}{import} \PY{n}{CosetTable}\PY{p}{,} \PY{n}{readGroup}
+\end{Verbatim}
+\end{tcolorbox}
+
+\end{itemize}
+
+
+
+El procedimiento a seguir se desarrollará a continuación y se ilustrará con el siguiente ejemplo sencillo:
+\[
+G=\langle a,b \mid a^2, b^2, ab=ba \rangle \quad y \quad H=\{1\}.
+\]
+
+\begin{enumerate}
+\item Leemos los datos de entrada, ya sea mediante variables para definir el grupo o
+  haciendo uso del método \textit{readGroup}, en el que se le ha de especificar la ruta del fichero donde está el grupo.
+  
+  \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{gen} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{rels} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{abAB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{genH} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+  
+  
+  
+\item Creamos un objeto de la clase \textit{CosetTable}. Después, llamamos al método \textit{CosetEnumeration} para aplicar el \textit{Algoritmo de Todd Coxeter}.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{CosetTable}\PY{p}{(}\PY{n}{gen}\PY{p}{,}\PY{n}{rels}\PY{p}{,} \PY{n}{genH}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{CosetEnumeration}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+  
+Podemos mostrar la tabla de clases laterales de $G/H$, que se obtiene mediante el método \textit{coset\_table}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{T} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{coset\PYZus{}table}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{T}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.29\linewidth}{0.29\paperheight}}{img/1g.png}
+    \end{center}
+
+
+Como hemos comentado anteriormente, el número de filas sin contar las cabeceras indica el número de elementos del grupo $G/H$, que coincide con el índice $[G:H]$. En este ejemplo, se tiene:
+\[
+    [G:H] = \frac{|G|}{|H|} = \frac{|G|}{1} = |G| = 4 \: .
+\]
+
+\newpage
+Equivalentemente, el grafo de Schreier asociado se llama de la siguiente forma:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G}\PY{o}{.}\PY{n}{schreier\PYZus{}graph}\PY{p}{(}\PY{n}{notes}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.4\linewidth}{0.26\paperheight}}{img/code_7_0.png}
+    \end{center}
+
+
+
+\item El siguiente paso es el de obtener los generadores de Schreier y definir el grupo como aquel generado por estos elementos.
+  
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{print\PYZus{}gens}\PY{p}{(}\PY{n}{gens}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{gens}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{g}\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{gens}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{print\PYZus{}gens}\PY{p}{(}\PY{n}{generators}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}  
+
+ \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+g0 = (1, 2)(3, 4)
+g1 = (1, 3)(2, 4)
+    \end{Verbatim}
+\end{tcolorbox}
+    
+
+En este momento, tenemos los generadores que definen al grupo. En particular, en este ejemplo el grupo estará definido por
+$G = \langle \, g0, \, g1 \, \rangle $.
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Gr} \PY{o}{=} \PY{n}{Group(elems=generators)}
+\end{Verbatim}
+\end{tcolorbox}  
+ 
+ 
+\item  Usar el método \textit{is\_isomorphic} para identificar cada grupo con
+  grupos conocidos.
+  
+  
+Observando la presentación dada, no es dificil ver que el grupo debe ser isomorfo al Grupo de Klein:
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{K} \PY{o}{=} \PY{n}{KleinGroup}\PY{p}{(}\PY{p}{)}
+\PY{n}{Gr}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{K}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+  
+  
+\end{enumerate}
+
+ 
+\newpage
+\subsection{Ejemplos}
+
+En la siguiente sección se estudiarán diferentes ejemplos de grupos finitamente presentados. El objetivo es identificar la presentación dada estableciendo isomorfismos con grupos estudiados.
+
+Consideramos el siguiente grupo, que se encuentra en \textit{Groups/1.txt}.
+\begin{align*} \label{1st}
+    G = \langle a,b\; | \; ab^{-1}b^{-1}a^{-1}bbb, b^{-1}a^{-1}a^{-1}baaa\rangle \quad y \quad H = \{ 1\}.
+\end{align*}
+
+\begin{enumerate}
+En primer lugar, usamos el método \textit{readGroup} para leerlo:
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{file} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Groups/1.txt}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{f} \PY{o}{=} \PY{n}{readGroup}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(['a', 'b'], ['aBBAbbb', 'BAAbaaa'], [])
+    \end{Verbatim}
+
+De igual modo que en el ejemplo anterior, aplicamos el \textit{Algoritmo de Todd Coxeter}. 
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{CosetTable}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{CosetEnumeration}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+
+A continuación, mostramos la tabla de clases de $G/H$:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{table}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.28\linewidth}{0.28\paperheight}}{img/2g.png}
+    \end{center}
+
+Como vemos, únicamente hay una fila de clases, por lo que $[G:H]=1$ y, como $H=\{1\}$, $G$ debe ser necesariamente el grupo trivial. Como consecuencia, el grafo de Schreier posee un único vértice.
+En este ejemplo, no es de utilidad darle estructura de grupo a $G$, en cambio, servirá para mostrar un ejemplo de un grupo sencillo en el que el número de clases que se usan es muy elevado. 
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{u} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{usedCosets}\PY{p}{(}\PY{p}{)}
+\PY{n}{f} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{finalCosets}\PY{p}{(}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Clases usadas: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{ Clases vivas: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{f}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Clases usadas: 85
+Clases vivas: 1
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\newpage
+El siguiente grupo $G$ se encuentra definido en \textit{Groups/S3\_2.txt}, y como subgrupo $H\leq G$, tomamos aquel generado por $a$.
+\begin{align*}
+    G = \langle a,b \; | \; a^2 = b^2 = 1, (ab)^3=1\rangle \quad y \quad H= \langle a \rangle.
+\end{align*}
+
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{file} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Groups/S3\PYZus{}2.txt}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{f} \PY{o}{=} \PY{n}{readGroup}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n}{f}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(['a', 'b'], ['aa', 'bb', 'ababab'], ['a'])
+\end{Verbatim}
+\end{tcolorbox}
+        
+Mostramos la tabla de clases de $G/H$ resultante tras aplicar el algoritmo.
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{coset\PYZus{}table}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.28\linewidth}{0.28\paperheight}}{img/4g.png}
+    \end{center}
+
+
+
+Ahora, el grafo de Schreier equivalente:
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G}\PY{o}{.}\PY{n}{schreier\PYZus{}graph}\PY{p}{(}\PY{n}{notes}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    \begin{center}
+    \adjustimage{max size={0.2\linewidth}{0.2\paperheight}}{img/code_48_0.png}
+    \end{center}
+
+Obtenemos los generadores de Schreier que definen al grupo, que se usarán, por el Teorema \ref{important}, para darle estructura de grupo de Permutaciones.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{print\PYZus{}gens}\PY{p}{(}\PY{n}{generators}\PY{p}{)}
+
+\PY{n}{S} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{elems}\PY{o}{=}\PY{n}{generators}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+g0 = (2, 3)
+g1 = (1, 2)
+    \end{Verbatim}
+\end{tcolorbox}
+
+Vemos que el grupo es isomorfo a $S_3$, el grupo Simétrico de orden $6$.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S3} \PY{o}{=} \PY{n}{SymmetricGroup}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{S3}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+Otra forma equivalente para construir el grupo $S_3$ es mediante el producto
+semidirecto $A_3 \rtimes K$, donde $K = \{1,(12)\}$. Véase el Ejemplo \ref{SnAn}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{=} \PY{n}{AlternatingGroup}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{B} \PY{o}{=} \PY{n}{SymmetricGroup}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{B}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 3 elements: \{(1, 2, 3), (), (1, 3, 2)\} 
+Group with 2 elements: \{(), (1, 2)\}
+    \end{Verbatim}
+\end{tcolorbox}
+
+Para construir este producto semidirecto, habrá que ver las posibles acciones:
+\[
+    \varphi \colon K \to \operatorname{Aut(A_3)}
+\]
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{AutA} \PY{o}{=} \PY{n}{A}\PY{o}{.}\PY{n}{AutomorphismGroup}\PY{p}{(}\PY{p}{)}
+\PY{n}{Hom} \PY{o}{=} \PY{n}{B}\PY{o}{.}\PY{n}{AllHomomorphisms}\PY{p}{(}\PY{n}{AutA}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{hom0} \PY{o}{=} \PY{n}{GroupHomomorphism}\PY{p}{(}\PY{n}{B}\PY{p}{,} \PY{n}{AutA}\PY{p}{,} \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{Hom}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)} 
+\PY{n}{hom1} \PY{o}{=} \PY{n}{GroupHomomorphism}\PY{p}{(}\PY{n}{B}\PY{p}{,} \PY{n}{AutA}\PY{p}{,} \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{Hom}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{SP0} \PY{o}{=} \PY{n}{A}\PY{o}{.}\PY{n}{semidirect\PYZus{}product}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{hom0}\PY{p}{)} \PY{l+m+mi}{#hom0 es la acción trivial}
+\PY{n}{SP1} \PY{o}{=} \PY{n}{A}\PY{o}{.}\PY{n}{semidirect\PYZus{}product}\PY{p}{(}\PY{n}{B}\PY{p}{,}\PY{n}{hom1}\PY{p}{)} \PY{l+m+mi}{#Acción NO trivial}
+\end{Verbatim}
+\end{tcolorbox}
+
+Por el Comentario \ref{2p}, hay dos posibles productos semidirectos que vendrán determinados por la acción tomada. 
+Si la acción es la trivial, el producto semidirecto coincidirá con el producto directo y será el grupo cíclico $\mathbb{Z}_{2p}$.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{o}{.}\PY{n}{direct\PYZus{}product}\PY{p}{(}\PY{n}{B}\PY{p}{)}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{SP0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+Mientras que si consideramos la acción no trivial obtendremos un producto semidirecto que será isomorfo al grupo $D_p$. Para $n=3$, se tiene que $D_3 \cong S_3$ por lo que terminamos la construcción de $S_3$ como producto semidirecto viendo que $S_3 \cong A \rtimes_{hom1} B$.
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{SP1}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+\end{enumerate}
+
+\iffalse
+\newpage 
+\begin{align*}
+   G = \langle a,b,c,d \; | \; & a^2 = b^2 = c^2 = d^2 = 1,  \\
+                            &(ab)^3 = (bc)^3 = (cd)^3 = 1, (ac)^2 = (bd)^2 = (ad)^2 = 1\rangle \quad y \quad H=\{1\}. 
+\end{align*}
+
+
+
+\begin{enumerate} 
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{file} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Groups/S5.txt}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{f} \PY{o}{=} \PY{n}{readGroup}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n}{f}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(['a', 'b', 'c', 'd'],
+ ['aa', 'bb', 'cc', 'dd', 'ababab', 'bcbcbc', 'cdcdcd', 'acac', 'bdbd', 'adad'], [])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{CosetTable}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{CosetEnumeration}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{S} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{elems} \PY{o}{=} \PY{n}{generators}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 120 elements.
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S}\PY{o}{.}\PY{n}{is\PYZus{}abelian}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+False
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S5} \PY{o}{=} \PY{n}{SymmetricGroup}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\PY{n}{S5}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    
+
+\end{enumerate}
+\fi
+
+\newpage
+
+Consideramos el siguiente ejemplo, disponible en \textit{Groups/D4.txt}.
+\begin{align*}
+    G = \langle a,b \; | \; a^4, b^2, bab^{-1}a \rangle \quad  y \quad H=\langle b \rangle.
+\end{align*}
+
+\begin{enumerate} 
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{file} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Groups/D4.txt}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{f} \PY{o}{=} \PY{n}{readGroup}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n}{f}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(['a', 'b'], ['aaaa', 'bb', 'baBa'], ['b'])
+\end{Verbatim}
+\end{tcolorbox}
+        
+        
+Por orden, ejecutamos el algoritmo y mostramos tanto la tabla de clases como el grafo de Schreier asociado.
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{CosetTable}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{CosetEnumeration}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{o}{.}\PY{n}{coset\PYZus{}table}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.28\linewidth}{0.28\paperheight}}{img/5g.png}
+    \end{center}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G}\PY{o}{.}\PY{n}{schreier\PYZus{}graph}\PY{p}{(}\PY{n}{notes}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.39\linewidth}{0.39\paperheight}}{img/code_69_0.png}
+    \end{center}
+    
+    
+Se tiene que:
+\begin{align*}
+   4 =  [G:H] = \frac{|G|}{|H|} = \frac{|G|}{2} \text{ , por lo que } |G|=8 \: .
+\end{align*}
+    
+\iffalse
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{print\PYZus{}gens}\PY{p}{(}\PY{n}{generators}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+g0 = (1, 2, 3, 4)
+g1 = (2, 4)
+    \end{Verbatim}
+    \end{tcolorbox}
+\fi
+
+\newpage
+A continuación, construímos el grupo a partir de los generadores de Schreier y veremos que es isomorfo al grupo Diédrico $D_4$.
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{S} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{elems}\PY{o}{=}\PY{n}{generators}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 8 elements: \{(1, 2, 3, 4), (), (1, 2)(3, 4), (1, 4, 3, 2), (1, 4)(2, 3), (2, 4), (1, 3), (1, 3)(2, 4)\}
+    \end{Verbatim}
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D4} \PY{o}{=} \PY{n}{DihedralGroup}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{D4}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+
+El objetivo ahora es comprobar que el grupo $D_4$ es producto semidirecto interno de dos de sus subgrupos. Véase el Ejemplo \ref{dnrs}. En primer lugar, consideremos los subgrupos de $D_4$ generados por  $R1$  y  por $S0$:
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{R} \PY{o}{=} \PY{n}{D4}\PY{o}{.}\PY{n}{generate}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{R1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{S} \PY{o}{=} \PY{n}{D4}\PY{o}{.}\PY{n}{generate}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S0}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{R, S}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 4 elements: \{'R3', 'R2', 'R0', 'R1'\}
+Group with 2 elements: \{'S0', 'R0'\}
+    \end{Verbatim}
+    \end{tcolorbox}
+    
+
+Ahora bien, estudiamos las acciones $\varphi \colon \langle S0 \rangle \to \langle R1 \rangle$. Por el Comentario \ref{2p}, hay $2$ posibles productos semidirectos (uno de ellos  generado por la acción trivial). 
+
+
+
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{AutR}\PY{o}{ = }\PY{n}{R}\PY{o}{.}\PY{n}{AutomorphismGroup}\PY{p}{(}\PY{p}{)}
+\PY{n}{Hom}\PY{o}{ = }\PY{n}{S}\PY{o}{.}\PY{n}{AllHomomorphisms}\PY{p}{(}\PY{n}{AutD}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{hom0}\PY{o}{ = }\PY{n}{GroupHomomorphism}\PY{p}{(}\PY{n}{S}\PY{p}{,} \PY{n}{AutR}\PY{p}{,} \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{Hom}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{(}\PY{n}{x}\PY{p}{))}
+\PY{n}{hom1}\PY{o}{ = }\PY{n}{GroupHomomorphism}\PY{p}{(}\PY{n}{S}\PY{p}{,} \PY{n}{AutR}\PY{p}{,} \PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{Hom}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{(}\PY{n}{x}\PY{p}{))}
+
+\PY{n}{SP0}\PY{o}{ = }\PY{n}{R}\PY{o}{.}\PY{n}{semidirect\PYZus{}product}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{hom0}\PY{p}{)} \PY{l+m+mi}{#Hom0 es la acción trivial.}
+\PY{n}{SP1}\PY{o}{ = }\PY{n}{R}\PY{o}{.}\PY{n}{semidirect\PYZus{}product}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{hom1}\PY{p}{)} \PY{l+m+mi}{#Hom1 NO es trivial.}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+Bastará ver que el grupo Diédrico $D_4$ es producto semidirecto cuando la acción tomada no es la trivial, es decir:
+\[
+    D_4 \cong \langle R1 \rangle \rtimes_{hom1} \langle S0 \rangle \: .
+\]
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{SP0}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{D4}\PY{p}{)}
+\PY{n}{SP1}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{D4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+False, True
+\end{Verbatim}
+\end{tcolorbox}
+    
+
+
+\end{enumerate}
+
+
+
+\iffalse
+\newpage 
+\begin{enumerate}
+
+
+\begin{align*}
+    G = \langle a,b \mid a^5, b^3, (ab)^2 \rangle \quad y \quad H=\{ 1 \}.
+\end{align*}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{file} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Groups/A5.txt}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{f} \PY{o}{=} \PY{n}{readGroup}\PY{p}{(}\PY{n}{file}\PY{p}{)}
+\PY{n}{f}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(['a', 'b'], ['aaaaa', 'bbb', 'abab'], ['a'])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{51}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{CosetTable}\PY{p}{(}\PY{n}{f}\PY{p}{)}
+\PY{n}{G}\PY{o}{.}\PY{n}{CosetEnumeration}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{generators} \PY{o}{=} \PY{n}{G}\PY{o}{.}\PY{n}{getGenerators}\PY{p}{(}\PY{p}{)}
+\PY{n}{print\PYZus{}gens}\PY{p}{(}\PY{n}{generators}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+g0 = (2, 3, 4, 5, 6)(7, 9, 10, 11, 8)
+g1 = (1, 2, 3)(4, 6, 7)(5, 8, 9)(10, 11, 12)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{elems}\PY{o}{=}\PY{n}{generators}\PY{p}{)}
+\PY{n}{S}\PY{o}{.}\PY{n}{order}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+60
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A5} \PY{o}{=} \PY{n}{AlternatingGroup}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\PY{n}{A5}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+                    
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{54}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+\end{enumerate}
+\fi 
+
+
+
+ 
+\begin{enumerate}
+Por último, consideramos dos grupos $G$ y $H$ definidos como sigue:
+\begin{align*}
+    G = \langle a,b,c \mid a^6 = b^{2} = c^{2} = 1, abc \rangle  \quad y \quad 
+H = \{ b\}.
+\end{align*}
+
+La definición del grupo se encuentra en el fichero \textit{Groups/3gens.txt}, y en principio no parece ser un grupo conocido.\\
+Por orden: leemos el grupos haciendo uso del método \textit{readGroup}, llamamos al método que ejecuta el \textit{Algoritmo de Todd Coxeter}, y después vemos el número de clases que resultan en la tabla de clases de $G/H$ o el número de vértices del grafo de Schreier (no los mostramos por espacio), obteniendo que $[G:H]=6$.
+
+El conjunto de generadores del grupo son:
+\begin{align*}
+    g0 &= (1, 2, 3, 4, 5, 6), \\
+    g1 &= (2, 6)(3, 5), \\
+    g2 &= (1, 6)(2, 5)(3, 4).
+\end{align*}
+
+
+Definimos el grupo $G= \langle g0, g1, g2 \rangle$, es decir, aquel generado por los elementos $g0, g1$ y $g2$, obteniendo:
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 12 elements: \{(1, 5)(2, 4), (1, 2, 3, 4, 5, 6), (1, 4)(2, 5)(3, 6), (1, 6)(2, 5)(3, 4), (1, 3)(4, 6), (1, 4)(2, 3)(5, 6), (), (2, 6)(3, 5), (1, 2)(3, 6)(4, 5), (1, 6, 5, 4, 3, 2), (1, 3, 5)(2, 4, 6), (1, 5, 3)(2, 6, 4)\}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{group}\PY{o}{.}\PY{n}{is\PYZus{}abelian}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+False
+\end{Verbatim}
+\end{tcolorbox}
+        
+    El grupo no es abeliano, luego debe ser isomorfo a uno de los siguientes grupos:
+\begin{align*}
+    &G \cong A_4 = \{ a,b \; | \; a^3=b^3=(ab)^2=1 \} , \\
+    &G \cong D_6 = \{ a,b \; | \; a^6=b^2=1, ab=a^{-1}b \}, \\ 
+    &G \cong Q_3 = \{ a,b \; | \; a^{6}=1, a^3=b^2, ab=a^{-1}b \}.
+\end{align*}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{=} \PY{n}{AlternatingGroup}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{D} \PY{o}{=} \PY{n}{DihedralGroup}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{Q} \PY{o}{=} \PY{n}{QuaternionGroupGeneralised}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{group}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{group}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{D}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{group}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{Q}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+ \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+False, True, False
+    \end{Verbatim}
+\end{tcolorbox}
+Como hemos visto, el grupo $G$ se trata del grupo Diédrico $D_6$. Como consecuencia, vemos que la presentación de un grupo no es única.
+\end{enumerate}
+
+
+
+\newpage
+\subsection{Otras presentaciones}
+Para acabar, consideraremos grupos finitamente presentados que no se han estudiado en este proyecto. El objetivo es el de mostrar la potencia que tiene este método programado, llegando incluso a terminar en poco tiempo con ejemplos de grupos de orden muy alto.
+
+\begin{enumerate}
+\item Consideramos el grupo especial lineal $SL_n(F) \colon = \{ A \in M_n(F) \: | \: det(A)=1 \}$ y su centro $Z(SL_n(F))$. Definimos el grupo lineal especial proyectivo $PSL_n(F)$ como el cociente entre $SL_n(F)$ por $Z(SL_2(F))$.
+
+Consideramos un campo finito con $7$ elementos, por ejemplo $\mathbb{Z}_7$, entonces $PSL_2(\mathbb{Z}_7)$ viene definido por:
+\begin{align*}
+        G = \langle a,b,c \mid a^7 = b^3 = c^2 = 1, ba=aab, (bc)^2, (ac)^2  \rangle  .
+\end{align*}
+
+
+Este grupo se encuentra definido en el fichero \textit{Groups/PSL2.txt} y se tomará el grupo trivial $H$ para su ejecución. A pesar de ser un grupo de orden $168$, termina en torno a $15$ segundos con el método \textit{HLT}.
+
+
+        
+\item Sea $G$ un grupo generado por tres elementos $a,b$ y $c$ que satisfacen las siguientes relaciones:
+\begin{align*} \label{ye1}
+    a^3=b^2=c^2=1,\: (ab)^4=(ac)^2=(bc)^3=1 \:.
+\end{align*}
+y $H \leq G$ generado por $a$ y $b$, es decir:
+\begin{align*}
+    G = \langle a,b,c \mid a^3=b^2=c^2=1,\: (ab)^4=(ac)^2=(bc)^3=1 \rangle \quad y \quad H=\langle a,b \rangle.
+    %G = \langle a,b,c \; | \; b^2c^{-1}bc, a^2b^{-1}ab, cab^{-1}cabc \rangle \quad y \quad H=\langle a,b \rangle.
+\end{align*}
+Se encuentra disponible en \textit{Group/G0.txt} y se trata de un grupo de orden $576$. Su ejecución con el método programado tarda en torno a $1$ minuto. De igual modo, es costoso generar todo el grupo de Permutaciones y realizar operaciones con los métodos de la librería.
+
+
+
+\item El siguiente grupo es conocido como grupo de Mathieu,  descubierto a finales del siglo $XIX$ por el matemático francés Émile Mathieu junto a otros cuatro grupos de permutaciones. Se denota por $M_{12}$ y viene dado por:
+\begin{align*}
+    M_{12} = \langle a,b,c \mid a^{11} = b^2 = c^2 = 1, (ab)^3 = (ac)^3 = (bc)^{10} = 1, a^2(bc)^2a = (bc)^2  \rangle.
+\end{align*}
+
+Se encuentra definido en el archivo \textit{Groups/Big.txt}, y como subgrupo $H$, se ha tomado el trivial. Tras aplicar el \textit{Algoritmo de Todd Coxeter}, obtenemos que el índice $[G:H]=|G|=95040$. 
+ Requiere en torno a $600$.$000$ clases laterales y su ejecución con el método \textit{HLT} se demora en torno a $5$ minutos. Por esta razón, no es pensable obtener los generadores de Schreier ni definir el grupo con estos ya que cualquier operación básica que se realice consumiría mucho tiempo.
+ 
+\end{enumerate}
+    

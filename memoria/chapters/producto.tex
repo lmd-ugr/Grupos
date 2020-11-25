@@ -1,0 +1,588 @@
+
+%\blankpage
+%\newpage 
+\chapter{Producto de grupos}
+ 
+ 
+En esta sección se presentarán y estudiarán diferentes herramientas para la construcción de un grupo a partir de otros más simples. Dados dos grupos $H$ y $K$, la forma más sencilla es considerar el producto directo   $H \times K$, que es análogo al producto cartesiano de la Teoría de Conjuntos. En \ref{direct1} recordaremos su construcción interna y externa.  Más adelante, en \ref{semidirect1} presentaremos y estudiaremos el producto semidirecto, sin embargo, esta construcción requiere de acciones de grupo por lo que se introducirán previamente. La documentación usada para esta sección ha sido principalmente ~\cite{abstractrojo} y ~\cite{abstract}, ayudándonos en gran medida de ~\cite{eugenio}. 
+
+
+
+
+
+
+\section{Producto directo} \label{direct1}
+
+
+\begin{definition} \label{direct} 
+Sean $(H,\cdot_1)$ y $(K, \cdot_2)$ dos grupos. El producto directo (o simplemente producto) de ambos grupos es el producto cartesiano:  
+\[
+H\times K :=\{(h,k) \mid  h \in H, k \in K \} ,
+\]
+
+dotado de la operación binaria ($\cdot$) :
+\[
+    (h_1,k_1) (h_2,k_2) :=(h_1 \cdot_1 h_2, k_1 \cdot_2 k_2), \: \text{ para todo } h_1,h_2\in H, k_1,k_2 \in K .
+\]
+\end{definition}
+
+Denotando $G=H\times K$, como $(H, \cdot_1)$ y $(K, \cdot_2)$ son grupos entonces $(G,\cdot)$ también lo es y su orden será $|H|\cdot|K|$. La identidad es $(1_H, 1_K)$; para cada $h \in H, k \in K$, su elemento inverso vendrá dado por $(h^{-1},k^{-1})$, y por último, la propiedad asociativa en $G$ se cumple por la asociatividad de $H$ y $K$.
+
+Por otro lado, los conjuntos $\{(h,1) \mid h \in H \}$ y $\{ (1,k) \mid k \in K\}$ son subgrupos normales de $G$ y se identifican con $H$ y $K$, respectivamente, es decir:
+\[
+    H \cong \{(h,1) \mid h \in H \} \quad y \quad  K \cong \{ (1,k) \mid k \in K\}.
+\]
+
+Si $H$ y $K$ son grupos abelianos, está claro que su producto $H\times K$ también es un grupo abeliano.
+
+
+\begin{theorem}[Propiedad Universal]
+Sea $H\times K$ un producto de grupos. Consideramos las proyecciones:
+\begin{align*}
+H \xleftarrow[]{\text{$pr_H$}}  H \times & K  \xrightarrow[]{\text{$pr_K$}} K \\
+h \testleftlong  (h,k&)  \longmapsto k
+\end{align*}
+
+
+%\begin{align*}
+%    f = pr_H(f,g) \\
+%    g = pr_K(f,g)
+%\end{align*}
+
+Dado cualquier grupo $G$ y dos morfismos de grupos $f_1 \colon G \rightarrow H$ y $f_2 \colon G \rightarrow K$, entonces existe un único morfismo $(f_1,f_2)$ tal que $(f_1,f_2)(g)\colon=(f_1(g), f_2(g))$, que hace al siguiente diagrama conmutativo:
+\[
+\begin{tikzcd}
+ H  && H \times K \arrow[ll,']{}{pr_H} \arrow[rr]{}{pr_K} && K\\
+&& G \arrow[ull,bend left=20]{}{f_1} \arrow[u,dashrightarrow,']{}{\exists !(f_1,f_2)} \arrow[rru,bend right=20,']{}{f_2} &&
+\end{tikzcd}
+\]
+
+\iffalse
+\textcolor{red}{mira}
+\[
+\begin{tikzcd}
+		&& G \arrow[dl l, ',bend right=20]{} {f_1} \arrow[d,dashrightarrow] {}{\exists !(f_1,f_2)}\arrow[drr,bend left=20]{}{f_2}&&\\
+	H  & & H\times K \arrow[ll]{}{p_1}  \arrow[rr, ']{}{p_2} & &K   
+\end{tikzcd}\qquad
+(f_1,f_2)(g):= (f_1(g),f_2(g)).
+\]
+\fi
+\end{theorem}
+
+
+
+
+
+
+
+\begin{Ejemplo} \label{Klein}
+El grupo $\mathbb{Z}_2\times \mathbb{Z}_2$ es conocido como grupo de \textit{Klein} y es el producto directo del grupo cíclico de orden dos por sí mismo:
+\begin{align*}
+    K = \{ (0,0), (0,1), (1,0), (1,1) \},
+\end{align*}
+
+Este grupo en notación multiplicativa puede representarse como:
+\begin{align*}
+    K = \{1, a,b, ab\} .
+\end{align*}
+donde $a$ y $b$ conmutan y en la que cada elemento (menos la identidad) tiene orden $2$ y es inverso de sí mismo. 
+Otra forma comúnmente conocida es mediante permutaciones, el subgrupo de $A_4$ conocido como \textit{Vierergruppe} (en alemán) y denotado con la letra $V$:
+\begin{align*}
+    V = \{ 1, (12)(3,4), (13)(24), (14)(23) \}.
+\end{align*}
+
+\end{Ejemplo}
+
+
+
+\begin{proposition}
+    El orden de cada elemento $(h,k) \in H \times K$ es el mínimo común múltiplo de los órdenes de $h$ y $k$:
+    \[
+    |(h,k)| = mcm(|h|,|k|) .
+    \]
+    En particular, si $|h|$ y $|k|$ son primos relativos, entonces el orden de $(h,k)$ es el producto de los órdenes de $h$ y $k$.
+\end{proposition}
+
+
+
+
+\begin{proposition} \label{ciclico}
+Consideramos el producto de grupos cíclicos $\mathbb{Z}_m \times \mathbb{Z}_n$, se tiene:
+\[
+    \mathbb{Z}_m \times \mathbb{Z}_n \cong \mathbb{Z}_{mn} \Longleftrightarrow mcd(n,m)=1 \:.
+\]
+\end{proposition}
+
+
+%En la definición \ref{direct} se ha visto como a partir del producto directo de dos grupos $H$ y $K$ se ha construido un grupo $G$. Este grupo se conoce como producto directo externo de $H$ y $K$. 
+
+La construcción realizada en la Definición \ref{direct} caracteriza al producto de grupos de manera externa.  En cambio, en ocasiones resulta de interés estudiar si un grupo es producto directo de dos subgrupos suyos, es decir, establecer un criterio para dar un isomorfismo entre el grupo y el producto directo de sus subgrupos. La siguiente Proposición \ref{Otro} caracterizará el producto directo de forma interna.
+
+
+\newpage
+\begin{proposition} \label{Otro}
+    Sea $G$ un grupo y $H, K \leq G$ subgrupos normales satisfaciendo:
+    \begin{enumerate}
+    \item $H,K  \trianglelefteq G$ ,
+        \item $G = HK$  ,
+        \item $H \cap K = \{1\}$.
+        %\item $hk = kh$ para todo $k\in K$, $h \in H$.
+        %\item Para cualquier $g\in G$, $g = hk$ , $\forall h \in H$, $\forall k \in K$ .
+    \end{enumerate}
+    entonces:
+    \[
+        G \cong H \times K \: .
+    \]
+\end{proposition}
+
+%\begin{remark}
+%Si un grupo $G$ tiene dos subgrupos $H$ y $K$ que satisfacen las condiciones de \ref{Otro}, se dice que $G$ es producto directo interno.
+%\end{remark}
+
+
+
+%\begin{Ejemplo}
+%$D_6$ es producto directo interno de otros dos.
+%\end{Ejemplo}
+
+%\begin{Ejemplo}
+%$Q_2$ no es producto directo interno.
+%\end{Ejemplo}
+
+
+
+
+
+
+
+
+
+
+Para el caso general, se construye el producto directo de igual forma. En primer lugar, definiremos la caracterización externa del producto directo de grupos, y en la Proposición \ref{next} destacaremos propiedades del producto que no serán demostradas por ser estándar.
+
+Sean $H_i$ , $ i \in I = \{ 1,2,\ldots,n \}$ grupos. Definimos el producto directo de esta familia de grupos como el producto cartesiano:
+\[
+    H_1 \times H_2 \times \cdots\times H_n := \prod_{i\in I } H_i = \{ (h_i)_{i \in I} \mid h_i \in H_i \} ,
+\]
+dotado de la operación
+\[
+    (h_1,h_2,\cdots,h_n)(h'_1,h'_2,\cdots,h'_n) = (h_i)_{i \in I} (h_i')_{i \in I} := (h_i h_i')_{i \in I}
+\]
+
+
+%\makeatletter
+%\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+%\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+%\makeatother
+
+
+\begin{proposition} \label{next}
+\hfill
+    \begin{enumerate}
+        \setlength\itemsep{0.3em}
+
+
+    \item  Sean $H_1,\ldots,H_n$ subgrupos de un grupo $G$. El grupo $G$ es producto directo de sus subgrupos $H_1, \ldots, H_n$ si:
+        \begin{enumerate}
+            \setlength\itemsep{0.1em}
+    
+            \item $H_i \trianglelefteq G$, $\; \forall i = 1,\ldots, n$.
+            \item $H_i \cap (\bigcdot_ {j \not = i} H_j) =\{1\}$, $\; \forall i =1,\ldots ,n$.
+            \item $H_1 \cdots H_n = G$.
+        \end{enumerate}
+    
+    \item   Si $H_1, H_2, \ldots , H_n$ son grupos finitos, su producto directo es un grupo de orden:
+        \[
+            |H_1|\cdot|H_2|\cdots |H_n|\:.
+        \]
+            \end{enumerate}
+\end{proposition}
+
+
+
+
+
+
+
+
+
+
+\newpage
+\section{Producto semidirecto} \label{semidirect1}
+En esta sección presentaremos y desarrollaremos el producto semidirecto para la construcción de un grupo $G$ a partir de dos grupos $H$ y $K$. Su construcción requiere de acciones de grupo, que se introdujeron en la Sección \ref{acciones}. Este concepto es clave para dos de los teoremas más importantes del álgebra abstracta, el \textit{Teorema de Cayley} \ref{cayley} y los \textit{Teoremas de Sylow} \ref{sylow}.
+
+
+
+Como hemos comentado anteriormente, dar una acción de grupo (\ref{prop}) es equivalente a dar un homomorfismo de grupos $G \rightarrow S(X)$, el grupo de Permutaciones del conjunto $X$. Ahora bien, en vez de considerar un conjunto $X$, podemos tomar un grupo $H$ y restringirnos a las acciones de $G \rightarrow \operatorname{Aut}(H)$ que son compatibles con una estructura de grupo, es decir, acciones que satisfagan las propiedades \ref{grupo1} y \ref{grupo2}.
+
+
+%En (\ref{prop}) se ha introducido el concepto de acción de grupo y se ha estudiado que dar una acción es equivalente a dar un homomorfismo de grupos $K \rightarrow S(X)$, el grupo de permutaciones del conjunto $X$. En vez de considerar un conjunto $X$, se puede tomar un grupo $H$ y restringirnos a las acciones de $K \rightarrow \operatorname{Aut}(H)$ que son compatibles con una estructura de grupos, dando lugar a la construcción del \textit{producto semidirecto}.
+
+El producto semidirecto de dos grupos $H$ y $K$ es una generalización del producto directo en la que la condición de normalidad de ambos grupos $H$ y $K$ se encuentra ``relajada''. Esta herramienta nos permitirá construir un grupo más grande $G$, de tal manera que contenga subgrupos isomorfos a $H$ y $K$, al igual que en el producto directo. En este caso, $H$ será normal en $G$, pero el subgrupo $K$ no tiene por qué serlo.
+Así, por ejemplo, podremos construir grupos no abelianos incluso si $H$ y $K$ son abelianos.
+
+
+\iffalse
+\begin{theorem} \label{import}
+Sean $H$ y $K$ dos grupos y  $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ un homomorfismo de grupos. Definimos $G$ como el conjunto de los pares $(h,k)$ con $h\in H$, $k \in K$ dotado con la operación:
+\[
+    (h_1,k_1)(h_2,k_2) = (h_1 \cdot \varphi_{k_1}(h_2), k_1k_2), \quad \forall \, h_1,h_2 \in H, \; \forall \, k_1,k_2 \in K.
+    %(h_1,k_1)(h_2,k_2) = (h_1 \cdot {}^{k_1}h_2, k_1k_2), \quad \forall \, h_1,h_2 \in H, \; \forall \, k_1,k_2 \in K
+\]
+
+
+donde: %$\varphi_{k_1}$ es un automorfismo de conjugación que viene dado por:
+\begin{align*}
+    \varphi \colon K &\longrightarrow \operatorname{Aut}(H) \\
+    k  &\longmapsto \varphi(k) = \varphi_k   \colon \; \; H\longrightarrow H \\
+        & \hspace{3.5cm}   
+        h \longmapsto \varphi_k(h) = {}^{k}h
+        %h \longmapsto \varphi_k(h) := khk^{-1}
+    %\varphi(k) &= \varphi_k
+\end{align*}
+Entonces, se cumple:
+%\renewcommand\labelenumi{(\theenumi)}
+\begin{enumerate}[label=\arabic*.]
+    \item $G$ es un grupo de orden $|H|\cdot|K|$. \label{item:1}
+    
+    \item Los conjuntos $\{(h,1) \mid h \in H\}$ y $\{(1,k) \; | \; k \in K\}$ son subgrupos de $G$ y las aplicaciones $h \mapsto (h,1)$, $h\in H$ y $k\mapsto (1,k)$, $k \in K$ son isomorfismos de esos dos grupos en $H$ y en $K$, es decir:
+    \[
+        H \cong \{(h,1) \mid h \in H\}, \qquad 
+        K \cong \{(1,k) \mid k \in K\}
+    \]
+     \label{item:2}
+\end{enumerate} 
+    Identificando $H$ y $K$ con sus isomorfismos en $G$ descritos en \ref{item:2}, se tiene:
+\begin{enumerate}[label=\arabic*.]
+    \setcounter{enumi}{2}
+    \item $H \trianglelefteq G$  \label{item:3}
+    \item $H \cap K =1$  \label{item:4}
+    \item Para todo $h\in H$ y $k\in K$, \; $khk^{-1}=\varphi(k)(h) = \varphi_k(h) = {}^kh$.  \label{item:5}
+    \end{enumerate}
+\end{theorem}
+\fi
+
+
+
+
+
+\begin{theorem} \label{grande}
+
+Sean $K$ un grupo y $H$ un $K$-grupo, llamemos $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ al morfismo inducido por la acción:
+\begin{align*}
+    \varphi \colon K &\longrightarrow \operatorname{Aut}(H) \\
+    k  &\longmapsto \varphi(k) = \varphi_k   \colon \; \; H\longrightarrow H \\
+        & \hspace{3.5cm}   h \longmapsto {}^kh = khk^{-1} 
+    %\varphi(k) &= \varphi_k
+\end{align*}
+
+y definamos $G$ como el conjunto de los pares $(h,k)$ con $h\in H$, $k \in K$ dotado con la operación:
+\[
+    (h_1,k_1)(h_2,k_2) = (h_1 \cdot \varphi_{k_1}(h_2), k_1k_2), \quad \forall \, h_1,h_2 \in H, \; \forall \, k_1,k_2 \in K.
+    %(h_1,k_1)(h_2,k_2) = (h_1 \cdot {}^{k_1}h_2, k_1k_2), \quad \forall \, h_1,h_2 \in H, \; \forall \, k_1,k_2 \in K
+\]
+
+
+Entonces, se cumple:
+%\renewcommand\labelenumi{(\theenumi)}
+\begin{enumerate}[label=\arabic*.]
+    \item $G$ es un grupo de orden $|H|\cdot|K|$. \label{item:1}
+    
+    \item Los conjuntos $\{(h,1) \mid h \in H\}$ y $\{(1,k) \mid k \in K\}$ son subgrupos de $G$ y las aplicaciones $h \mapsto (h,1)$, $h\in H$ y $k\mapsto (1,k)$, $k \in K$ son isomorfismos de esos dos grupos en $H$ y en $K$, es decir:
+    \[
+        H \cong \{(h,1) \mid h \in H\} \quad y \quad 
+        K \cong \{(1,k) \mid k \in K\}.
+    \]
+     \label{item:2}
+\end{enumerate} 
+    Identificando $H$ y $K$ con sus isomorfismos en $G$ descritos en \ref{item:2} y la acción por conjugación en $G$, se tiene:
+\begin{enumerate}[label=\arabic*.]
+    \setcounter{enumi}{2}
+    \item $H \trianglelefteq G$  , \label{item:3}
+    \item $H \cap K =1$ , \label{item:4}
+    %\item Para todo $h\in H$ y $k\in K$, \; $khk^{-1}=\varphi(k)(h) = \varphi_k(h) = {}^kh$.  \label{item:5}
+    \item $G = KH$ .\label{item:5}
+    \end{enumerate}
+\end{theorem}
+
+
+
+\begin{proof}
+\mbox{}\par 
+
+No es complicado probar que $G$ es un grupo:
+\begin{itemize}
+    \item El elemento neutro de $G$ es $(1_K, 1_H)$ puesto que:
+    \begin{align*}
+        (k,h)(1_K, 1_H) &= (k \cdot \varphi_h(1_K), h \cdot 1_H) = (k,h). \\
+        (1_K, 1_H)(k,h) &= (1_K \cdot \varphi_{1_H}(k), 1_H \cdot h) = (k,h).
+    \end{align*}
+    
+    \item Los elementos inversos vienen dados por $(k,h)^{-1} = (\varphi_{h^{-1}}(k^{-1}),h^{-1})$ :
+    \begin{align*}
+        (k,h)\cdot (k,h)^{-1} &= (k,h)\cdot(\varphi_{h^{-1}}(k^{-1}), h^{-1}) = (k \cdot \varphi_h(\varphi_{h^{-1}}(k^{-1})) ,hh^{-1}) = \\
+        &=(k\cdot \varphi_{hh^{-1}}(k^{-1}), hh^{-1}) = (kk^{-1},hh^{-1})=(1_K,1_H). \\
+        \vspace{0.2cm}
+        (k,h)^{-1}\cdot (k,h) &=  (\varphi_{h^{-1}}(k^{-1}), h^{-1}) \cdot (k,h)
+        (\varphi_{h^{-1}}(k^{-1})\varphi_{h^{-1}}(k), hh^{-1}) = \\
+        &=(\varphi_{h^{-1}}(k^{-1}k), 1_H)  =
+        (\varphi_{h^{-1}}(1_K),1_H)=(1_K,1_H).
+    \end{align*}
+    
+    \item Asociatividad:
+    \begin{align*}
+        &\big[(k_1,h_1)\cdot(k_2,h_2)\big]\cdot (k_3,h_3) 
+        = (k_1\cdot \varphi_{h_1}(k_2), h_1\cdot h_2)\cdot(k_3,h_3) = \\
+        = &(k_1\cdot \varphi_{h_1}(k_2)\cdot \varphi_{h_1h_2}(k_3) , h_1\cdot h_2\cdot h_3) 
+        = (k_1\cdot \varphi_{h_1}(k_2)\varphi_{h_1h_2}(k_3), h_1\cdot h_2\cdot h_3) = \\
+        =&(k_1\cdot \varphi_{h_1}(k_2\cdot \varphi_{h_2}(k_3)), h_1\cdot h_2 \cdot h_3) 
+        = (k_1,h_1) \cdot (k_2 \varphi_{h_2}(k_3) , h_2h_3) = \\
+         & \hspace{6cm} = (k_1,h_1)\cdot \big[(k_2,h_2)\cdot(k_3,h_3)\big].
+    \end{align*}
+    
+\end{itemize}
+El orden del grupo $G$ claramente es el producto del orden de $H$ y $K$, que prueba \ref{item:1}
+
+Sean $\widetilde{H}=\{(h,1) \mid h \in H \}\; $ y  $ \;\widetilde{K}=\{(1,k) \mid k \in K \}$, se tiene:
+\[
+    (x,1)(y,1)=(xy,1), \quad \forall x, y \in H .
+\]
+Además, 
+\[
+    (1,x)(1,y) = (1,xy), \quad \forall x, y \in K .
+\]
+que muestran que $\widetilde{H}$ y $\widetilde{K}$ son subgrupos de $G$ cumpliendo el punto \ref{item:5}, que las aplicaciones de \ref{item:2} son isomorfismos y que $\widetilde{H} \cap \widetilde{K}=1$ (\ref{item:4}).
+
+%Ahora, para todo $h\in H$ y $k\in %K$:
+%\begin{align*}
+%    (1,k)(h,1)(1,k)^{-1} %&=[(1,k)(h,1)](1,k^{-1}) \\
+%    & = (\varphi_k(h),k)(1,k^{-1}) %\\
+%    & = (\varphi_k(h)\varphi_k(1), %kk^{-1}) \\
+ %   &=(\varphi_k(h),1).
+%\end{align*}
+%Así, identificando $h \mapsto (h,1)$ y $k \mapsto (1,k)$ con los isomorfismos de \ref{item:2}, se tiene que $khk^{-1}=\varphi_k(h)$, que prueba \ref{item:5}.
+
+Por último, bajo los isomorfismos de \ref{item:2}, $K \leq N_G(H)$. Como $G=NK$ y $H \leq N_G(H)$, se tiene que $N_G(H) = G$, o en otras palabras, $H\trianglelefteq G$, que demuestra el punto \ref{item:3} y completa la prueba.
+\end{proof}
+%https://math.stackexchange.com/questions/2713093/h-and-k-are-subgroups-of-g-and-h-normalizes-k-is-h-k-a-group
+
+
+
+\begin{definition} \label{11}
+    Sean $H$ y $K$ grupos y $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ un homomorfismo. El grupo $G$ descrito en el Teorema \ref{grande} se denomina \textit{producto semidirecto} de $H$ y $K$ con respecto a $\varphi$ y se denota por $H \rtimes_{\varphi} K$.
+
+\end{definition}
+
+\begin{remark}
+%Cuando el homomorfismo $\varphi$ no da lugar a confusión.
+Cuando la acción está clara el producto semidirecto se denotará $H \rtimes K$. 
+Esta notación se ha elegido para recordarnos que $H$ es normal en $H \rtimes K$ y que la construcción del producto semidirecto no es simétrica en $H$ y $K$ (a diferencia del producto directo). 
+\end{remark}
+
+
+
+
+
+Al igual que en el producto directo, el producto semidirecto admite una caracterización de forma interna, como veremos en el Teorema \ref{inte}, que se enunciará y demostrará a continuación: 
+
+\begin{theorem} \label{inte}
+Sea $G$ un grupo con subgrupos $H$ y $K$ satisfaciendo:
+\begin{enumerate}
+    \setlength\itemsep{0em}
+
+    \item $H \trianglelefteq G \!$ , \label{item11}
+    \item $G=HK$  \!,\label{item22}
+    \item $H \cap K = 1$ . \! \label{item33}
+\end{enumerate}
+y sea $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ el homomorfismo definido por la aplicación que envía $k\in K$ al automorfismo de conjugación de $k$ en H, es decir, $\varphi_k(h)=khk^{-1}$, $\forall h \in H$. Entonces:
+\[
+   G\cong H \rtimes_{\varphi} K \:.
+\]
+\end{theorem}
+
+
+\begin{proof}
+\hfill
+
+Definimos la aplicación:
+\begin{align*}
+    f \colon H \rtimes_{\varphi} K & \rightarrow G \\
+    (h,k) &\mapsto hk
+\end{align*}
+\begin{itemize}
+    \setlength\itemsep{0.25em}
+
+    \item La sobreyectividad de $f$ es evidente ya que $G=HK$ \!.
+    \item Veamos que $f$ es inyectiva. Sean $h_1, h_2 \in H$, $k_1, k_2 \in K$.  Si $f(h_1, k_1)=f(h_2,k_2)$, entonces $h_1k_1=h_2k_2$. Se tiene que $h_2^{-1}h_1 = k_2k_1^{-1} \in H \cap K = 1$, luego $h_1=h_2$ y $k_1 = k_2$.
+    \item $f$ es un homomorfismo:
+    \begin{align*}
+        f((h_1,k_2),(h_2,k_2))&=f(h_1 \cdot \varphi_{k_1}(h_2), k_1k_2)= h_1(k_1h_2k_1^{-1})k_1k_2= \\
+        &=h_1k_1h_2k_2=f(h_1,k_1)f(h_2,k_2) .
+    \end{align*}
+\end{itemize}
+\end{proof}
+
+
+%\begin{proof}
+%$H\trianglelefteq G$, luego que $HK$ es un subgrupo de $G$. Como $H\cap K=1$, los elementos de $HK$ se escriben únicamente como $hk$, para %algún $h\in H$, $k \in K$. Así, la aplicación $hk\rightarrow(h,k)$ es una biyección de $HK$ a $H\rtimes K$. 
+%\end{proof}
+
+
+\begin{remark}
+En el Teorema \ref{grande} se ha construido el producto semidirecto externo de dos grupos a partir de un grupo $K$, un $K$-grupo $H$ y la acción de conjugación de $K$ en $\operatorname{Aut}(H)$. En cambio, a veces es de utilidad estudiar si un grupo $G$ satisface las hipótesis del Teorema \ref{inte} para ser producto semidirecto de dos subgrupos. 
+A continuación, veremos algunos ejemplos:
+
+%En la definición \ref{11} se ha visto como a partir del producto semidirecto $H$ y $K$ a través del homomorfismo $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ se ha construído un grupo $G$. Este grupo se conoce como producto semidirecto externo de $H$ y $K$.  \\
+%En cambio, muchas veces se desea estudiar si un grupo cualquiera es producto semidirecto de dos de sus subgrupos. En el teorema \ref{inte} se han enunciado las hipótesis para que un grupo $G$ las cumpla. En caso afirmativo, se dirá que $G$ es producto semidirecto interno de $H$ y $K$.
+\end{remark}
+
+
+\newpage
+\begin{Ejemplo} \label{SnAn}
+Veamos que $S_n$ es producto semidirecto interno de $A_n$ y $K$, $S_n \cong A_n \rtimes K$, donde $K=\{ 1, (12)\}$.
+\begin{enumerate}
+    \setlength\itemsep{0.1em}
+    \item El índice $[S_n:A_n]=2$, por lo que $A_n \trianglelefteq S_n$ y $A_n K \leq S_n$.
+    \item Trivialmente, $A_n \cap K = \{1\}$. De hecho, se cumple:
+    \[
+        |A_n K| = \frac{|A_n| \cdot |K|}{|A_n \cap K|} = \frac{\frac{n!}{2}\cdot 2}{1} = n! 
+    \]
+    y se tiene que $|A_nK| = |S_n|$. \; Luego $A_n$ y $K$ satisfacen las condiciones del Teorema \ref{inte} y podemos afirmar que:
+    \[
+         S_n \cong A_n \rtimes K \: .
+    \]
+\end{enumerate}
+\end{Ejemplo}
+
+
+
+\begin{Ejemplo} \label{dnrs}
+El grupo Diédrico $D_n =<\varphi \:, \: \sigma> $ es producto semidirecto interno. Se cumple:
+\begin{enumerate}
+    \setlength\itemsep{0.1em}
+    \item El subgrupo formado por el conjunto de las rotaciones $< \varphi>$  es un subgrupo normal de $D_n$. Por otro lado, $< \sigma> \leq D_n \:$.
+    \item $D_n =<\varphi>\cdot<\sigma> $.
+    \item $<\varphi> \cap <\sigma> = \{1\}.$
+\end{enumerate} 
+Ambos subgrupos cumplen las condiciones del Teorema \ref{inte} y, por tanto:
+\[
+    D_n = <\varphi> \rtimes <\sigma> \: .
+\]
+\end{Ejemplo}
+
+
+
+\begin{definition} \label{ot}
+    Sea $H$ un subgrupo de un grupo $G$. Un subgrupo $K$ de $G$ es \textit{complemento} de $H$ en $G$ si $G=HK$ y $H\cap K=1$.
+\end{definition}
+
+Con la Definición \ref{ot}, el criterio para reconocer un producto semidirecto se reduce a la existencia de un subgrupo que sea complemento para algún subgrupo normal propio de $G$.
+
+
+\begin{Ejemplo} \label{Q2ret}
+No siempre un grupo puede expresarse como producto semidirecto de dos de sus subgrupos, como es el caso del grupo de los Cuaternios $Q_2$. Veamos el retículo de subgrupos:
+\begin{equation*}
+    \begin{tikzcd}
+    & & Q_2  \\
+    & <i> \arrow[ur,dash,hook]
+    & <j> \arrow[u,dash,hook]
+    &<k> \arrow[ul,dash, hook] \\
+    & & <-1> \arrow[ul,dash,hook] \arrow[u,dash,hook] \arrow[ur,dash,hook] \\
+    & & \{1\}  \arrow[u, dash,hook]
+    \end{tikzcd}
+\end{equation*}
+
+donde:
+\begin{align*}
+    <i> &= \{ 1,-1,i,-i\} , \qquad 
+    <j> = \{ 1,-1,j,-j\}, \\
+    <k> &= \{ 1,-1,k,-k \}, \qquad 
+    <-1> = \{ 1,-1\}.
+\end{align*}
+
+
+Dado cualquier grupo $H\leq Q_2$ (que además es normal), no existe otro subgrupo complemento (\ref{ot}) de $H$ en $Q_2$ que satisfaga las condiciones del Teorema \ref{inte}.
+\end{Ejemplo}
+
+
+\begin{proposition} \label{esto}
+    Sean $H$ y $K$ grupos y $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ un homomorfismo. Las siguientes enunciados son equivalentes:
+    \begin{enumerate}[label=(\arabic*)]
+        \item La aplicación identidad entre $H \rtimes K$ y $H \times K$ es un homomorfismo de grupos. \label{item1}
+        \item $\varphi$ es el homomorfismo trivial de $K$ en $\operatorname{Aut}(H)$. \label{item2}
+        \item $K \trianglelefteq H \rtimes K$ \! . \label{item3}
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\mbox{}\par 
+\ref{item1} $\Rightarrow$ \ref{item2} Por la operación definida en $H \rtimes K$:
+\[
+    (h_1,k_1)(h_2,k_2) = (h_1 \cdot \varphi_{k_1}(h_2), k_1k_2) \stackrel{\ref{item1}}{=} (h_1 h_2, k_1k_2), \quad \forall h_1,h_2 \in H, \; \forall k_1,k_2 \in K.
+\]
+se tiene que $\varphi_{k_1}(h_2) = h_2$,  $\; \forall h_2 \in H$, $\forall k_1 \in K$ y $K$ actúa trivialmente sobre $H$.
+
+
+
+\ref{item2} $\Rightarrow$ \ref{item3} Si $\varphi$ es el homomorfismo trivial, entonces la acción de $K$ sobre $H$ es trivial por lo que por el Teorema \ref{grande} los elementos de $H$ conmutan con los de $K$. En particular, $H \leq N_G(K)$ y $G=HK \leq N_G(K)$ .
+
+
+
+\ref{item3} $\Rightarrow$ \ref{item1} Si $K$ es normal en $H \rtimes K$ entonces $\forall h \in H$ y $k \in K$, $[h,k]\in H\cap K=1$. Así, $hk=kh$ y la acción de $K$ en $H$ es trivial. La multiplicación en el producto semidirecto coincide con la del producto directo:
+\[
+    (h_1,k_1)(h_2,k_2) = (h_1h_2,k_1k_2) ,\quad \forall h_1,h_2 \in H, \;\forall k_1, k_2 \in K.
+\]
+\end{proof}
+
+
+
+%Como consecuencia de la proposición \ref{esto}, cuando ambos subgrupos $H,K \leq G$ son normales, el producto semidirecto con la %acción trivial de $K \rightarrow \operatorname{Aut}(H)$ coincide con el producto directo, es decir:
+%\[
+%    H \times K \cong H \rtimes K
+%\]
+Consideramos $H$ y $K$ dos grupos, $\varphi  \colon K \rightarrow \operatorname{Aut}(H)$ un homomorfismo de $K$ en los automorfismos de $H$  y $H \rtimes K$ su producto semidirecto. Por el Teorema \ref{grande}, $H \trianglelefteq H \rtimes K$, pero no necesariamente $K$. Si $H\rtimes K$ es abeliano, entonces cada subgrupo es normal por lo que si $K$ es normal, entonces por la Proposición \ref{esto}, $\varphi$ sería el homomorfismo trivial y el producto semidirecto coincidiría con el producto directo, es decir:
+\[
+    H \times K \cong H \rtimes K .
+\]
+
+\begin{Ejemplo} \label{c3c2}
+Consideramos los grupos cíclicos $C_2=\langle a\rangle $ y $C_3=\langle b\rangle$. Estudiemos los posibles productos semidirectos:
+\begin{itemize}
+    \setlength\itemsep{0.34em}
+
+        \item $C_2 \rtimes C_3 \:$, el único homomorfismo $\varphi \colon C_3 \rightarrow \operatorname{Aut}(C_2)$ es el trivial por lo que el producto semidirecto coincide con el producto directo.
+
+    \item $C_3 \rtimes C_2$ \! \!, se tiene que $C_3 \trianglelefteq C_3 \rtimes C_2$ y, por tanto:
+    \begin{align*}
+        \varphi \colon C_2 \longrightarrow \operatorname{Aut}(&C_3) \\
+         C_3 &\longrightarrow  \; C_3  \\
+         a   \;  \longmapsto  \quad  b  \; \; &\longmapsto  
+        \begin{cases}
+              b  \\
+              b^2  
+        \end{cases}
+    \end{align*}
+    Hay dos acciones posibles, por lo que existirán dos productos semidirectos:
+    \begin{align}
+        \varphi_a(b) &= {}^ab = b  \Longrightarrow C_3 \rtimes C_2 \cong C_3 \times C_2. \label{p4}\\
+        \varphi_a(b) &= {}^ab = b^2  \Longrightarrow C_3 \rtimes C_2 \cong D_3 . \label{s}
+    \end{align}
+    
+    En (\ref{p4}), la acción es trivial por lo que por la Proposición \ref{esto} el producto semidirecto coincide con el producto directo. Por la Proposición \ref{ciclico}, el grupo es cíclico de orden $6$. \\
+    En (\ref{s}), el grupo obtenido no es abeliano por lo que debe ser isomorfo a $D_3$. No es difícil aplicar el Teorema de Dyck \ref{dick} para dar dicho isomorfismo.
+    
+    
+\end{itemize}
+
+
+\end{Ejemplo}
+
+
+
+
+%En http://www.ugr.es/~anillos/textos/pdf/2019/3000-Grupos.pdf hay ejemplos de productos semidirectos.
+%Se puede tomar hol, Dicíclico, metacíclico.
+
+
+%En http://www.ugr.es/~anillos/textos/pdf/2019/3000-Grupos.pdf hay ejemplos de productos semidirectos.
+%Se puede tomar hol, Dicíclico, metacíclico.

@@ -1,0 +1,221 @@
+% Plantilla para un Trabajo Fin de Grado de la Universidad de Granada,
+% adaptada para el Doble Grado en Ingeniería Informática y Matemáticas.
+%
+%  Autor: Mario Román.
+%  Licencia: GNU GPLv2.
+%
+% Esta plantilla es una adaptación al castellano de la plantilla
+% classicthesis de André Miede, que puede obtenerse en:
+%  https://ctan.org/tex-archive/macros/latex/contrib/classicthesis?lang=en
+% La plantilla original se licencia en GNU GPLv2.
+
+% La compilación se realiza con las siguientes instrucciones:
+%   pdflatex --shell-escape main.tex
+%   bibtex main
+%   pdflatex --shell-escape main.tex
+%   pdflatex --shell-escape main.tex
+
+
+% Opciones del tipo de documento
+\documentclass[scrartcl,oneside,openright,titlepage,numbers=noenddot,openany,headinclude,footinclude=true, cleardoublepage=empty,abstractoff,BCOR=5mm,paper=a4,fontsize=12pt,main=spanish]{scrreprt}
+
+%\documentclass{scrartcl}
+\usepackage{graphicx}
+\usepackage{gensymb}
+\makeatletter
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
+\makeatother
+\usepackage{cancel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{fixltx2e}
+\usepackage{graphicx} % Inclusión de imágenes.
+\usepackage{grffile}  % Distintos formatos para imágenes.
+\usepackage{longtable} % Tablas multipágina.
+\usepackage{wrapfig} % Coloca texto alrededor de una figura.
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{tikz} % Diagramas conmutativos.
+\usepackage{minted} % Código fuente.
+\usepackage[T1]{fontenc}
+\usepackage[square,sort,comma,numbers]{natbib}
+
+% Plantilla classicthesis
+\usepackage[beramono,eulerchapternumbers,linedheaders,parts,a5paper,dottedtoc,
+manychapters,pdfspacing]{classicthesis}
+
+% Geometría y espaciado de párrafos.
+\setcounter{secnumdepth}{0}
+%\usepackage{enumitem}
+
+%\usepackage[ruled]{algorithm2e} %for psuedo code
+\usepackage[ruled]{algorithm2e}
+\SetKwRepeat{Do}{do}{while}%
+\SetEndCharOfAlgoLine{}
+
+
+
+\usepackage{multicol}
+%\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+%\setlist[enumerate]{topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex}
+\usepackage[top=1in, bottom=1.5in, left=1in, right=1in]{geometry}
+\setlength\itemsep{0em}
+\setlength{\parindent}{0pt}
+\usepackage{parskip}
+
+
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+
+    
+% Profundidad de la tabla de contenidos.
+\setcounter{secnumdepth}{3}
+
+% Usa el paquete minted para mostrar trozos de código.
+% Pueden seleccionarse el lenguaje apropiado y el estilo del código.
+\usepackage{minted}
+\usemintedstyle{colorful}
+\setminted{fontsize=\small}
+\setminted[haskell]{linenos=false,fontsize=\small}
+
+\newcommand{\RN}[1]{%
+  \textup{\lowercase\expandafter{\romannumeral#1}}%
+}
+
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+
+\renewcommand{\theFancyVerbLine}{\sffamily\textcolor[rgb]{0.5,0.5,1.0}{\oldstylenums{\arabic{FancyVerbLine}}}}
+
+% Archivos de configuración.
+\input{macros}  % En macros.tex se almacenan las opciones y comandos para escribir matemáticas.
+\input{classicthesis-config} % En classicthesis-config.tex se almacenan las opciones propias de la plantilla.
+
+% Color institucional UGR
+% \definecolor{ugrColor}{HTML}{ed1c3e} % Versión clara.
+\definecolor{ugrColor}{HTML}{c6474b}  % Usado en el título.
+\definecolor{ugrColor2}{HTML}{c6474b} % Usado en las secciones.
+
+% Datos de portadaR
+\usepackage{titling} % Facilita los datos de la portada
+\author{Alberto Jesús Durán López} 
+\date{\today}
+\title{Librería en Python de Teoría de Grupos }
+%\title{Teoría de Grupos: \\Implementación de una librería en Python }
+
+% Portada
+\include{plantilla/preliminares/titlepage}
+\usepackage{wallpaper}
+\usepackage[main=spanish]{babel}
+
+
+\begin{document}
+
+
+
+\ThisULCornerWallPaper{1}{plantilla/preliminares/ugrA4.pdf}
+\maketitle
+
+
+
+
+%TÍTULO
+%\input{plantilla/preliminares/titulo}
+
+
+
+%RESUMEN
+\input{plantilla/preliminares/resumen}
+
+%SUMMARY
+\input{plantilla/preliminares/summary}
+
+
+
+%ORIGINALIDAD
+\input{plantilla/preliminares/originalidad}
+
+
+%AGRADECIMIENTOS 
+\input{plantilla/preliminares/agradecimientos}
+
+
+%TABLA DE CONTENIDOS
+
+
+
+
+
+
+
+\ctparttext{
+  \color{black}
+  \begin{center}
+    \textit{$\ldots$ algunos misterios siempre escaparán a la mente humana. Para convencernos de ello, sólo hay que echar un vistazo a las tablas de los números primos, y ver que no reina ni orden, ni reglas $\ldots$ (Galois)}
+  \end{center}
+}
+
+
+
+\newpage
+\blankpage
+\tableofcontents
+
+
+\input{plantilla/preliminares/glosario}
+\blankpage
+
+\part{Parte matemática}
+
+
+\input{plantilla/chapters/introduccion}
+\input{plantilla/chapters/presentaciones}
+\input{plantilla/chapters/producto}
+\input{plantilla/chapters/clasificación}
+\input{plantilla/chapters/informatica}
+\input{plantilla/chapters/conclusiones}
+
+
+
+
+\nocite{*}
+
+
+
+%\newpage
+%\blankpage
+
+
+% Añade sección de referencias al final del documento.
+% Selecciona un estilo de cita.
+%\bibliographystyle{unsrt}
+%\bibliographystyle{ieeetr}
+\bibliographystyle{alpha}
+%\bibliography{authoryear}
+%\bibliographystyle{siam}
+%\bibliographystyle{apalike}
+%\bibliographystyle{unsrtnat}
+
+% En research.bib están las entradas de los artículos que citamos.
+% Podemos cambiar el nombre del archivo aquí.
+
+
+
+\newpage 
+\blankpage
+
+\bibliography{research}   
+
+\end{document}

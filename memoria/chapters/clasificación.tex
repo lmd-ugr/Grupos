@@ -1,0 +1,385 @@
+%\blankpage
+%\newpage 
+\blankpage
+
+\chapter{Técnicas de clasificación de grupos}
+
+
+El producto semidirecto nos ofrece una una herramienta potente para la clasificación de grupos, sin embargo, no funciona para todo grupo de orden $n$. Por ejemplo, en el Ejemplo \ref{Q2ret} hemos visto que el grupo $Q_2$ no puede expresarse como producto semidirecto (interno) de dos de sus subgrupos. De hecho, es una herramienta que no funciona para grupos que son potencia alta de un número primo. La documentación usada para este desarrollo ha sido principalmente ~\cite{jara} y ~\cite{eugenio}, y en menor medida, de ~\cite{abstractrojo}.
+
+Aplicaremos el Teorema \ref{inte} para clasificar grupos de orden $n$ para algunos valores específicos de $n$. La idea a seguir es el siguiente procedimiento:
+\begin{enumerate}
+    \item Mostrar que cada grupo de orden $n$ tiene subgrupos propios $H$ y $K$ que satisfacen las hipótesis del Teorema \ref{inte}.
+    \item Encontrar todos los isomorfismos posibles para $H$ y $K$.
+    \item Para cada pareja $H$, $K$ del paso anterior, encontrar todos los posibles homomorfismos $\varphi \colon K \rightarrow \operatorname{Aut}(H)$.
+    \item Para cada terna $H$, $K$, $\varphi$ del paso anterior, contruir el producto semidirecto $H \rtimes K$ y determinar cuáles de ellos son isomorfos, obteniendo así una lista de grupos e isomorfismos de orden $n$.
+  
+\end{enumerate}
+
+
+
+A modo de ejemplo y siguiendo el procedimiento descrito anteriormente, en el Ejemplo \ref{12e} se determinarán todos los grupos de orden $12$ salvo isomorfismos. Pero antes, enunciamos bajo la siguiente Proposición \ref{juntas} algunas propiedades que necesitaremos.
+
+\begin{proposition} \label{juntas}
+\hfill 
+\begin{enumerate}
+    \item Sea $p$ un primo con $p\not=2$ y sea $n \in \mathbb{Z}$. Entonces $\operatorname{Aut}(\mathbb{Z}_p) \cong \mathbb{Z}_{p-1}$. En el caso general, se cumple $\operatorname{Aut}(\mathbb{Z}_{p^n}) \cong \mathbb{Z}_{p^{n-1}(p-1)}$. \label{ant1}
+    
+    \item Sea $p$ un primo y sea V un grupo abeliano tal que para todo $v \in V$, $pv=0$. Si $|V|=p^n$, entonces $V$ es un espacio vectorial de dimensión $n$ sobre el cuerpo $\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$. Además, $\operatorname{Aut}(V) \cong GL(V) \cong GL_n(\mathbb{F}_p)$, donde $|\operatorname{Aut}(V)|=(p^n-1)(p^n-p) \cdots (p^n -p^{n-1})$. \label{ant2}
+    
+    \item Sean $\varphi \colon C_n \langle x \rangle \longrightarrow \operatorname{Aut}(H)$, $i=1,2$ acciones de grupos. Si $\varphi_1(x)$ y $\varphi_2(x)$ son conjugados, entonces: \label{ant3}
+    \[
+        C_n \rtimes_{\varphi_1}H \cong C_n  \rtimes_{\varphi_2}H \:. 
+    \] 
+\end{enumerate}
+
+\end{proposition}
+
+
+
+
+
+
+\begin{Ejemplo} \label{12e}
+Sea $G$ con $|G|=12 = 2^2\cdot 3$. Denotamos por $n_2$ el nº de $2$-subgrupos de Sylow y por $n_3$ el número de $3$-subgrupos de Sylow, entonces:
+\begin{equation*}
+\begin{rcases}
+  &n_2  \equiv 1 \: mod(2) \\
+  &n_2 \: \big|\: 3
+\end{rcases}
+\Rightarrow  n_2= 1,3 \quad y \quad 
+\begin{rcases}
+  &n_3  \equiv 1 \: mod(3) \\
+  &n_3  \:\big|\: 4
+\end{rcases}
+\Rightarrow  n_3 = 1, 4 \:.
+\end{equation*}
+
+ 
+Consideramos $H$ un 2-subgrupo de Sylow y $K$ un 3-subgrupo de Sylow. El caso $n_2=3$ y $n_3=4$ no se puede dar ya que existirían $4\times(3-1)=8$ elementos de orden $3$ y más de $3$ elementos de orden $2$ o $4$, lo que sería una contradicción ya que $|G|=12$.
+
+Como en el resto de casos alguno de los p-subgrupos es normal, se tiene que $HK=G$. Además, $H\cap K = \{1\}$ por lo que se cumplen las condiciones del Teorema \ref{inte} y $G$ se puede expresar como producto semidirecto. Distinguimos los siguientes casos:
+\begin{itemize}
+    \setlength\itemsep{0.3em}
+    \item $n_2=1$ y $n_3=1$. Ambos subgrupos son normales luego por la Proposición \ref{esto}, $G$ es producto directo de $H$ y $K$:
+    \[
+        G = H\times K \cong \mathbb{Z}_4 \times \mathbb{Z}_3 \cong \mathbb{Z}_{12}\:.
+    \]
+    
+    \item $n_2=1$ y $n_3=4$. Se tiene que $H$ es un subgrupo normal y $G = H \rtimes_{\varphi} K$. Estudiamos los posibles homomorfismos $\varphi \colon K \to \operatorname{Aut}(H)$. Como $|H|=4$, tenemos que distinguir dos casos:
+    \vspace{0.2cm}
+    
+        \begin{itemize}
+            \setlength\itemsep{0.3em}
+            \item Si $H \cong \mathbb{Z}_4$, entonces  por la Proposición \ref{ant1}, $\operatorname{Aut}(H) \cong \mathbb{Z}_2$ y el único homomorfismo $\varphi \colon K \to \operatorname{Aut}(H)$ es el trivial, por tanto:
+            \[
+               G \cong H \rtimes_{\varphi} K \cong H \times K \cong \mathbb{Z}_{12} \:.
+            \]
+            \item Si $H\cong \mathbb{Z}_2 \times \mathbb{Z}_2$, entonces $\operatorname{Aut}(H)\cong GL_2(\mathbb{Z}_2) \cong  S_3$ y existen tres posibles morfismos $\varphi \colon K \to S_3$. Uno de ellos debe ser el trivial, mientras que los otros dos, por la Proposición \ref{ant3}, dan lugar a productos semidirectos que son isomorfos ya que tienen imágenes conjugadas. 
+            Escribimos $K = \langle x \rangle$ y $H = \langle y \rangle \times \langle z \rangle$ .
+            \begin{align*}
+            \varphi_{0} \colon K \rightarrow \operatorname{Aut}(H) &; \: \varphi_{0}(x)= Id \\
+            \varphi_{1} \colon K \rightarrow \operatorname{Aut}(H) &; \: \varphi_{1}(x)(y)= yz, \: \varphi_{1}(x)(z)=y 
+            \end{align*}
+        \end{itemize}
+        
+    El morfismo $\varphi_0$ da lugar al producto directo de grupos:
+    \[
+        G \cong K \rtimes_{\varphi_0} H \cong K \times H \cong \mathbb{Z}_{12} \:.
+    \]
+    
+    Mientras que $\varphi_1$ resulta en el grupo Alternado $A_4$:
+    \[
+    G \cong H \rtimes_{\varphi_{1}} K \cong \langle x,y,z \mid x^3 = y^2=z^2 = (yz)^2 = 1, \: xyx^{-1}=yz, \: xzx^{-1}=y  \rangle \cong A_4.
+    \]
+    
+    
+    \item $n_2=3$ y $n_3=1$. Se tiene que $K$ es un subgrupo normal de $G$, por lo que $G$ es producto semidirecto $K\rtimes_{\varphi} H$ con $\varphi \colon H \rightarrow \operatorname{Aut}(K)$. De igual modo, como $|H|=4$, distinguimos dos casos: 
+    \vspace{0.2cm}        
+        \begin{itemize}
+            \setlength\itemsep{0.3em}
+            \item Si $H \cong \mathbb{Z}_4$. Se cumple que $\operatorname{Aut}(K) \cong \mathbb{Z}_2$ por la Proposición $\ref{ant1}$, por lo que existen dos homomorfismos. Escribimos $H=\langle y \rangle$ y $K=\langle x \rangle$, entonces:
+            \begin{align*}
+            \varphi_{0} \colon H \rightarrow \operatorname{Aut}(K) &; \: \varphi_{0}(y)= Id \\
+            \varphi_{1} \colon H \rightarrow \operatorname{Aut}(K) &; \: \varphi_{1}(y)(x) = x^2 = x^{-1} 
+            \end{align*}
+            
+            El primer morfismo da lugar al producto semidirecto $K\rtimes_{\varphi_{0}} H$, que por la Proposición \ref{esto}, coincide con el producto directo de grupos:
+            \[
+                G \cong \langle x,y \mid x^3=x^4 =1, yxy^{-1} = x\: \rangle \cong \mathbb{Z}_3 \times \mathbb{Z}_4 \cong  \mathbb{Z}_{12} .
+            \]
+            Mientras que el segundo morfismo nos da el producto semidirecto $K\rtimes_{\varphi_{1}} H$:
+            \[
+                G \cong \langle x,y \mid x^3=y^4 =1, yxy^{-1} = x^{-1}\: \rangle \cong Q_3 \:.
+            \]
+            \item Si $H \cong \mathbb{Z}_2 \times \mathbb{Z}_2$. De igual modo, $\operatorname{Aut}(K) \cong \mathbb{Z}_2= \langle x \rangle$ y escribimos $H=\langle y \rangle \times \langle z \rangle$. En este caso existirán dos morfismos distintos:
+            \begin{align*}
+            \varphi_{0} \colon H \rightarrow \operatorname{Aut}(K) &; \: \varphi_{0}(y)(x) = \varphi_{0}(z)(x) = Id \\
+            \varphi_{1} \colon H \rightarrow \operatorname{Aut}(K) &; \: \varphi_{1}(y)(x) = x^{-1}, \varphi_{1}(z)(x) = Id
+            \end{align*}
+            El primer morfismo de grupos resulta en el producto semidirecto  $K \rtimes_{\varphi_{0}} H$, que es isomorfo a:
+            \begin{align*}
+                G \cong \langle x,y,z \mid x^3=y^2=z^2=1,  yzy^{-1}=z, yxy^{-1}=x, zxz^{-1}=x \rangle \cong \mathbb{Z}_6 \times \mathbb{Z}_2 .
+            \end{align*}
+            Mientras que el segundo producto semidirecto  $K \rtimes_{\varphi_{1}} H$ nos da el grupo:
+            \[
+            G \cong \langle x,y,z \mid x^3=y^2=z^2=1, yzy^{-1}=z, yxy^{-1}=x^{-1},zxz^{-1}=x  \rangle \cong D_6  .
+            \]
+            
+        \end{itemize}
+\end{itemize}
+
+Como conclusión, tenemos que los grupos no abelianos de orden $12$ salvo isomorfismos son: $A_4, Q_3$ y $D_6$, mientras que los grupos abelianos son: $\mathbb{Z}_{12}$ y $\mathbb{Z}_6 \times \mathbb{Z}_2$.
+
+\end{Ejemplo}
+
+
+\begin{remark}
+El proceso de clasificación de grupos para todo $n$ es costoso y llevaría mucho tiempo clasificar todos los grupos uno a uno. Además, se ha de tener en cuenta que existen grupos que no se pueden clasificar usando esta herramienta. Por estas razones, muchos matemáticos empezaron a estudiar patrones que siguen diferentes grupos, como por ejemplo Hölder, quien realizó diferentes estudios para clasificar grupos cuyo orden es producto de números primos.
+
+Por consiguiente, en las siguientes secciones nos centraremos en determinar grupos que sigan patrones parecidos. Consideramos $p,q$ primos: Nos basaremos en ~\cite{bullejos} para clasificar en \ref{pyp2} los grupos de orden $p$ y $p^2$.  Continuaremos en \ref{pyq} clasificando grupos de orden $pq$ con $p<q$, donde centraremos nuestra atención en el caso particular de grupos de orden $2p$. Por último, nos basaremos en ~\cite{abstractrojo} para determinar en el Teorema \ref{p33} todos los grupos de orden $p^3$.
+\end{remark}
+
+\newpage 
+
+
+
+\iffalse
+\begin{proposition} \label{dos} Sea $p$ un número primo, entonces:
+\hfill
+    \begin{enumerate}
+        \item    Todo grupo de orden $p$ es cíclico. \label{pprimo}
+    
+        \item  Todo grupo de orden $p^2$ es abeliano. \label{p2}
+    \end{enumerate}
+    
+\end{proposition}
+\fi
+
+
+
+\section{Grupos de orden $p$ y $p^2$} \label{pyp2}
+
+
+Para clasificar grupos de orden $p$ y $p^2$, enunciaremos los Teoremas \ref{p} y \ref{pp}, respectivamente. Se tratan de teoremas básicos que se dan como normal general en cualquier curso sobre Teoría de Grupos. Sin embargo, los demostraremos basándonos en ~\cite{bullejos}  ya que nos serán de mucha utilidad en las siguientes secciones para clasificar grupos cuya construcción es más compleja.
+
+
+
+\begin{theorem} \label{p}
+Sea $G$ un grupo de orden $p$ primo, entonces $G$ es cíclico: $G \cong C_p$ .
+\end{theorem}
+
+\begin{proof}
+Consideramos $g\in G$ distinto a la identidad. Por el \textit{Teorema de Lagrange} \ref{Lagrange}, $|g| \: \big | \: p$, pero como $g\not = 1_G$, se tiene que $|g|=p$, y por tanto, $G=\langle g \rangle$, luego:
+\[
+    G \cong C_p \: .
+\]
+\end{proof}
+
+
+\begin{theorem} \label{pp}
+Sea $G$ un grupo de orden $p^2$ con $p$ primo. Entonces $G$ es abeliano, es decir:
+\[
+G \cong C_{p^{2}} \quad o \quad  G \cong C_p \times C_p \:.
+\]
+\end{theorem}
+
+%En la introducción: grupo cíclico (si tiene elem de orden |G|), Teorema de Lagrange, teorema de Cayley), orden de g, orden de G.
+
+\begin{proof}
+Por el \textit{Teorema de Lagrange} \ref{Lagrange}, los elementos salvo la identidad deben tener orden $p$ o $p^2$. Si uno de ellos tiene orden $p^2$ entonces $G$ es cíclico e isomorfo a $C_{p^{2}}$. Por el contrario, si todos ellos tienen orden $p$, por el Primer Teorema de Sylow \ref{sylowI} existe $K \trianglelefteq G$ con $|K|=p$.
+Tomamos $h \in G \textbackslash{} K$, que tendrá orden $p$ y consideramos $H=\langle h \rangle$.  Entonces, $H\cap N = \{ 1_G \}$ y $HN=G$, de modo que se cumplen las condiciones del Teorema \ref{inte} y existirá un único homomorfismo $\varphi \colon H \rightarrow \operatorname{Aut}(K)$ tal que:
+\[
+    G \cong N \rtimes_{\varphi} H.
+\] 
+Por otro, $\operatorname{Aut}(N) \cong C_{p-1}$ por la Proposición \ref{ant1} y como $(p-1)$ no divide a $p = |h|$, entonces $\varphi$ debe ser trivial, y por la Proposición \ref{esto}:
+\[
+    G \cong N \rtimes_{\varphi} H \cong N \times H \cong  C_p \times C_p \: .
+\]
+\end{proof}
+
+
+
+
+
+
+
+\newpage
+\section{Grupos de orden $pq$} \label{pyq}
+
+
+
+
+Sea $G$ un grupo de orden $p\cdot q$, con $p<q$ primos. Aplicando los \textit{Teoremas de Sylow} \ref{sylow}, se tiene:
+\begin{equation*}
+\begin{rcases}
+  &n_p  \equiv 1\: mod \:( p )\\
+  &n_p  \: \big | \: q
+\end{rcases}
+\Rightarrow  n_p= 1,q \quad \quad y \quad 
+\begin{rcases}
+  &n_q  \equiv  1\: mod\:( q ) \\
+  &n_q  \: \big | \: p 
+\end{rcases}
+\Rightarrow  n_q = 1  \:.
+\end{equation*}
+
+\hfill 
+
+Sean $P$ y $Q$ un p-subgrupo y q-subgrupo de Sylow de $G$. Como $n_q = 1$, se tiene que $Q \trianglelefteq G$. Además, $P \cap Q = 1$ y $G=QP$ por lo que se cumplen las condiciones del Teorema \ref{inte} y $G$ es producto semidirecto interno de $Q$ y $P$.
+
+
+Distinguimos los siguientes casos según el valor que tome $n_p$, el número de p-subgrupos de Sylow de $G$:
+\begin{enumerate}
+    \item $n_p=1$. En este caso, $P$ también sería un subgrupo normal de $G$ y, por la Proposición \ref{esto}, el producto semidirecto $Q \rtimes P$ coincide con el producto directo:
+    \[
+    G = Q \times P \cong C_q \times C_p    \stackrel{\hbox{(\ref{ciclico})}}{\hbox{$\cong$}} C_{pq} \: .
+    \]
+
+    \item $n_p=q$. Se debe cumplir que $q \equiv 1 \: mod \:(p)$ , o equivalentemente, $p \big | (q-1)$. Por la Proposición \ref{ant1}, $\operatorname{Aut}(Q) \cong \mathbb{Z}_{q-1}$, cíclico, y por el \textit{Teorema de Cauchy} \ref{cauchy}, $\operatorname{Aut}(Q)$ contiene un único subgrupo de orden $p$, lo denotamos $\langle \gamma \rangle$.\\
+    Sea $P= \langle y \rangle$, entonces cualquier homomorfismo $\varphi \colon P \rightarrow \operatorname{Aut}(Q)$ debe aplicar el generador $y\in P$ a una potencia de $\gamma$. En total, hay $p$ homomorfismos que vienen dados por:
+    \begin{align*}
+        \varphi_i \colon P &\rightarrow \operatorname{Aut}(Q) \\
+        y& \mapsto \gamma^i \; , \quad 0 \leq i \leq p-1 \;. 
+    \end{align*}
+    El homomorfismo trivial $\varphi_0$, por la Proposición \ref{esto}, da lugar al producto directo:
+    \[
+    Q \rtimes_{\varphi_0} P \cong Q \times P \: .
+    \]
+    El resto de los $p-1$ homomorfismos de grupos dan lugar a grupos no abelianos de orden $pq$,  que serán todos isomorfos entre sí ya que para cada $\varphi_i$ existe un $y_i$ generador de $P$ tal que $\varphi_i(y_i) = \gamma$. Luego si $p |(q-1)$, entonces:
+    \begin{align} \label{need}
+       G \cong C_q \rtimes C_p  \cong \langle x,y \mid x^q, y^p, yxy^{-1}=x^{-1}  \rangle \: . 
+    \end{align}
+\end{enumerate}
+
+De esta forma, todos los grupos que tengan un orden producto de dos primos estarían clasificados. Algunos grupos serían aquellos de orden $6, 10, 14, 15, 21 \ldots$ etc.
+
+\newpage
+\begin{remark} \label{2p}
+Si $G$ es un grupo de orden $2p$ entonces debe ser isomorfo al grupo cíclico $\mathbb{Z}_{2p}$ o al grupo Diédrico $D_p$, que tendrá una presentación como \eqref{need}. % \cong C_p \rtimes C_2$.
+
+Para dar este isomorfismo basta considerar una presentación del grupo Diédrico:
+\[
+D_p = \langle \varphi , \sigma \mid \varphi^p, \sigma^2, \sigma\varphi\sigma^{-1}=\varphi^{-1}  \rangle 
+\]
+y aplicar el Teorema de Dyck \ref{dick}.
+\begin{align*}
+     D_p &\rightarrow C_p \rtimes C_2 \\
+    \varphi & \mapsto x \\
+    \sigma & \mapsto y
+\end{align*}
+\end{remark}
+Es evidente que $x$ e $y$ satisfacen las relaciones de $D_p$. Además, ambos grupos tienen $2p$ elementos luego son isomorfos.
+
+
+
+
+
+
+\section{Grupos de orden $p^3$} \label{p3}
+
+
+En esta sección nos centraremos en los grupos cuyo orden es potencia cúbica de un número primo. Nos basaremos en las notas de ~\cite{abstractrojo} para demostrar el Teorema \ref{p33}, pero antes,  introduciremos la siguiente proposición:
+
+
+\begin{proposition} \label{corp}
+Si $G$ es un grupo no abeliano de orden $p^3$, con $p\not = 2$, entonces $G$ es producto semidirecto de $H$ y $K$, donde $H$ es un subgrupo normal de orden $p^2$ y $K$ es un subgrupo de orden $p$.
+\end{proposition}
+
+\begin{proof}
+$G$ es producto semidirecto interno de $H$ y $K$ ya que satisfacen las condiciones del Teorema \ref{inte}.
+\end{proof}
+
+\begin{theorem} \label{p33}
+Sea $p$ un primo con $p\not = 2$, entonces, salvo isomorfismos, existen 5 grupos de orden $p^3$.
+\end{theorem}
+
+\begin{proof}
+Sea $G$ un grupo con $|G|=p^3$. Si $G$ es abeliano, entonces se tendrá:
+\[
+G \cong \mathbb{Z}_{p^3}, \quad G \cong \mathbb{Z}_{p^2} \times \mathbb{Z}_p\quad o \quad G \cong \mathbb{Z}_p \times \mathbb{Z}_p \times \mathbb{Z}_p \; .
+\]
+Si $G$ es no abeliano, por la Proposición anterior \ref{corp}, se tiene que:
+\[
+    G \cong H \rtimes K \;,
+\]
+donde $|H|=p^2$ y $|K|=p$. Por el Teorema \ref{pp}, todo grupo de orden $p^2$ es abeliano, luego se tendrá que:
+\[
+H \cong \mathbb{Z}_{p^2} \quad o \quad H \cong \mathbb{Z}_p \times \mathbb{Z}_p \; .
+\]
+
+\begin{enumerate}
+    \item $H \cong \mathbb{Z}_p \times \mathbb{Z}_p$ y $K \cong \mathbb{Z}_p$. 
+    
+    Sea $\varphi \colon K \rightarrow H$ un homomorfismo de grupos. Por la Proposición \ref{ant2}, se tiene que $\operatorname{Aut}(H) \cong GL_2(\operatorname{F}_p)$, que tiene orden $(p^2-1)(p^2-p) = p(p^2-1)(p-1)$.\\   %$p(p-1)^2(p+1)$. \\
+    Como $p \big | |\operatorname{Aut}(H)|$, por el \textit{Teorema de Cauchy} \ref{cauchy}, $\operatorname{Aut}(H)$ tiene un único automorfismo de orden $p$. De este modo, hay un homomorfismo de grupos $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ no trivial donde  $H\rtimes K$ es un grupo no abeliano de orden $p^3$.
+    
+    Escribimos $K = \langle x \rangle $ y $H=\langle y \rangle \times \langle z \rangle$  y $\varphi \colon K \to \operatorname{Aut}(H)$ vendrá dada por:
+    \begin{align*}
+    %(x,y) \mapsto yz \quad y \quad (x,z) \mapsto z \\
+    \varphi(x)(y)=yz , \: \varphi(x)(z)=z 
+    \end{align*}
+    El producto semidirecto $H \rtimes_{\varphi} K$ será isomorfo a:
+    \[
+    G_1 = \langle x,y,z \mid x^p = y^p = z^p = 1, \:yzy^{-1}=z,\: xyx^{-1}=yz, \: xzx^{-1}=z \rangle .
+    \]
+    
+    \item $H \cong \mathbb{Z}_{p^2}$ y $K\cong \mathbb{Z}_p$.
+    
+    Sea $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ un homomorfismo de grupos. Por la Proposición $\ref{ant1}$, se tiene que $\operatorname{Aut}(H) \cong \mathbb{Z}_{p(p-1)}$, cíclico, luego $H$ tiene un único automorfismo de orden $p$. Así, hay un único homomorfismo de grupos $\varphi \colon K \rightarrow \operatorname{Aut}(H)$ no trivial ,y por tanto, $H \rtimes K$ será un grupo no abeliano de orden $p^3$.
+    
+    Si $K=\langle x \rangle$ y $H= \langle y \rangle$ , entonces el morfismo $\varphi \colon K \to \operatorname{Aut}(H)$ viene dado por:%$y$ actúa sobre $x$ del siguiente modo:
+    \[
+    %(y,x) \mapsto x^{1+p} \;.
+    \varphi(x)(y)=y^{1+p}
+    \]
+    
+    El grupo $H \rtimes_{\varphi} K$   tiene presentación:
+    \[
+    G_2 = \langle x,y \mid y^{p^2}, x^p, xyx^{-1}=y^{1+p} \rangle .
+    \]
+    
+
+\end{enumerate}
+Para terminar, $G_1$ y $G_2$ no son isomorfos. $G_2$ contiene un elemento de orden $p^2$ mientras que en $G_1$ todo elemento distinto a la identidad tiene orden $p$.
+\end{proof}
+
+\begin{remark}
+Para $p=2$, se tiene que el grupo de los Cuaternios $Q_2$ tiene orden $p^3=8$. Sin embargo, se ha visto en el Ejemplo \ref{Q2ret} que este grupo no es producto semidirecto interno de dos de sus subgrupos por lo que este teorema no es válido para clasificar grupos de orden 8. 
+\end{remark}
+
+
+Como consecuencia del Teorema \ref{p33}, los grupos de orden $27$, $125$, $343 \ldots$ etc estarían clasificados por ser potencia cúbica de un número primo. En resumen, se tiene:
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}clclc@{}}
+%\toprule
+\textbf{$|G|$} &  & \textbf{$G_1$}                                            &  & \textbf{$G_2$}                          \\ \midrule
+\textbf{$27$}  &  & $(\mathbb{Z}_3 \times \mathbb{Z}_3) \rtimes \mathbb{Z}_3$ &  & $\mathbb{Z}_9  \rtimes \mathbb{Z}_3$    \\
+\textbf{$125$} &  & $(\mathbb{Z}_5 \times \mathbb{Z}_5) \rtimes \mathbb{Z}_5$ &  & $\mathbb{Z}_{25}  \rtimes \mathbb{Z}_5$ \\
+\textbf{$343$} &  & $(\mathbb{Z}_7 \times \mathbb{Z}_7) \rtimes \mathbb{Z}_7$ &  & $\mathbb{Z}_{49}  \rtimes \mathbb{Z}_7$ \\
+$\vdots$       &  & $\vdots$                                                  &  & $\vdots$                                \\
+\textbf{$p^3$} &  & $(\mathbb{Z}_p \times \mathbb{Z}_p) \rtimes \mathbb{Z}_p$ &  & $\mathbb{Z}_{p^2} \rtimes \mathbb{Z}_p$ \\ \bottomrule
+\end{tabular}
+\caption{Grupos de orden $p^3$.}
+\label{tablep3}
+\end{table}
+
+%Sacado de:
+%http://people.math.gatech.edu/~mbaker/pdf/pcubed.pdf
+
+%alternativa:
+%https://people.kth.se/~boij/kandexjobbVT11/Material/pgroups.pdf
+
+%All groups
+%https://people.maths.bris.ac.uk/~matyd/GroupNames/
+
+%otros
+%http://reynoldsalexander.com/docs/areynolds_444_050916.pdf
+%http://www.math.buffalo.edu/~badzioch/MTH619/Lecture_Notes_files/MTH619_week6.pdf
+
+
+
+

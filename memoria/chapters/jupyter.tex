@@ -1,0 +1,628 @@
+
+
+En esta sección se comentarán los cambios realizados en cada
+clase de la librería, que se han implementado siguiendo los conceptos matemáticos descritos anteriormente. Además, se ha completado y añadido la documentación de cada método y función implementada, por lo que el usuario puede consultarla si así lo desea. \\
+Se usará Jupyter para ilustrar algunos ejemplos, donde únicamente bastará con importar la librería que queramos para poder usar todos sus métodos implementados.
+
+\begin{itemize}
+
+\item \texttt{Set.py}: se han añadido métodos para realizar operaciones
+  a nivel de conjunto.
+
+  \begin{itemize}
+  \item Unión, diferencia, intersección, producto cartesiano y diferencia
+    simétrica.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{Set} \PY{k+kn}{import} \PY{n}{Set}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{=} \PY{n}{Set}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{B} \PY{o}{=} \PY{n}{Set}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{C} \PY{o}{=} \PY{n}{A}\PY{o}{*}\PY{n}{B}
+\PY{n}{C}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{(2, 4), (1, 2), (3, 4), (2, 2), (3, 2), (1, 4)\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+  
+
+    \item \textit{cardinality}, \textit{is\_finite}: se tratan de métodos que sirven para calcular la cardinalidad del conjunto y comprobar si este es finito, respectivamente.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{C}\PY{o}{.}\PY{n}{is\PYZus{}finite}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{C}\PY{o}{.}\PY{n}{cardinality}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(True, 6)
+\end{Verbatim}
+\end{tcolorbox}
+        
+        
+    \item \textit{subsets}:  este método se encarga de calcular los subconjuntos de un conjunto. Si por parámetro se le pasa un número natural $n$, entonces calculará los subconjuntos de tamaño $n$.
+    
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{o}{.}\PY{n}{subsets}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[\{1\}, \{2\}, \{3\}, \{1, 2\}, \{1, 3\}, \{2, 3\}, \{1, 2, 3\}]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A}\PY{o}{.}\PY{n}{subsets}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+        \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[\{1, 2\}, \{1, 3\}, \{2, 3\}]
+\end{Verbatim}
+\end{tcolorbox}
+        
+        
+    \end{itemize}
+  
+  
+\newpage
+\item  \texttt{Function.py}: se ha mantenido en tu totalidad el formato
+  original, a excepción del operador \textit{\_\_str\_\_} que muestra ahora
+  la función de manera clara y precisa.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{Function} \PY{k+kn}{import} \PY{n}{Function}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Sea S un conjunto de tipo Set, para definir, por ejemplo, la siguiente operación binaria
+    \begin{align*}
+        S \times S &\rightarrow S \\
+            (x,y) & \mapsto (x+y)\%3 
+    \end{align*}
+
+usaremos las función lambda que nos ofrece Python.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S} \PY{o}{=} \PY{n}{Set}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{F} \PY{o}{=} \PY{n}{Function}\PY{p}{(}\PY{n}{S}\PY{o}{*}\PY{n}{S}\PY{p}{,} \PY{n}{S}\PY{p}{,}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{+}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZpc{}}\PY{k}{3})
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{F}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+    f((0, 1))=1
+    f((1, 2))=0
+    f((2, 1))=0
+    f((0, 0))=0
+    f((1, 1))=2
+    f((2, 0))=2
+    f((0, 2))=2
+    f((2, 2))=1
+    f((1, 0))=1
+    \end{Verbatim}
+
+    
+
+\item  \texttt{Group.py}:
+
+\begin{itemize}
+    \item \textit{\_\_str\_\_} y \textit{\_\_repr\_\_}: se modifican
+      para además mostrar los elementos del grupo (siempre que el orden del
+      grupo no sea grande).
+    \item Se ha modificado el constructor \textit{\_\_init\_\_} de la clase
+      \textit{Group}. De este modo, se podrán definir grupos de las dos
+      formas comentadas en la Sección \ref{pg}.
+
+  \begin{enumerate}
+
+  \item Definición axiomatixada. Se comprueba que el par
+    \textit{(Set, Function)} pasado por argumento satisface los axiomas de grupo (asociatividad, identidad e inversos).
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{Group} \PY{k+kn}{import} \PY{o}{*}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{S} \PY{o}{=} \PY{n}{Set}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{F}\PY{o} {=} \PY{n}{Function}\PY{p}{(}\PY{n}{S}\PY{o}{*}\PY{n}{S}\PY{p}{,} \PY{n}{S}\PY{p}{,}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{+}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{\PYZpc{}}\PY{k}{4})
+\PY{n}{Z4} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{F}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Z4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 4 elements: \{0, 1, 2, 3\}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\item Definición en términos de generadores y relatores. Sea un grupo $G = \langle X \mid R\rangle$. Se pasa por argumento el conjunto de generadores $X$ y relaciones $R$ que definen al grupo. El constructor se encarga de aplicar el \textit{Algoritmo de Todd Coxeter} y darle estructura de grupo de Permutaciones al grupo $G$. Se tomará el subgrupo trivial para esta ejecución del algoritmo.
+
+
+A continuación definimos el grupo $G= \langle a \mid a^4 =1 \rangle$.
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{gens} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{rels} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{aaaa}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{l+m+mi}{#a^4=1}
+
+\PY{n}{G} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{gensG}\PY{o}{=}\PY{n}{gens}\PY{p}{,} \PY{n}{relsG}\PY{o}{=}\PY{n}{rels}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 4 elements: \{(), (1, 2, 3, 4), (1, 4, 3, 2), (1, 3)(2, 4)\}
+    \end{Verbatim}
+
+Naturalmente, y aunque la forma de definir ambos grupos anteriores es distinta, son isomorfos; es
+decir, $G=\langle a \mid a^4=1 \rangle \cong \mathbb{Z}_4$.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{Z4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+Por último, se añadirá una tercera forma de definir un grupo. Sea $Y$ un conjunto de elementos, entonces el grupo $G$ se definirá como el grupo generado por $\langle Y \rangle$. En el siguiente ejemplo tomaremos un conjunto con una única permutación, sin embargo, no exigimos que los elementos sean permutaciones.
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p} \PY{o}{=} \PY{n}{permutation}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n}{G} \PY{o}{=} \PY{n}{Group}\PY{p}{(}\PY{n}{elems}\PY{o}{=}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 4 elements: \{(), (1, 2, 3, 4), (1, 4, 3, 2), (1, 3)(2, 4)\}
+    \end{Verbatim}
+
+
+  \end{enumerate}
+
+
+        
+   \item  \textit{is\_abelian}: en una primera versión se comprobaba si el
+grupo era abeliano en el constructor y se hacía uso de una variable de
+clase. Se añade este método para realizar esta comprobación.
+
+ \item \textit{identity}: del mismo modo que en \textit{is\_abelian},
+se añade un nuevo método para calcular la identidad del grupo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Z4}\PY{o}{.}\PY{n}{is\PYZus{}abelian}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+
+
+
+\newpage 
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Z4}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{p}{)} \PY{p}{,} \PY{n}{G}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(0, ())
+\end{Verbatim}
+\end{tcolorbox}
+        
+   \item  \textit{cosets}: método que calcula las clases laterales de un grupo
+$G$ sobre un subgrupo $H$. Se optimiza y se simplifica.
+
+\end{itemize}
+
+\item   \texttt{Permutation.py}: la clase \textit{Permutation} es la
+  que se encarga de construir permutaciones y da lugar al grupo
+  Simétrico y Alternado. En esta clase no se han realizado importantes
+  modificaciones, sin embargo, requiere de una mención especial ya que
+  basándonos en el Teorema \ref{important}, se programará un
+  método que le proporcionará una estructura de grupo de Permutaciones a
+  cualquier grupo, en especial, a los grupos definidos por una
+  presentación.
+
+  Las modificaciones realizadas han sido las siguientes:
+  \begin{itemize}
+    \item \textit{\_\_mul\_\_}: se modifica el operador encargado de
+  multiplicar dos permutaciones. Optimización y simplificación del
+  código.
+    \item \textit{\_\_call\_\_}: este operador se encarga de calcular la
+  imagen de un elemento de una permutación. Arrojaba un error de
+  compilación que ya se ha corregido.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p} \PY{o}{=} \PY{n}{permutation}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p(}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{)=}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{p}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+p(1)=3
+p(2)=5
+p(3)=1
+p(4)=4
+p(5)=2
+    \end{Verbatim}
+
+   \item  \textit{even\_permutation}, \textit{odd\_permutation}: se añaden los
+siguientes métodos encargados de calcular si una permutación es par o
+impar.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p}\PY{o}{.}\PY{n}{odd\PYZus{}permutation}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+False
+\end{Verbatim}
+\end{tcolorbox}
+
+\end{itemize}
+
+\item \texttt{Complex.py}: se ha realizado una implementación de la
+  clase número complejo, \textit{class Complex}, junto a todos los
+  operadores necesarios para realizar operaciones entre números
+  complejos. Gracias a esta clase, se programa el grupo de las raíces
+  n-ésimas de la unidad y una función que se encarga de representar sus
+  soluciones:
+  \begin{itemize}
+    \item \textit{plot(G, rep)}: dado un grupo de las raíces n-ésimas de
+  la unidad pasado por argumento, esta función representa todas sus
+  raíces en el plano complejo. El segundo parámetro \textit{rep} permite elegir el modo de representación, que puede ser ``exp'' (por defecto) para mostrarlos mediante la representación exponencial o ``binom'' para mostrarlos usando su forma binomial $a+bi$.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{n}{RootsOfUnitGroup}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\PY{n}{plot}\PY{p}{(}\PY{n}{G}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    %\begin{center}
+    %\adjustimage{max size={1.5\linewidth}{1.5\paperheight}}{img/raiz.png}
+    %\end{center}
+
+    \begin{center}
+    \adjustimage{max size={0.29\linewidth}{0.29\paperheight}}{img/1g.png}
+    \end{center}
+
+
+
+
+    \end{itemize}
+
+\item \texttt{Quaternion.py}: como hemos comentado anteriormente, uno de
+  los problemas que tenía la librería  y que se quería corregir era evitar tener que dar la tabla de multiplicar de un grupo.
+  Por ello, se realiza una implementación de los números cuaternios en
+  la clase \textit{Quaternion} sobrecargando el operador
+  \textit{\_\_mul\_\_} para dotar a estos números de su producto.
+  
+  \begin{itemize}
+        \item Se han programado todos los operadores necesarios para trabajar y
+      operar con números cuaternios, desde su manejo y representación
+      \textit{\_\_repr\_\_}, \textit{\_\_str\_\_}, \textit{\_\_call\_\_},
+      hasta los operadores encargados de sumar, restar, multiplicar, dividir
+      (\textit{\_\_add\_\_}, \textit{\_\_sub\_\_}, \textit{\_\_mull\_\_},
+      \textit{\_\_div\_\_})\ldots etc.
+        
+     \item Se han implementado métodos como \textit{conjugate}, \textit{norm},
+      \textit{inverse}, \textit{trace}, encargados de calcular el conjugado,
+      norma, inverso y traza, respectivamente.
+
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q} \PY{o}{=} \PY{n}{Quaternion}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{8}\PY{p}{)}
+\PY{n}{p} \PY{o}{=} \PY{n}{Quaternion}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{q}\PY{o}{+}\PY{n}{p}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ -3+3i+5j-7k
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q}\PY{o}{*}\PY{n}{p}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ 20i-26j-4k
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{p}{(}\PY{n}{q}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{o}{.}\PY{n}{conjugate}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{2}\PY{o}{*}\PY{p}{(}\PY{n}{q}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+ -6-30i+12j-18k
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{i} \PY{o}{=} \PY{n}{Quaternion}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{j} \PY{o}{=} \PY{n}{Quaternion}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{k} \PY{o}{=} \PY{n}{Quaternion}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{i}\PY{o}{*}\PY{n}{i} \PY{o}{==} \PY{n}{j}\PY{o}{*}\PY{n}{j} \PY{o}{==} \PY{n}{k}\PY{o}{*}\PY{n}{k} \PY{o}{==} \PY{n}{i}\PY{o}{*}\PY{n}{j}\PY{o}{*}\PY{n}{k} \PY{o}{==} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    La función que se encarga de crear el grupo de los Cuaternios es
+\textit{QuaternionGroup}, donde únicamente se le ha de pasar por argumento
+una de las dos representaciones siguientes:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Q} \PY{o}{=} \PY{n}{QuaternionGroup}\PY{p}{(}\PY{n}{rep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ijk}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Q}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 8 elements: \{ 1,  i,  j,  k,  -k,  -j,  -i,  -1\}
+    \end{Verbatim}
+\end{tcolorbox}
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Q2} \PY{o}{=} \PY{n}{QuaternionGroup}\PY{p}{(}\PY{n}{rep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{permutations}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{Q2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 8 elements: \{(1, 4, 3, 2)(5, 7, 8, 6), (1, 7, 3, 6)(2, 8, 4, 5), (1, 6, 3, 7)(2, 5, 4, 8), (1, 8, 3, 5)(2, 6, 4, 7), (1, 2, 3, 4)(5, 6, 8, 7), (1, 5, 3, 8)(2, 7, 4, 6), (), (1, 3)(2, 4)(5, 8)(6, 7)\}
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Q}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{Q2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+
+    
+    
+\item 
+Por último, se ha programado la función \textit{QuaternionGroupGeneralised(n)} que define el grupo generalizado de los Cuaternios, con presentación:
+\begin{align*}
+    Q_n = \langle a,b \mid a^n = b^2, a^{2n}=1,
+b^{-1}ab=a^{-1} \rangle \, .
+\end{align*}
+Cuando $n=2$ se tiene el grupo de los Cuaternios.
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Q3} \PY{o}{=} \PY{n}{QuaternionGroupGeneralised}\PY{p}{(}\PY{n}{2}\PY{p}{)}
+\PY{n}{Q3}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{Q}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+
+\end{itemize}
+        
+
+
+    
+    
+    
+    
+  \newpage  
+\item  \texttt{Dihedral.py}: del mismo modo que en el grupo de los
+  Cuaternios, se ha realizado la implementación del grupo Diédrico en la
+  clase Dihedral, \textit{class dihedral}. Ahora, un grupo Diédrico  $D_n$, de orden $2n$, almacenará internamente $n$ simetrías y  $n$ rotaciones que podrán representarse de tres formas equivalentes:
+
+  \begin{enumerate}
+  \item \textit{RS}: el conjunto de rotaciones serán denotadas por
+    $R0, R1, \ldots, RN$ y las simetrías por $S1, S2,\ldots, SN$.
+  \item \textit{Permutations}: se representará el grupo como un grupo de
+    permutationes.
+  \item \textit{Matrix}: se trata de una representación que hace
+    referencia a la matriz del movimiento asociado.
+
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D4} \PY{o}{=} \PY{n}{Dihedral}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{D4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Rotaciones: \qquad  \qquad \qquad \quad Reflexiones:
+(1.0, -0.0, 0.0, 1.0) \qquad \quad(1.0, 0.0, 0.0, -1.0)
+(0.0, -1.0, 1.0, 0.0) \qquad \, (0.0, 1.0, 1.0, -0.0)
+(-1.0, -0.0, 0.0, -1.0) \qquad (-1.0, 0.0, 0.0, 1.0)
+(-0.0, 1.0, -1.0, -0.0) \qquad (-0.0, -1.0, -1.0, 0.0)
+    \end{Verbatim}
+
+    Para construir el grupo basta con llamar a la función $DihedralGroup$.
+El primer parámetro $n$ hace referencia al grupo que se desea crear,
+que tendrá orden $2n$, mientras que el segundo parámetro sirve para
+indicar la representación deseada.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D} \PY{o}{=} \PY{n}{DihedralGroup}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{rep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RS}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{D}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Group with 6 elements: \{'R1', 'R0', 'R2', 'S2', 'S1', 'S0'\}
+    \end{Verbatim}
+
+Comprobemos que efectivamente los grupos son isomorfos aunque su representación sea distinta:
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D2} \PY{o}{=} \PY{n}{DihedralGroup}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{rep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{matrix}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{D3} \PY{o}{=} \PY{n}{DihedralGroup}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{rep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{permutations}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{D}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{D2}\PY{p}{)}\PY{p}{,} \PY{n}{D2}\PY{o}{.}\PY{n}{is\PYZus{}isomorphic}\PY{p}{(}\PY{n}{D3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(True, True)
+\end{Verbatim}
+\end{tcolorbox}
+        
+  \end{enumerate}
+
+\end{itemize}
+ 
+
+    % Add a bibliography block to the postdoc
+    

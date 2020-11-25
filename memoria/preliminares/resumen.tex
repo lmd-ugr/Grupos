@@ -1,0 +1,32 @@
+% !TeX root = ../libro.tex
+% !TeX encoding = utf8
+%
+%*******************************************************
+% Summary
+%*******************************************************
+
+\newpage
+\blankpage
+\chapter*{Resumen}
+
+
+\textbf{Palabras clave}: grupo, grupo libre, presentación, producto semidirecto, Problema de Palabras,  Todd Coxeter, Python.
+
+\vspace{0.5cm}
+
+La Teoría de Grupos es un área de las Matemáticas que estudia la estructura algebraica de conjuntos dotados de diferentes operaciones binarias que satisfacen unos axiomas específicos. Sus aplicaciones van más allá de las Matemáticas, desde lo más profundo de la Física o Mecánica hasta las estructuras moleculares de la Química, y potencialmente aplicable a todos los estados y situaciones en los que la simetría intervenga.
+
+En este proyecto se hablará sobre el concepto de Grupo y los axiomas que deben cumplir sus elementos. Además, se introducirán diferentes grupos junto a las propiedades que caracterizan a cada uno de ellos, como el grupo de las Permutaciones, Diédrico o grupo de los Cuaternios. Asimismo, presentaremos los grupos mediante una serie de 
+ generadores y relatores, es decir, dando lugar al concepto de \textit{presentación de grupo}. Para ello se profundizará sobre  grupos libres, concluyendo con el Problema de Palabras y describiendo el \textit{Algoritmo de Todd Coxeter}, que trata de resolver este problema mediante la enumeración de clases.
+
+Por otro lado, y usando toda la teoría introducida anteriormente, se llevará a cabo la construcción del producto semidirecto de grupos: una alternativa al producto directo (cartesiano) de grupos en el que se hará uso de acciones de grupo. Usando esta noción de producto semidirecto, y con la ayuda de los \textit{Teoremas de Sylow} \ref{sylow}, se describirán las principales características y técnicas para la clasificación de grupos de orden $n$ para algunos $n$ específicos, ofreciendo así una alternativa a la clasificación usual.
+
+En tercer y último lugar, se realizará una optimización y ampliación de la librería de Pedro A. García y José L. Bueso, basada en la librería de Naftali Harris ~\cite{Absalg}, que recoge los aspectos más importantes de la Teoría de Grupos.  
+A esta librería se incorporará una implementación del \textit{Algoritmo de Todd Coxeter}, donde dados dos grupos $G$ y $H\leq G$, se obtendrá una tabla de clases laterales que refleje la acción de $G$ sobre $G/H$. Como consecuencia, no sólo obtendremos el índice $[G:H]$, sino que podremos dar estructura de grupo de Permutaciones a grupos definidos por una presentación. 
+
+
+Se ha realizado un \href{https://github.com/lmd-ugr/Grupos/blob/master/Tutorial.ipynb}{\color{brown2}{tutorial}}
+ en Jupyter mostrando diferentes ejemplos de ejecución, y la librería está disponible en \href{https://github.com/lmd-ugr/Grupos}{\color{brown2}{https://github.com/lmd-ugr/Grupos}}.
+
+
+\endinput
