@@ -1,0 +1,65 @@
+% !TeX root = ../libro.tex
+% !TeX encoding = utf8
+%
+%*******************************************************
+% Summary
+%*******************************************************
+
+\chapter*{Abstract}
+
+
+\textbf{Key words}: group, free group, presentation, semidirect product, word problem,  Todd Coxeter, Python.
+
+\vspace{0.5cm}
+
+\iffalse
+Group Theory is an area of Mathematics that studies the algebraic structure of sets endowed with different binary operations and that satisfy specific axioms. Its applications go beyond Mathematics, from the depths of Physics or Mechanics to the molecular structures of chemistry, and potentially applicable to all states and situations in which symmetry intervenes.
+
+
+In this project, we will deal with the concept of Group and the axioms that its elements must fulfill. In addition, different groups will be introduced together with the properties that characterize each one of them, such as the Permutation, Dihedral or the Quaternion group. We will also present the groups through a series of generators and relators, that is, resulting in the concept of \textit{group presentation}. In order to do so, we will delve into free groups, concluding with the Word Problem and describing the \textit{Todd Coxeter Algorithm}, which tries to solve this problem by coset enumeration.
+
+On the other hand, the construction of the semidirect products of groups will be carried out using all the theory introduced above. This tool is an alternative to the direct product (cartesian) of groups in which group actions are used. Using this notion of semidirect product, and with the help of \textit{Sylow Theorems}, the main characteristics and techniques for the classification of groups of order $n$ for some specific n will be described, thus offering an alternative to the usual classification.
+
+Finally, a study will be conducted about the optimization and ampliation of Pedro A. García and José L. Bueso library, based on the Naftali Harris ~\cite{Absalg} library and available in ~\cite{Pedrito}, which collects the most important aspects of Group Theory. Furthermore, an implementation of the \textit{Todd Coxeter Algorithm} will be incorporated into this library, where given two groups $G$ and $H$, we will obtain a lateral coset table that reflects the action of $G$ on $G/H$. As a consequence, we will not only obtain the index $[G:H]$, but we will give the structure of the group of permutations to groups defined by a presentation.
+\fi 
+
+
+
+
+
+Group Theory is an area of Mathematics that studies the algebraic structure of sets endowed with different binary operations and that satisfy specific axioms. Its applications go beyond Mathematics, from the depths of Physics or Mechanics to the molecular structures of chemistry, and potentially applicable to all states and situations in which symmetry intervenes.
+
+
+In this project, we will deal with the concept of Group and the axioms that its elements must fulfill. In addition, different groups will be introduced 
+in a first introductory chapter together with the properties that characterize each one of them, such as the Permutation, Dihedral or the Quaternion group.  
+We will also present the groups through a series of generators and relators, that is, resulting in the concept of \textit{group presentation}. 
+In order to do this, we must talk about free groups and carry out their construction based on a set X, developed by Dyck.
+
+
+One of the first problems that arises in giving a group through a presentation is that of determining when two elements of the group (given as words in the generators) are equal; that is, determine using the relators if two words in the generators give rise to the same element. This problem is known as the Word Problem and it first arose in 1911, by Max Dehn. Along with this problem, Dehn published an article with other problems, the Conjugation Problem and the Isomorphism Problem, being today the three best known decision problems in Group Theory.
+
+
+
+
+
+Nowadays there are algorithms that may be able to solve the Word Problem for a group $G$ defined by a finite presentation. The best known is called \textit{Todd Coxeter Algorithm} which tries to solve this problem by a technique called  coset enumeration of $G/H$, where $G$ is a finite group defined by a presentation and $H$ is a subgroup of it.
+An implementation of this algorithm has been incorporated into the library and numerous methods have been implemented that will allow us to obtain the index $[G:H]$ and a representation by permutations of $G$, among others. The latter is a key  concept since we can define any group using the library through a presentation. Once the group is defined, the different methods implemented can be called to try to establish an isomorphism with a known group. We will detail the algorithm in section \ref{descripcion}, and its implementation in section \ref{implementacion}.
+
+
+\newpage
+
+On the other hand, the construction of the semidirect product of groups will be carried out using all the theory introduced above. This tool is an alternative to the direct product (cartesian) of groups in which group actions are used. Using this notion of semidirect product, and with the help of \textit{Sylow Theorems} \ref{sylow}, the main characteristics and techniques for the classification of groups of order $n$ for some specific $n$ will be described, thus offering an alternative to the usual classification. 
+Carrying out this classification is a costly and difficult process. As it will be seen in later sections, not every group can be expressed as a semidirect product. For this reason, a study similar to the one Hölder did will be carried out, studying groups that follow similar patterns, where we will focus on groups whose order is the product of prime numbers, specially in these of order $p$,  $p^2$, $2p$, $pq$ and $p^3$, where $p$ is a prime.
+
+
+
+Moreover, a study will be conducted about the optimization and ampliation of Pedro A. García and José L. Bueso library, based on the Naftali Harris ~\cite{Absalg}, which collects the most important aspects of Group Theory. In this optimization, new methods will be added and the main groups will be implemented in classes in order to equip each class with the operations that define the different groups.
+One of the main problems of the library was the impossibility of defining a group given by a presentation, that is, a group could be defined as from a Set and its binary operation but not from a set of generators and relators; as a consequence an implementation of the \textit{Todd Coxeter Algorithm} will be incorporated into this library as we have already commented previously.
+
+Finally, the documentation will be completed and a \href{https://github.com/lmd-ugr/Grupos/blob/master/Tutorial.ipynb}{\color{brown2}{tutorial}} will be provided in Jupyter showing with different examples the use of the different methods and files that make up the library. The library is available at \href{https://github.com/lmd-ugr/Grupos}{\color{brown2}{https://github.com/lmd-ugr/Grupos}}.
+
+
+
+
+
+\endinput

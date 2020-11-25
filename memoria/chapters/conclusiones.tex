@@ -1,0 +1,56 @@
+\newpage
+\blankpage
+\part{Conclusiones y Trabajo futuro}
+\chapter{Conclusiones y Trabajo futuro}
+
+
+En primer lugar, se han introducido los principales conceptos y teoremas sobre la construcción de grupos libres, con los cuales podremos definir grupos dados por un conjunto de generadores y relatores, lo que se conoce por presentación de grupo.
+
+
+Por otro lado, se ha presentado el producto semidirecto, una alternativa al producto directo de grupos en el que se obtiene un grupo a partir de dos más pequeños. Su construcción requiere de acciones de grupo por lo que se han introducido los conceptos más relevantes. Usando este producto semidirecto, se han descrito algunas técnicas de clasificación de grupos y se ha visto que es una herramienta potente y a veces más útil que el producto usual, pero no siempre es válida ya que no todo grupo puede expresarse como producto semidirecto (interno) de dos de sus subgrupos.
+
+
+
+
+
+En relación con la parte informática, se ha realizado una
+extensión y optimización de la librería de Teoría de Grupos de José L. Bueso Montero y Pedro A. García Sánchez, una librería que se presenta como material didáctico y complementario a la Teoría de Grupos estudiada durante la carrera. Se han estudiado los principales problemas de la librería y se han aportado e implementado soluciones a éstos, como por ejemplo la implementación en clases de grupos que se definen de forma axiomatizada (asociatividad, identidad e inversos). Ante la imposibilidad de definir grupos dados por una presentación, se ha implementado el \textit{Algoritmo de Todd Coxeter}, obteniendo así mucha información del grupo $G$, la más importante la representación por permutaciones del grupo $G$.
+
+
+
+La versión implementada es conocida como el método \textit{HLT} o \textit{método basado de relatores}. Como hemos visto anteriormente, cumple con las necesidades de cualquier curso avanzado de Teoría de Grupos; sin embargo, si queremos profundizar y mejorar la eficiencia, se podrían implementar las siguientes estrategias, disponibles en ~\cite{green}.
+
+\begin{itemize}
+    \item  Existe una variante del método \textit{HLT}  llamada \textit{HLT+lookahead}, que puede ser útil cuando la tabla de clases es excesivamente grande y no disponemos de suficiente memoria. Supongamos que estamos trabajando con una clase $x$ y el número de clases vivas excede el máximo valor de memoria permitido. En vez de abortar el proceso, el método opera sobre las clases definidas para buscar coincidencias y borrar aquellas clases que estén en la clase de equivalencia de otra que represente una clase menor. De este modo, liberamos memoria y permitimos al método seguir ejecutándose sobre la clase $x$.
+    \item Por último, se describirá el método \textit{Felsch}. En vez de forzar el escaneo de cada relator para cada clase como se realiza en ambos métodos anteriores, este método se centra en rellenar la tabla de clases de $G/H$ del siguiente modo. Para los generadores del subgrupo $H$, se escanea y completa la clase $1$. Para las relaciones que definen al grupo $G$, dada una clase $x$,  se realizan definiciones para completar la fila de la clase $x$, y después de cada definición, se escanean todas las clases sin completar con nuevas definiciones. De esta forma, intentamos evitar las coincidencias, lo que se refleja en un menor uso de clases usadas.
+
+\end{itemize}
+
+%Sigamos con el estudio de grupos finitamente presentados.
+Sigamos ahora con el estudio de nuevos algoritmos que pueden ser incorporados a la librería.
+Sea $G$ un grupo finitamente presentado y $H \leq G$ un subgrupo suyo no trivial dado mediante generadores. Puede haber ocasiones en las que tras haber aplicado el  \textit{Algoritmo de Todd Coxeter} sobre $G$ y $H$, nos encontremos que el índice $[G:H]$ es excesivamente grande y los generadores de $H$ no nos aporten información relevante sobre el subgrupo. Por ello, podemos pensar en implementar algoritmos que puedan calcular una presentación del subgrupo $H$. Este tema se le atribuye a George Havas ~\cite{havas} y Joachim Neubüser ~\cite{neu}, y gracias a su trabajo, existen hoy en día algoritmos que realizan esta función, como es el caso del \textit{Algoritmo de Reidemeister-Schreier}. Este algoritmo requiere del \textit{Algoritmo de Todd Coxeter} ya que usa los generadores de Schreier de $G$ como datos de entrada.  Véase ~\cite{green} para una descripción detallada.
+
+
+
+Aquellas presentaciones de subgrupos obtenidas a partir  del \textit{Algoritmo de Reidemeister-Schreier} usan un número tan elevado de relatores que su manejo de vuelve dificultoso. Por ello, podemos aplicar transformaciones a los relaciones (transformaciones de Tietze) para obtener, en una secuencia finita de transformaciones, una presentación con un menor número de generadores y sin relatores redundantes.
+
+
+
+
+Para terminar con nuestro estudio de algoritmos para grupos finitos, puede resultar de interés calcular una presentación de un grupo dado. Para grupos de orden pequeño carece de importancia, sin embargo, para grupos grandes es imprescindible, tanto para su manejo matemático como para su almacenamiento y/o representación  computacional. Actualmente, existen algoritmos que hacen esto posible. El más importante se conoce como \textit{Todd-Coxeter Schreier-Sims} ~\cite{TCSS}, un algoritmo que gira en torno a una presentación candidata a la que se le van añadiendo nuevos relatores y aplicando enumeración de clases para  comprobar en cada paso si dicha presentación  es isomorfa a la presentación del grupo original.
+
+
+
+Los principales sistemas de desarrollo de software algebraico como GAP y Magma incluyen implementaciones de los algoritmos anteriores y de la gran mayoría de herramientas de Teoría de Grupos computacional. En relación con el \textit{Algoritmo de Todd Coxeter}, GAP incorpora dos paquetes especiales, llamados ACE ~\cite{ace} (“Advanced Coset Enumerator”) e ITC ~\cite{itc}  (“Interactive Todd–Coxeter”). Este último tiene una interfaz gráfica  y permite al usuario controlar el proceso paso a paso, experimentando con las diferentes estrategias explicadas anteriormente. 
+
+
+
+
+%Estos y más problemas relacionados con grupos finitamente presentados son perfectamente programables en la librería, que se presenta con licencia... y abierta para cualquier persona que desee colaborar añadiendo nuevos algoritmos, métodos, reportante bugs...etc
+
+
+
+% Este algoritmo puede también ser usado para implementar el \textit{Algoritmo de Schreier-Sims}, un método capaz de determinar una base y un conjunto de generador fuerte de un grupo de permutaciones.
+
+
+
